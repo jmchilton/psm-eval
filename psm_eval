@@ -1,0 +1,13 @@
+#!/bin/bash
+
+project_directory="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+cd $project_directory
+
+# If a virtualenv exists, activate it.
+if [ -d .venv ];
+then
+    . .venv/bin/activate
+fi
+
+export PYTHONPATH=.:$PYTHONPATH
+python $project_directory/psme/main.py "$@"

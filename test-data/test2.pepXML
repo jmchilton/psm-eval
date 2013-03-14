@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<msms_pipeline_analysis date="2013-03-12T16:22:59" summary_xml="test2.pepXML" xmlns="http://regis-web.systemsbiology.net/pepXML" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://sashimi.sourceforge.net/schema_revision/pepXML/pepXML_v117.xsd">
+  <analysis_summary analysis="MyriMatch" version="2.1.131" time="2013-03-12T16:22:59"/>
+  <msms_run_summary base_name="test2" raw_data_type="" raw_data="">
+    <sample_enzyme name="Trypsin" independent="false" fidelity="specific">
+      <specificity sense="C" cut="KR" no_cut="P" min_spacing="1"/>
+    </sample_enzyme>
+    <search_summary base_name="test2" search_engine="MyriMatch" precursor_mass_type="monoisotopic" fragment_mass_type="monoisotopic" out_data_type="" out_data="">
+      <search_database local_path="Uniprot Human and Decoys.fasta" database_name="SDB" type="AA"/>
+      <enzymatic_search_constraint enzyme="Trypsin" max_num_internal_cleavages="100000" min_number_termini="2"/>
+      <aminoacid_modification aminoacid="M" massdiff="16.0" mass="147.0404846062" variable="Y"/>
+      <parameter name="Config: AvgPrecursorMzTolerance" value="1.5mz"/>
+      <parameter name="Config: ClassSizeMultiplier" value="2"/>
+      <parameter name="Config: CleavageRules" value="Trypsin"/>
+      <parameter name="Config: ComputeXCorr" value="1"/>
+      <parameter name="Config: DecoyPrefix" value="REV_"/>
+      <parameter name="Config: DynamicMods" value="M * 16.0"/>
+      <parameter name="Config: EstimateSearchTimeOnly" value="0"/>
+      <parameter name="Config: FragmentMzTolerance" value="1.5mz"/>
+      <parameter name="Config: FragmentationAutoRule" value="1"/>
+      <parameter name="Config: FragmentationRule" value="cid"/>
+      <parameter name="Config: KeepUnadjustedPrecursorMz" value="0"/>
+      <parameter name="Config: MaxDynamicMods" value="2"/>
+      <parameter name="Config: MaxFragmentChargeState" value="0"/>
+      <parameter name="Config: MaxMissedCleavages" value="100000"/>
+      <parameter name="Config: MaxPeakCount" value="300"/>
+      <parameter name="Config: MaxPeptideLength" value="75"/>
+      <parameter name="Config: MaxPeptideMass" value="10000"/>
+      <parameter name="Config: MaxPeptideVariants" value="1000000"/>
+      <parameter name="Config: MaxResultRank" value="2"/>
+      <parameter name="Config: MinPeptideLength" value="5"/>
+      <parameter name="Config: MinPeptideMass" value="0"/>
+      <parameter name="Config: MinResultScore" value="9.9999999999999995e-08"/>
+      <parameter name="Config: MinTerminiCleavages" value="2"/>
+      <parameter name="Config: MonoPrecursorMzTolerance" value="10ppm"/>
+      <parameter name="Config: MonoisotopeAdjustmentSet" value="[-1,2] "/>
+      <parameter name="Config: NumBatches" value="50"/>
+      <parameter name="Config: NumChargeStates" value="3"/>
+      <parameter name="Config: NumIntensityClasses" value="3"/>
+      <parameter name="Config: NumMzFidelityClasses" value="3"/>
+      <parameter name="Config: OutputFormat" value="pepXML"/>
+      <parameter name="Config: OutputSuffix" value=""/>
+      <parameter name="Config: PrecursorMzToleranceRule" value="auto"/>
+      <parameter name="Config: PreferIntenseComplements" value="1"/>
+      <parameter name="Config: ProteinDatabase" value="Uniprot Human and Decoys.fasta"/>
+      <parameter name="Config: ProteinListFilters" value=""/>
+      <parameter name="Config: ProteinSamplingTime" value="15"/>
+      <parameter name="Config: ResultsPerBatch" value="200000"/>
+      <parameter name="Config: SpectrumListFilters" value="peakPicking true 2-"/>
+      <parameter name="Config: StaticMods" value=""/>
+      <parameter name="Config: StatusUpdateFrequency" value="5"/>
+      <parameter name="Config: TicCutoffPercentage" value="0.97999999999999998"/>
+      <parameter name="Config: UseMultipleProcessors" value="1"/>
+      <parameter name="Config: UseSmartPlusThreeModel" value="1"/>
+      <parameter name="Config: WorkingDirectory" value="/home/john/workspace/galaxyp-central/database/job_working_directory/000/276"/>
+      <parameter name="PeakCounts: 1stQuartile: Filtered" value="28"/>
+      <parameter name="PeakCounts: 1stQuartile: Original" value="31"/>
+      <parameter name="PeakCounts: 2ndQuartile: Filtered" value="29"/>
+      <parameter name="PeakCounts: 2ndQuartile: Original" value="31"/>
+      <parameter name="PeakCounts: 3rdQuartile: Filtered" value="35"/>
+      <parameter name="PeakCounts: 3rdQuartile: Original" value="41"/>
+      <parameter name="PeakCounts: Mean: Filtered" value="32"/>
+      <parameter name="PeakCounts: Mean: Original" value="37"/>
+      <parameter name="PeakCounts: Min/Max: Filtered" value="23 / 49"/>
+      <parameter name="PeakCounts: Min/Max: Original" value="26 / 56"/>
+      <parameter name="SearchEngine: Name" value="MyriMatch"/>
+      <parameter name="SearchEngine: Version" value="2.1.131"/>
+      <parameter name="SearchStats: Nodes" value="1"/>
+      <parameter name="SearchStats: Overall" value="262138 proteins; 12925382 peptides; 1966226 variants; 30449 comparisons"/>
+      <parameter name="SearchTime: Duration" value="31.484024 seconds"/>
+      <parameter name="SearchTime: Started" value="16:22:28 on 03/12/2013"/>
+      <parameter name="SearchTime: Stopped" value="16:22:59 on 03/12/2013"/>
+    </search_summary>
+    <spectrum_query spectrum="test2.2.2.2" spectrumNativeID="controllerType=0 controllerNumber=1 scan=2" start_scan="2" end_scan="2" precursor_neutral_mass="725.406162398272" assumed_charge="2" index="1" retention_time_sec="2.25310000002">
+      <search_result num_target_comparisons="0" num_decoy_comparisons="0">
+        <search_hit hit_rank="1" peptide="FFTALK" peptide_prev_aa="R" peptide_next_aa="V" protein="sp|A6NNL5|CO061_HUMAN" num_tot_proteins="1" calc_neutral_pep_mass="725.4112117787" massdiff="0.005049380428" num_tol_term="2" num_missed_cleavages="0" num_matched_ions="5" tot_num_ions="11">
+          <search_score name="number of matched peaks" value="5"/>
+          <search_score name="number of unmatched peaks" value="6"/>
+          <search_score name="mvh" value="7.041799227122"/>
+          <search_score name="mzFidelity" value="10.5877558944"/>
+          <search_score name="xcorr" value="0.52017368165799416"/>
+        </search_hit>
+        <search_hit hit_rank="1" peptide="FFVSVK" peptide_prev_aa="R" peptide_next_aa="G" protein="REV_115215" num_tot_proteins="5" calc_neutral_pep_mass="725.4112117787" massdiff="0.005049380428" num_tol_term="2" num_missed_cleavages="0" num_matched_ions="5" tot_num_ions="11">
+          <alternative_protein protein="REV_119677"/>
+          <alternative_protein protein="REV_1276"/>
+          <alternative_protein protein="REV_128974"/>
+          <alternative_protein protein="REV_93418"/>
+          <search_score name="number of matched peaks" value="5"/>
+          <search_score name="number of unmatched peaks" value="6"/>
+          <search_score name="mvh" value="7.041799227122"/>
+          <search_score name="mzFidelity" value="10.5877558944"/>
+          <search_score name="xcorr" value="0.43741570613333025"/>
+        </search_hit>
+        <search_hit hit_rank="1" peptide="MFVGKK" peptide_prev_aa="R" peptide_next_aa="I" protein="sp|Q6ZN57|ZFP2_HUMAN" num_tot_proteins="2" calc_neutral_pep_mass="724.3992668839" massdiff="0.001769401228" num_tol_term="2" num_missed_cleavages="1" num_matched_ions="5" tot_num_ions="11">
+          <alternative_protein protein="tr|B7ZM21|B7ZM21_HUMAN"/>
+          <modification_info>
+            <mod_aminoacid_mass position="1" mass="147.0404846062"/>
+          </modification_info>
+          <search_score name="number of matched peaks" value="5"/>
+          <search_score name="number of unmatched peaks" value="6"/>
+          <search_score name="mvh" value="7.041799227122"/>
+          <search_score name="mzFidelity" value="10.875437966852"/>
+          <search_score name="xcorr" value="0.52331839010948311"/>
+        </search_hit>
+        <search_hit hit_rank="2" peptide="SHTLLR" peptide_prev_aa="R" peptide_next_aa="F" protein="sp|Q9ULS6|KCNS2_HUMAN" num_tot_proteins="1" calc_neutral_pep_mass="725.4184224216" massdiff="0.012260023328" num_tol_term="2" num_missed_cleavages="0" num_matched_ions="3" tot_num_ions="10">
+          <search_score name="number of matched peaks" value="3"/>
+          <search_score name="number of unmatched peaks" value="7"/>
+          <search_score name="mvh" value="6.404081333884"/>
+          <search_score name="mzFidelity" value="6.22441948387"/>
+          <search_score name="xcorr" value="0.31704575632014315"/>
+        </search_hit>
+      </search_result>
+    </spectrum_query>
+    <spectrum_query spectrum="test2.5.5.2" spectrumNativeID="controllerType=0 controllerNumber=1 scan=5" start_scan="5" end_scan="5" precursor_neutral_mass="848.483070848322" assumed_charge="2" index="2" retention_time_sec="6.65110000002">
+      <search_result num_target_comparisons="3225" num_decoy_comparisons="2956">
+        <search_hit hit_rank="1" peptide="TKTTSRR" peptide_prev_aa="R" peptide_next_aa="G" protein="sp|Q9UQ35|SRRM2_HUMAN" num_tot_proteins="3" calc_neutral_pep_mass="848.4828135924" massdiff="-2.57255922179e-04" num_tol_term="2" num_missed_cleavages="2" num_matched_ions="4" tot_num_ions="12">
+          <alternative_protein protein="tr|I3L2L6|I3L2L6_HUMAN"/>
+          <alternative_protein protein="tr|O60382|O60382_HUMAN"/>
+          <search_score name="number of matched peaks" value="4"/>
+          <search_score name="number of unmatched peaks" value="8"/>
+          <search_score name="mvh" value="7.438401652475"/>
+          <search_score name="mzFidelity" value="8.745806912037"/>
+          <search_score name="xcorr" value="0.27294589335168712"/>
+        </search_hit>
+        <search_hit hit_rank="2" peptide="KTTSTALK" peptide_prev_aa="K" peptide_next_aa="G" protein="tr|B2R729|B2R729_HUMAN" num_tot_proteins="1" calc_neutral_pep_mass="848.4967323221" massdiff="0.013661473778" num_tol_term="2" num_missed_cleavages="1" num_matched_ions="4" tot_num_ions="15">
+          <search_score name="number of matched peaks" value="4"/>
+          <search_score name="number of unmatched peaks" value="11"/>
+          <search_score name="mvh" value="7.046976739331"/>
+          <search_score name="mzFidelity" value="7.217255835235"/>
+          <search_score name="xcorr" value="0.27796004721419887"/>
+        </search_hit>
+        <search_hit hit_rank="2" peptide="LFAAKSGR" peptide_prev_aa="R" peptide_next_aa="A" protein="REV_43088" num_tot_proteins="4" calc_neutral_pep_mass="848.4868363378" massdiff="0.003765489478" num_tol_term="2" num_missed_cleavages="1" num_matched_ions="4" tot_num_ions="15">
+          <alternative_protein protein="REV_7129"/>
+          <alternative_protein protein="REV_81808"/>
+          <alternative_protein protein="REV_99197"/>
+          <search_score name="number of matched peaks" value="4"/>
+          <search_score name="number of unmatched peaks" value="11"/>
+          <search_score name="mvh" value="7.046976739331"/>
+          <search_score name="mzFidelity" value="5.830961474115"/>
+          <search_score name="xcorr" value="0.62617018460379914"/>
+        </search_hit>
+      </search_result>
+    </spectrum_query>
+    <spectrum_query spectrum="test2.14.14.2" spectrumNativeID="controllerType=0 controllerNumber=1 scan=14" start_scan="14" end_scan="14" precursor_neutral_mass="725.406528609208" assumed_charge="2" index="3" retention_time_sec="23.6121">
+      <search_result num_target_comparisons="3290" num_decoy_comparisons="3022">
+        <search_hit hit_rank="1" peptide="SGHVAKK" peptide_prev_aa="R" peptide_next_aa="K" protein="sp|Q5T7B8|KIF24_HUMAN" num_tot_proteins="1" calc_neutral_pep_mass="725.4184224216" massdiff="0.011893812392" num_tol_term="2" num_missed_cleavages="1" num_matched_ions="3" tot_num_ions="12">
+          <search_score name="number of matched peaks" value="3"/>
+          <search_score name="number of unmatched peaks" value="9"/>
+          <search_score name="mvh" value="6.28598063694"/>
+          <search_score name="mzFidelity" value="5.641972534447"/>
+          <search_score name="xcorr" value="0.22181994866051247"/>
+        </search_hit>
+        <search_hit hit_rank="2" peptide="EVVSYK" peptide_prev_aa="K" peptide_next_aa="S" protein="REV_43650" num_tot_proteins="2" calc_neutral_pep_mass="723.3803055808" massdiff="-0.008893197208" num_tol_term="2" num_missed_cleavages="0" num_matched_ions="3" tot_num_ions="11">
+          <alternative_protein protein="REV_5589"/>
+          <search_score name="number of matched peaks" value="3"/>
+          <search_score name="number of unmatched peaks" value="8"/>
+          <search_score name="mvh" value="4.571560160447"/>
+          <search_score name="mzFidelity" value="6.077142641978"/>
+          <search_score name="xcorr" value="0.13468793104295618"/>
+        </search_hit>
+        <search_hit hit_rank="2" peptide="KTPHNK" peptide_prev_aa="R" peptide_next_aa="T" protein="REV_11287" num_tot_proteins="1" calc_neutral_pep_mass="723.4027723574" massdiff="0.013573579392" num_tol_term="2" num_missed_cleavages="1" num_matched_ions="3" tot_num_ions="11">
+          <search_score name="number of matched peaks" value="3"/>
+          <search_score name="number of unmatched peaks" value="8"/>
+          <search_score name="mvh" value="4.571560160447"/>
+          <search_score name="mzFidelity" value="7.463437003098"/>
+          <search_score name="xcorr" value="0.30458260072474369"/>
+        </search_hit>
+      </search_result>
+    </spectrum_query>
+    <spectrum_query spectrum="test2.16.16.2" spectrumNativeID="controllerType=0 controllerNumber=1 scan=16" start_scan="16" end_scan="16" precursor_neutral_mass="808.465246506108" assumed_charge="2" index="4" retention_time_sec="25.97239999998">
+      <search_result num_target_comparisons="2619" num_decoy_comparisons="2875">
+        <search_hit hit_rank="1" peptide="RKVNHR" peptide_prev_aa="K" peptide_next_aa="K" protein="sp|A6NEQ2|F181B_HUMAN" num_tot_proteins="1" calc_neutral_pep_mass="808.478002986" massdiff="0.012756479892" num_tol_term="2" num_missed_cleavages="2" num_matched_ions="5" tot_num_ions="11">
+          <search_score name="number of matched peaks" value="5"/>
+          <search_score name="number of unmatched peaks" value="6"/>
+          <search_score name="mvh" value="7.273611831037"/>
+          <search_score name="mzFidelity" value="11.117100528878"/>
+          <search_score name="xcorr" value="0.46360180633813142"/>
+        </search_hit>
+        <search_hit hit_rank="2" peptide="TSLPHKK" peptide_prev_aa="K" peptide_next_aa="R" protein="tr|B5MC82|B5MC82_HUMAN" num_tot_proteins="1" calc_neutral_pep_mass="809.4759373005" massdiff="0.002025878792" num_tol_term="2" num_missed_cleavages="1" num_matched_ions="5" tot_num_ions="13">
+          <search_score name="number of matched peaks" value="5"/>
+          <search_score name="number of unmatched peaks" value="8"/>
+          <search_score name="mvh" value="7.162156752473"/>
+          <search_score name="mzFidelity" value="10.166737058323"/>
+          <search_score name="xcorr" value="0.70671338180452581"/>
+        </search_hit>
+        <search_hit hit_rank="3" peptide="EGPHIKK" peptide_prev_aa="K" peptide_next_aa="H" protein="REV_20135" num_tot_proteins="1" calc_neutral_pep_mass="807.4602872363" massdiff="0.003705645792" num_tol_term="2" num_missed_cleavages="1" num_matched_ions="5" tot_num_ions="13">
+          <search_score name="number of matched peaks" value="5"/>
+          <search_score name="number of unmatched peaks" value="8"/>
+          <search_score name="mvh" value="6.469009571913"/>
+          <search_score name="mzFidelity" value="9.473589877763"/>
+          <search_score name="xcorr" value="0.73094104701951146"/>
+        </search_hit>
+      </search_result>
+    </spectrum_query>
+    <spectrum_query spectrum="test2.21.21.2" spectrumNativeID="controllerType=0 controllerNumber=1 scan=21" start_scan="21" end_scan="21" precursor_neutral_mass="851.509614911528" assumed_charge="2" index="5" retention_time_sec="34.5609">
+      <search_result num_target_comparisons="3208" num_decoy_comparisons="2938">
+        <search_hit hit_rank="1" peptide="HANKVKR" peptide_prev_aa="K" peptide_next_aa="Y" protein="sp|Q9UL40|ZN346_HUMAN" num_tot_proteins="4" calc_neutral_pep_mass="851.5089687634" massdiff="-6.461481279985e-04" num_tol_term="2" num_missed_cleavages="2" num_matched_ions="5" tot_num_ions="13">
+          <alternative_protein protein="tr|B7Z6B6|B7Z6B6_HUMAN"/>
+          <alternative_protein protein="tr|B7Z6Q2|B7Z6Q2_HUMAN"/>
+          <alternative_protein protein="tr|D6RJ07|D6RJ07_HUMAN"/>
+          <search_score name="number of matched peaks" value="5"/>
+          <search_score name="number of unmatched peaks" value="8"/>
+          <search_score name="mvh" value="6.631833659091"/>
+          <search_score name="mzFidelity" value="10.95873630849"/>
+          <search_score name="xcorr" value="0.70671013185479681"/>
+        </search_hit>
+        <search_hit hit_rank="1" peptide="RKAATMR" peptide_prev_aa="R" peptide_next_aa="E" protein="sp|P13349|MYF5_HUMAN" num_tot_proteins="4" calc_neutral_pep_mass="848.4701404161" massdiff="-0.013479748628" num_tol_term="2" num_missed_cleavages="2" num_matched_ions="5" tot_num_ions="13">
+          <alternative_protein protein="sp|P15172|MYOD1_HUMAN"/>
+          <alternative_protein protein="tr|B2RC72|B2RC72_HUMAN"/>
+          <alternative_protein protein="tr|Q5U0P5|Q5U0P5_HUMAN"/>
+          <modification_info>
+            <mod_aminoacid_mass position="6" mass="147.0404846062"/>
+          </modification_info>
+          <search_score name="number of matched peaks" value="5"/>
+          <search_score name="number of unmatched peaks" value="8"/>
+          <search_score name="mvh" value="6.631833659091"/>
+          <search_score name="mzFidelity" value="10.488732679244"/>
+          <search_score name="xcorr" value="0.22324881647238509"/>
+        </search_hit>
+        <search_hit hit_rank="2" peptide="SKKGKMR" peptide_prev_aa="R" peptide_next_aa="K" protein="sp|Q8TDD1|DDX54_HUMAN" num_tot_proteins="1" calc_neutral_pep_mass="849.4905415072" massdiff="-0.001743573128" num_tol_term="2" num_missed_cleavages="3" num_matched_ions="5" tot_num_ions="12">
+          <modification_info>
+            <mod_aminoacid_mass position="6" mass="147.0404846062"/>
+          </modification_info>
+          <search_score name="number of matched peaks" value="5"/>
+          <search_score name="number of unmatched peaks" value="7"/>
+          <search_score name="mvh" value="6.234097080458"/>
+          <search_score name="mzFidelity" value="10.348179834603"/>
+          <search_score name="xcorr" value="0.41552432824103164"/>
+        </search_hit>
+        <search_hit hit_rank="3" peptide="CLKALFR" peptide_prev_aa="R" peptide_next_aa="L" protein="REV_109239" num_tot_proteins="4" calc_neutral_pep_mass="849.4894788747" massdiff="-0.002806205628" num_tol_term="2" num_missed_cleavages="1" num_matched_ions="5" tot_num_ions="12">
+          <alternative_protein protein="REV_120027"/>
+          <alternative_protein protein="REV_15547"/>
+          <alternative_protein protein="REV_27205"/>
+          <search_score name="number of matched peaks" value="5"/>
+          <search_score name="number of unmatched peaks" value="7"/>
+          <search_score name="mvh" value="6.1287365648"/>
+          <search_score name="mzFidelity" value="11.734474195723"/>
+          <search_score name="xcorr" value="0.51728720808355133"/>
+        </search_hit>
+      </search_result>
+    </spectrum_query>
+  </msms_run_summary>
+</msms_pipeline_analysis>

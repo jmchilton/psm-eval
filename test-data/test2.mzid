@@ -1,0 +1,442 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<MzIdentML id="test2 Uniprot Human and Decoys.fasta MyriMatch 2.1.131" creationDate="2013-03-10T14:57:18" version="1.1.0" xsi:schemaLocation="http://psidev.info/psi/pi/mzIdentML/1.1 ../schema/mzIdentML1.1.0.xsd" xmlns="http://psidev.info/psi/pi/mzIdentML/1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <cvList>
+    <cv id="MS" fullName="Proteomics Standards Initiative Mass Spectrometry Ontology" version="3.30.0" uri="http://psidev.cvs.sourceforge.net/*checkout*/psidev/psi/psi-ms/mzML/controlledVocabulary/psi-ms.obo"/>
+    <cv id="UNIMOD" fullName="UNIMOD" version="2012-08-03" uri="http://www.unimod.org/obo/unimod.obo"/>
+    <cv id="UO" fullName="Unit Ontology" version="12:10:2011" uri="http://obo.cvs.sourceforge.net/*checkout*/obo/obo/ontology/phenotype/unit.obo"/>
+  </cvList>
+  <AnalysisSoftwareList>
+    <AnalysisSoftware id="AS" version="2.1.131" uri="http://forge.fenchurch.mc.vanderbilt.edu/projects/myrimatch/">
+      <SoftwareName><cvParam cvRef="MS" accession="MS:1001585" name="MyriMatch" value=""/></SoftwareName>
+    </AnalysisSoftware>
+  </AnalysisSoftwareList>
+  <SequenceCollection>
+    <DBSequence id="DBSeq_sp|A6NNL5|CO061_HUMAN" accession="sp|A6NNL5|CO061_HUMAN" searchDatabase_ref="SDB"/>
+    <DBSequence id="DBSeq_REV_115215" accession="REV_115215" searchDatabase_ref="SDB"/>
+    <DBSequence id="DBSeq_REV_119677" accession="REV_119677" searchDatabase_ref="SDB"/>
+    <DBSequence id="DBSeq_REV_1276" accession="REV_1276" searchDatabase_ref="SDB"/>
+    <DBSequence id="DBSeq_REV_128974" accession="REV_128974" searchDatabase_ref="SDB"/>
+    <DBSequence id="DBSeq_REV_93418" accession="REV_93418" searchDatabase_ref="SDB"/>
+    <DBSequence id="DBSeq_sp|Q6ZN57|ZFP2_HUMAN" accession="sp|Q6ZN57|ZFP2_HUMAN" searchDatabase_ref="SDB"/>
+    <DBSequence id="DBSeq_tr|B7ZM21|B7ZM21_HUMAN" accession="tr|B7ZM21|B7ZM21_HUMAN" searchDatabase_ref="SDB"/>
+    <DBSequence id="DBSeq_sp|Q9ULS6|KCNS2_HUMAN" accession="sp|Q9ULS6|KCNS2_HUMAN" searchDatabase_ref="SDB"/>
+    <DBSequence id="DBSeq_sp|Q9UQ35|SRRM2_HUMAN" accession="sp|Q9UQ35|SRRM2_HUMAN" searchDatabase_ref="SDB"/>
+    <DBSequence id="DBSeq_tr|I3L2L6|I3L2L6_HUMAN" accession="tr|I3L2L6|I3L2L6_HUMAN" searchDatabase_ref="SDB"/>
+    <DBSequence id="DBSeq_tr|O60382|O60382_HUMAN" accession="tr|O60382|O60382_HUMAN" searchDatabase_ref="SDB"/>
+    <DBSequence id="DBSeq_tr|B2R729|B2R729_HUMAN" accession="tr|B2R729|B2R729_HUMAN" searchDatabase_ref="SDB"/>
+    <DBSequence id="DBSeq_REV_43088" accession="REV_43088" searchDatabase_ref="SDB"/>
+    <DBSequence id="DBSeq_REV_7129" accession="REV_7129" searchDatabase_ref="SDB"/>
+    <DBSequence id="DBSeq_REV_81808" accession="REV_81808" searchDatabase_ref="SDB"/>
+    <DBSequence id="DBSeq_REV_99197" accession="REV_99197" searchDatabase_ref="SDB"/>
+    <DBSequence id="DBSeq_sp|Q5T7B8|KIF24_HUMAN" accession="sp|Q5T7B8|KIF24_HUMAN" searchDatabase_ref="SDB"/>
+    <DBSequence id="DBSeq_REV_43650" accession="REV_43650" searchDatabase_ref="SDB"/>
+    <DBSequence id="DBSeq_REV_5589" accession="REV_5589" searchDatabase_ref="SDB"/>
+    <DBSequence id="DBSeq_REV_11287" accession="REV_11287" searchDatabase_ref="SDB"/>
+    <DBSequence id="DBSeq_sp|A6NEQ2|F181B_HUMAN" accession="sp|A6NEQ2|F181B_HUMAN" searchDatabase_ref="SDB"/>
+    <DBSequence id="DBSeq_tr|B5MC82|B5MC82_HUMAN" accession="tr|B5MC82|B5MC82_HUMAN" searchDatabase_ref="SDB"/>
+    <DBSequence id="DBSeq_REV_20135" accession="REV_20135" searchDatabase_ref="SDB"/>
+    <DBSequence id="DBSeq_sp|Q9UL40|ZN346_HUMAN" accession="sp|Q9UL40|ZN346_HUMAN" searchDatabase_ref="SDB"/>
+    <DBSequence id="DBSeq_tr|B7Z6B6|B7Z6B6_HUMAN" accession="tr|B7Z6B6|B7Z6B6_HUMAN" searchDatabase_ref="SDB"/>
+    <DBSequence id="DBSeq_tr|B7Z6Q2|B7Z6Q2_HUMAN" accession="tr|B7Z6Q2|B7Z6Q2_HUMAN" searchDatabase_ref="SDB"/>
+    <DBSequence id="DBSeq_tr|D6RJ07|D6RJ07_HUMAN" accession="tr|D6RJ07|D6RJ07_HUMAN" searchDatabase_ref="SDB"/>
+    <DBSequence id="DBSeq_sp|P13349|MYF5_HUMAN" accession="sp|P13349|MYF5_HUMAN" searchDatabase_ref="SDB"/>
+    <DBSequence id="DBSeq_sp|P15172|MYOD1_HUMAN" accession="sp|P15172|MYOD1_HUMAN" searchDatabase_ref="SDB"/>
+    <DBSequence id="DBSeq_tr|B2RC72|B2RC72_HUMAN" accession="tr|B2RC72|B2RC72_HUMAN" searchDatabase_ref="SDB"/>
+    <DBSequence id="DBSeq_tr|Q5U0P5|Q5U0P5_HUMAN" accession="tr|Q5U0P5|Q5U0P5_HUMAN" searchDatabase_ref="SDB"/>
+    <DBSequence id="DBSeq_sp|Q8TDD1|DDX54_HUMAN" accession="sp|Q8TDD1|DDX54_HUMAN" searchDatabase_ref="SDB"/>
+    <DBSequence id="DBSeq_REV_109239" accession="REV_109239" searchDatabase_ref="SDB"/>
+    <DBSequence id="DBSeq_REV_120027" accession="REV_120027" searchDatabase_ref="SDB"/>
+    <DBSequence id="DBSeq_REV_15547" accession="REV_15547" searchDatabase_ref="SDB"/>
+    <DBSequence id="DBSeq_REV_27205" accession="REV_27205" searchDatabase_ref="SDB"/>
+    <Peptide id="PEP_1"><PeptideSequence>FFTALK</PeptideSequence></Peptide>
+    <Peptide id="PEP_2"><PeptideSequence>FFVSVK</PeptideSequence></Peptide>
+    <Peptide id="PEP_3">
+      <PeptideSequence>MFVGKK</PeptideSequence>
+      <Modification location="1" residues="M" avgMassDelta="16.0" monoisotopicMassDelta="16.0">
+        <cvParam cvRef="UNIMOD" accession="UNIMOD:35" name="Oxidation" value=""/>
+      </Modification>
+    </Peptide>
+    <Peptide id="PEP_4"><PeptideSequence>SHTLLR</PeptideSequence></Peptide>
+    <Peptide id="PEP_5"><PeptideSequence>TKTTSRR</PeptideSequence></Peptide>
+    <Peptide id="PEP_6"><PeptideSequence>KTTSTALK</PeptideSequence></Peptide>
+    <Peptide id="PEP_7"><PeptideSequence>LFAAKSGR</PeptideSequence></Peptide>
+    <Peptide id="PEP_8"><PeptideSequence>SGHVAKK</PeptideSequence></Peptide>
+    <Peptide id="PEP_9"><PeptideSequence>EVVSYK</PeptideSequence></Peptide>
+    <Peptide id="PEP_10"><PeptideSequence>KTPHNK</PeptideSequence></Peptide>
+    <Peptide id="PEP_11"><PeptideSequence>RKVNHR</PeptideSequence></Peptide>
+    <Peptide id="PEP_12"><PeptideSequence>TSLPHKK</PeptideSequence></Peptide>
+    <Peptide id="PEP_13"><PeptideSequence>EGPHIKK</PeptideSequence></Peptide>
+    <Peptide id="PEP_14"><PeptideSequence>HANKVKR</PeptideSequence></Peptide>
+    <Peptide id="PEP_15">
+      <PeptideSequence>RKAATMR</PeptideSequence>
+      <Modification location="6" residues="M" avgMassDelta="16.0" monoisotopicMassDelta="16.0">
+        <cvParam cvRef="UNIMOD" accession="UNIMOD:35" name="Oxidation" value=""/>
+      </Modification>
+    </Peptide>
+    <Peptide id="PEP_16">
+      <PeptideSequence>SKKGKMR</PeptideSequence>
+      <Modification location="6" residues="M" avgMassDelta="16.0" monoisotopicMassDelta="16.0">
+        <cvParam cvRef="UNIMOD" accession="UNIMOD:35" name="Oxidation" value=""/>
+      </Modification>
+    </Peptide>
+    <Peptide id="PEP_17"><PeptideSequence>CLKALFR</PeptideSequence></Peptide>
+    <PeptideEvidence id="DBSeq_sp|A6NNL5|CO061_HUMAN_PEP_1" peptide_ref="PEP_1" dBSequence_ref="DBSeq_sp|A6NNL5|CO061_HUMAN" pre="R" post="V" isDecoy="false"/>
+    <PeptideEvidence id="DBSeq_REV_115215_PEP_2" peptide_ref="PEP_2" dBSequence_ref="DBSeq_REV_115215" pre="R" post="G" isDecoy="true"/>
+    <PeptideEvidence id="DBSeq_REV_119677_PEP_2" peptide_ref="PEP_2" dBSequence_ref="DBSeq_REV_119677" pre="R" post="G" isDecoy="true"/>
+    <PeptideEvidence id="DBSeq_REV_1276_PEP_2" peptide_ref="PEP_2" dBSequence_ref="DBSeq_REV_1276" pre="R" post="G" isDecoy="true"/>
+    <PeptideEvidence id="DBSeq_REV_128974_PEP_2" peptide_ref="PEP_2" dBSequence_ref="DBSeq_REV_128974" pre="R" post="G" isDecoy="true"/>
+    <PeptideEvidence id="DBSeq_REV_93418_PEP_2" peptide_ref="PEP_2" dBSequence_ref="DBSeq_REV_93418" pre="R" post="G" isDecoy="true"/>
+    <PeptideEvidence id="DBSeq_sp|Q6ZN57|ZFP2_HUMAN_PEP_3" peptide_ref="PEP_3" dBSequence_ref="DBSeq_sp|Q6ZN57|ZFP2_HUMAN" pre="R" post="I" isDecoy="false"/>
+    <PeptideEvidence id="DBSeq_tr|B7ZM21|B7ZM21_HUMAN_PEP_3" peptide_ref="PEP_3" dBSequence_ref="DBSeq_tr|B7ZM21|B7ZM21_HUMAN" pre="R" post="I" isDecoy="false"/>
+    <PeptideEvidence id="DBSeq_sp|Q9ULS6|KCNS2_HUMAN_PEP_4" peptide_ref="PEP_4" dBSequence_ref="DBSeq_sp|Q9ULS6|KCNS2_HUMAN" pre="R" post="F" isDecoy="false"/>
+    <PeptideEvidence id="DBSeq_sp|Q9UQ35|SRRM2_HUMAN_PEP_5" peptide_ref="PEP_5" dBSequence_ref="DBSeq_sp|Q9UQ35|SRRM2_HUMAN" pre="R" post="G" isDecoy="false"/>
+    <PeptideEvidence id="DBSeq_tr|I3L2L6|I3L2L6_HUMAN_PEP_5" peptide_ref="PEP_5" dBSequence_ref="DBSeq_tr|I3L2L6|I3L2L6_HUMAN" pre="R" post="G" isDecoy="false"/>
+    <PeptideEvidence id="DBSeq_tr|O60382|O60382_HUMAN_PEP_5" peptide_ref="PEP_5" dBSequence_ref="DBSeq_tr|O60382|O60382_HUMAN" pre="R" post="G" isDecoy="false"/>
+    <PeptideEvidence id="DBSeq_tr|B2R729|B2R729_HUMAN_PEP_6" peptide_ref="PEP_6" dBSequence_ref="DBSeq_tr|B2R729|B2R729_HUMAN" pre="K" post="G" isDecoy="false"/>
+    <PeptideEvidence id="DBSeq_REV_43088_PEP_7" peptide_ref="PEP_7" dBSequence_ref="DBSeq_REV_43088" pre="R" post="A" isDecoy="true"/>
+    <PeptideEvidence id="DBSeq_REV_7129_PEP_7" peptide_ref="PEP_7" dBSequence_ref="DBSeq_REV_7129" pre="R" post="A" isDecoy="true"/>
+    <PeptideEvidence id="DBSeq_REV_81808_PEP_7" peptide_ref="PEP_7" dBSequence_ref="DBSeq_REV_81808" pre="R" post="A" isDecoy="true"/>
+    <PeptideEvidence id="DBSeq_REV_99197_PEP_7" peptide_ref="PEP_7" dBSequence_ref="DBSeq_REV_99197" pre="R" post="A" isDecoy="true"/>
+    <PeptideEvidence id="DBSeq_sp|Q5T7B8|KIF24_HUMAN_PEP_8" peptide_ref="PEP_8" dBSequence_ref="DBSeq_sp|Q5T7B8|KIF24_HUMAN" pre="R" post="K" isDecoy="false"/>
+    <PeptideEvidence id="DBSeq_REV_43650_PEP_9" peptide_ref="PEP_9" dBSequence_ref="DBSeq_REV_43650" pre="K" post="S" isDecoy="true"/>
+    <PeptideEvidence id="DBSeq_REV_5589_PEP_9" peptide_ref="PEP_9" dBSequence_ref="DBSeq_REV_5589" pre="K" post="S" isDecoy="true"/>
+    <PeptideEvidence id="DBSeq_REV_11287_PEP_10" peptide_ref="PEP_10" dBSequence_ref="DBSeq_REV_11287" pre="R" post="T" isDecoy="true"/>
+    <PeptideEvidence id="DBSeq_sp|A6NEQ2|F181B_HUMAN_PEP_11" peptide_ref="PEP_11" dBSequence_ref="DBSeq_sp|A6NEQ2|F181B_HUMAN" pre="K" post="K" isDecoy="false"/>
+    <PeptideEvidence id="DBSeq_tr|B5MC82|B5MC82_HUMAN_PEP_12" peptide_ref="PEP_12" dBSequence_ref="DBSeq_tr|B5MC82|B5MC82_HUMAN" pre="K" post="R" isDecoy="false"/>
+    <PeptideEvidence id="DBSeq_REV_20135_PEP_13" peptide_ref="PEP_13" dBSequence_ref="DBSeq_REV_20135" pre="K" post="H" isDecoy="true"/>
+    <PeptideEvidence id="DBSeq_sp|Q9UL40|ZN346_HUMAN_PEP_14" peptide_ref="PEP_14" dBSequence_ref="DBSeq_sp|Q9UL40|ZN346_HUMAN" pre="K" post="Y" isDecoy="false"/>
+    <PeptideEvidence id="DBSeq_tr|B7Z6B6|B7Z6B6_HUMAN_PEP_14" peptide_ref="PEP_14" dBSequence_ref="DBSeq_tr|B7Z6B6|B7Z6B6_HUMAN" pre="K" post="Y" isDecoy="false"/>
+    <PeptideEvidence id="DBSeq_tr|B7Z6Q2|B7Z6Q2_HUMAN_PEP_14" peptide_ref="PEP_14" dBSequence_ref="DBSeq_tr|B7Z6Q2|B7Z6Q2_HUMAN" pre="K" post="Y" isDecoy="false"/>
+    <PeptideEvidence id="DBSeq_tr|D6RJ07|D6RJ07_HUMAN_PEP_14" peptide_ref="PEP_14" dBSequence_ref="DBSeq_tr|D6RJ07|D6RJ07_HUMAN" pre="K" post="Y" isDecoy="false"/>
+    <PeptideEvidence id="DBSeq_sp|P13349|MYF5_HUMAN_PEP_15" peptide_ref="PEP_15" dBSequence_ref="DBSeq_sp|P13349|MYF5_HUMAN" pre="R" post="E" isDecoy="false"/>
+    <PeptideEvidence id="DBSeq_sp|P15172|MYOD1_HUMAN_PEP_15" peptide_ref="PEP_15" dBSequence_ref="DBSeq_sp|P15172|MYOD1_HUMAN" pre="R" post="E" isDecoy="false"/>
+    <PeptideEvidence id="DBSeq_tr|B2RC72|B2RC72_HUMAN_PEP_15" peptide_ref="PEP_15" dBSequence_ref="DBSeq_tr|B2RC72|B2RC72_HUMAN" pre="R" post="E" isDecoy="false"/>
+    <PeptideEvidence id="DBSeq_tr|Q5U0P5|Q5U0P5_HUMAN_PEP_15" peptide_ref="PEP_15" dBSequence_ref="DBSeq_tr|Q5U0P5|Q5U0P5_HUMAN" pre="R" post="E" isDecoy="false"/>
+    <PeptideEvidence id="DBSeq_sp|Q8TDD1|DDX54_HUMAN_PEP_16" peptide_ref="PEP_16" dBSequence_ref="DBSeq_sp|Q8TDD1|DDX54_HUMAN" pre="R" post="K" isDecoy="false"/>
+    <PeptideEvidence id="DBSeq_REV_109239_PEP_17" peptide_ref="PEP_17" dBSequence_ref="DBSeq_REV_109239" pre="R" post="L" isDecoy="true"/>
+    <PeptideEvidence id="DBSeq_REV_120027_PEP_17" peptide_ref="PEP_17" dBSequence_ref="DBSeq_REV_120027" pre="R" post="L" isDecoy="true"/>
+    <PeptideEvidence id="DBSeq_REV_15547_PEP_17" peptide_ref="PEP_17" dBSequence_ref="DBSeq_REV_15547" pre="R" post="L" isDecoy="true"/>
+    <PeptideEvidence id="DBSeq_REV_27205_PEP_17" peptide_ref="PEP_17" dBSequence_ref="DBSeq_REV_27205" pre="R" post="L" isDecoy="true"/>
+  </SequenceCollection>
+  <AnalysisCollection>
+    <SpectrumIdentification id="SI" spectrumIdentificationProtocol_ref="SIP" spectrumIdentificationList_ref="SIL" activityDate="2013-03-10T14:57:18">
+      <InputSpectra spectraData_ref="SD"/>
+      <SearchDatabaseRef searchDatabase_ref="SDB"/>
+    </SpectrumIdentification>
+  </AnalysisCollection>
+  <AnalysisProtocolCollection>
+    <SpectrumIdentificationProtocol id="SIP" analysisSoftware_ref="AS">
+      <SearchType><cvParam cvRef="MS" accession="MS:1001083" name="ms-ms search" value=""/></SearchType>
+      <AdditionalSearchParams>
+        <cvParam cvRef="MS" accession="MS:1001211" name="parent mass type mono" value=""/>
+        <cvParam cvRef="MS" accession="MS:1001256" name="fragment mass type mono" value=""/>
+        <cvParam cvRef="MS" accession="MS:1001118" name="param: b ion" value=""/>
+        <cvParam cvRef="MS" accession="MS:1001262" name="param: y ion" value=""/>
+        <userParam name="Config: AvgPrecursorMzTolerance" value="1.5mz"/>
+        <userParam name="Config: ClassSizeMultiplier" value="2"/>
+        <userParam name="Config: CleavageRules" value="Trypsin"/>
+        <userParam name="Config: ComputeXCorr" value="1"/>
+        <userParam name="Config: DecoyPrefix" value="REV_"/>
+        <userParam name="Config: DynamicMods" value="M * 16.0"/>
+        <userParam name="Config: EstimateSearchTimeOnly" value="0"/>
+        <userParam name="Config: FragmentMzTolerance" value="1.5mz"/>
+        <userParam name="Config: FragmentationAutoRule" value="1"/>
+        <userParam name="Config: FragmentationRule" value="cid"/>
+        <userParam name="Config: KeepUnadjustedPrecursorMz" value="0"/>
+        <userParam name="Config: MaxDynamicMods" value="2"/>
+        <userParam name="Config: MaxFragmentChargeState" value="0"/>
+        <userParam name="Config: MaxMissedCleavages" value="100000"/>
+        <userParam name="Config: MaxPeakCount" value="300"/>
+        <userParam name="Config: MaxPeptideLength" value="75"/>
+        <userParam name="Config: MaxPeptideMass" value="10000"/>
+        <userParam name="Config: MaxPeptideVariants" value="1000000"/>
+        <userParam name="Config: MaxResultRank" value="2"/>
+        <userParam name="Config: MinPeptideLength" value="5"/>
+        <userParam name="Config: MinPeptideMass" value="0"/>
+        <userParam name="Config: MinResultScore" value="9.9999999999999995e-08"/>
+        <userParam name="Config: MinTerminiCleavages" value="2"/>
+        <userParam name="Config: MonoPrecursorMzTolerance" value="10ppm"/>
+        <userParam name="Config: MonoisotopeAdjustmentSet" value="[-1,2] "/>
+        <userParam name="Config: NumBatches" value="50"/>
+        <userParam name="Config: NumChargeStates" value="3"/>
+        <userParam name="Config: NumIntensityClasses" value="3"/>
+        <userParam name="Config: NumMzFidelityClasses" value="3"/>
+        <userParam name="Config: OutputFormat" value="mzIdentML"/>
+        <userParam name="Config: OutputSuffix"/>
+        <userParam name="Config: PrecursorMzToleranceRule" value="auto"/>
+        <userParam name="Config: PreferIntenseComplements" value="1"/>
+        <userParam name="Config: ProteinDatabase" value="Uniprot Human and Decoys.fasta"/>
+        <userParam name="Config: ProteinListFilters"/>
+        <userParam name="Config: ProteinSamplingTime" value="15"/>
+        <userParam name="Config: ResultsPerBatch" value="200000"/>
+        <userParam name="Config: SpectrumListFilters" value="peakPicking true 2-"/>
+        <userParam name="Config: StaticMods"/>
+        <userParam name="Config: StatusUpdateFrequency" value="5"/>
+        <userParam name="Config: TicCutoffPercentage" value="0.97999999999999998"/>
+        <userParam name="Config: UseMultipleProcessors" value="1"/>
+        <userParam name="Config: UseSmartPlusThreeModel" value="1"/>
+        <userParam name="Config: WorkingDirectory" value="/home/john/workspace/galaxyp-central/database/job_working_directory/000/249"/>
+        <userParam name="PeakCounts: 1stQuartile: Filtered" value="28"/>
+        <userParam name="PeakCounts: 1stQuartile: Original" value="31"/>
+        <userParam name="PeakCounts: 2ndQuartile: Filtered" value="29"/>
+        <userParam name="PeakCounts: 2ndQuartile: Original" value="31"/>
+        <userParam name="PeakCounts: 3rdQuartile: Filtered" value="35"/>
+        <userParam name="PeakCounts: 3rdQuartile: Original" value="41"/>
+        <userParam name="PeakCounts: Mean: Filtered" value="32"/>
+        <userParam name="PeakCounts: Mean: Original" value="37"/>
+        <userParam name="PeakCounts: Min/Max: Filtered" value="23 / 49"/>
+        <userParam name="PeakCounts: Min/Max: Original" value="26 / 56"/>
+        <userParam name="SearchEngine: Name" value="MyriMatch"/>
+        <userParam name="SearchEngine: Version" value="2.1.131"/>
+        <userParam name="SearchStats: Nodes" value="1"/>
+        <userParam name="SearchStats: Overall" value="262138 proteins; 12925382 peptides; 1966226 variants; 30449 comparisons"/>
+        <userParam name="SearchTime: Duration" value="30.3697758 seconds"/>
+        <userParam name="SearchTime: Started" value="14:56:47 on 03/10/2013"/>
+        <userParam name="SearchTime: Stopped" value="14:57:18 on 03/10/2013"/>
+      </AdditionalSearchParams>
+      <ModificationParams>
+        <SearchModification fixedMod="false" massDelta="16.0" residues="M">
+          <cvParam cvRef="MS" accession="MS:1001460" name="unknown modification" value=""/>
+        </SearchModification>
+      </ModificationParams>
+      <Enzymes independent="false">
+        <Enzyme id="ENZ_1" cTermGain="OH" nTermGain="H" missedCleavages="100000" minDistance="1" semiSpecific="false">
+          <SiteRegexp>(?&lt;=[KR])(?!P)</SiteRegexp>
+          <EnzymeName><cvParam cvRef="MS" accession="MS:1001251" name="Trypsin" value=""/></EnzymeName>
+        </Enzyme>
+      </Enzymes>
+      <MassTable id="MT" msLevel="1 2 3">
+        <Residue code="A" mass="71.0371137878"/>
+        <Residue code="C" mass="103.0091844778"/>
+        <Residue code="D" mass="115.026943032"/>
+        <Residue code="E" mass="129.0425930962"/>
+        <Residue code="F" mass="147.0684139162"/>
+        <Residue code="G" mass="57.0214637236"/>
+        <Residue code="H" mass="137.0589118624"/>
+        <Residue code="I" mass="113.0840639804"/>
+        <Residue code="K" mass="128.0949630177"/>
+        <Residue code="L" mass="113.0840639804"/>
+        <Residue code="M" mass="131.0404846062"/>
+        <Residue code="N" mass="114.0429274472"/>
+        <Residue code="P" mass="97.052763852"/>
+        <Residue code="Q" mass="128.0585775114"/>
+        <Residue code="R" mass="156.1011110281"/>
+        <Residue code="S" mass="87.0320284099"/>
+        <Residue code="T" mass="101.0476784741"/>
+        <Residue code="U" mass="150.9536355878"/>
+        <Residue code="V" mass="99.0684139162"/>
+        <Residue code="W" mass="186.0793129535"/>
+        <Residue code="Y" mass="163.0633285383"/>
+      </MassTable>
+      <FragmentTolerance>
+        <cvParam cvRef="MS" accession="MS:1001413" name="search tolerance minus value" value="1.5" unitCvRef="UO" unitAccession="UO:0000221" unitName="dalton"/>
+        <cvParam cvRef="MS" accession="MS:1001412" name="search tolerance plus value" value="1.5" unitCvRef="UO" unitAccession="UO:0000221" unitName="dalton"/>
+      </FragmentTolerance>
+      <ParentTolerance>
+        <cvParam cvRef="MS" accession="MS:1001413" name="search tolerance minus value" value="10.0" unitCvRef="UO" unitAccession="UO:0000169" unitName="parts per million"/>
+        <cvParam cvRef="MS" accession="MS:1001412" name="search tolerance plus value" value="10.0" unitCvRef="UO" unitAccession="UO:0000169" unitName="parts per million"/>
+      </ParentTolerance>
+      <Threshold>
+        <cvParam cvRef="MS" accession="MS:1001494" name="no threshold" value=""/>
+      </Threshold>
+    </SpectrumIdentificationProtocol>
+  </AnalysisProtocolCollection>
+  <DataCollection>
+    <Inputs>
+      <SearchDatabase id="SDB" name="Uniprot Human and Decoys.fasta" location="Uniprot Human and Decoys.fasta">
+        <FileFormat><cvParam cvRef="MS" accession="MS:1001348" name="FASTA format" value=""/></FileFormat>
+        <DatabaseName><userParam name="database name" value="Uniprot Human and Decoys.fasta" type="xsd:string"/></DatabaseName>
+        <cvParam cvRef="MS" accession="MS:1001073" name="database type amino acid" value=""/>
+      </SearchDatabase>
+      <SpectraData id="SD" name="test2" location="test2">
+        <FileFormat><cvParam cvRef="MS" accession="MS:1000584" name="mzML file" value=""/></FileFormat>
+        <SpectrumIDFormat><cvParam cvRef="MS" accession="MS:1000768" name="Thermo nativeID format" value=""/></SpectrumIDFormat>
+      </SpectraData>
+    </Inputs>
+    <AnalysisData>
+      <SpectrumIdentificationList id="SIL" numSequencesSearched="262138">
+        <SpectrumIdentificationResult id="SIR_1" spectrumID="controllerType=0 controllerNumber=1 scan=2" spectraData_ref="SD">
+          <SpectrumIdentificationItem id="SIR_1_SII_1" rank="1" chargeState="2" peptide_ref="PEP_1" experimentalMassToCharge="363.710357666016" calculatedMassToCharge="363.71288235623" passThreshold="true" massTable_ref="MT">
+            <PeptideEvidenceRef peptideEvidence_ref="DBSeq_sp|A6NNL5|CO061_HUMAN_PEP_1"/>
+            <cvParam cvRef="MS" accession="MS:1001121" name="number of matched peaks" value="5"/>
+            <cvParam cvRef="MS" accession="MS:1001362" name="number of unmatched peaks" value="6"/>
+            <cvParam cvRef="MS" accession="MS:1001589" name="MyriMatch:MVH" value="7.041799227122"/>
+            <cvParam cvRef="MS" accession="MS:1001590" name="MyriMatch:mzFidelity" value="10.5877558944"/>
+            <userParam name="xcorr" value="0.52017368165799416"/>
+          </SpectrumIdentificationItem>
+          <SpectrumIdentificationItem id="SIR_1_SII_2" rank="1" chargeState="2" peptide_ref="PEP_2" experimentalMassToCharge="363.710357666016" calculatedMassToCharge="363.71288235623" passThreshold="true" massTable_ref="MT">
+            <PeptideEvidenceRef peptideEvidence_ref="DBSeq_REV_115215_PEP_2"/>
+            <PeptideEvidenceRef peptideEvidence_ref="DBSeq_REV_119677_PEP_2"/>
+            <PeptideEvidenceRef peptideEvidence_ref="DBSeq_REV_1276_PEP_2"/>
+            <PeptideEvidenceRef peptideEvidence_ref="DBSeq_REV_128974_PEP_2"/>
+            <PeptideEvidenceRef peptideEvidence_ref="DBSeq_REV_93418_PEP_2"/>
+            <cvParam cvRef="MS" accession="MS:1001121" name="number of matched peaks" value="5"/>
+            <cvParam cvRef="MS" accession="MS:1001362" name="number of unmatched peaks" value="6"/>
+            <cvParam cvRef="MS" accession="MS:1001589" name="MyriMatch:MVH" value="7.041799227122"/>
+            <cvParam cvRef="MS" accession="MS:1001590" name="MyriMatch:mzFidelity" value="10.5877558944"/>
+            <userParam name="xcorr" value="0.43741570613333025"/>
+          </SpectrumIdentificationItem>
+          <SpectrumIdentificationItem id="SIR_1_SII_3" rank="1" chargeState="2" peptide_ref="PEP_3" experimentalMassToCharge="363.206025208216" calculatedMassToCharge="363.20690990883" passThreshold="true" massTable_ref="MT">
+            <PeptideEvidenceRef peptideEvidence_ref="DBSeq_sp|Q6ZN57|ZFP2_HUMAN_PEP_3"/>
+            <PeptideEvidenceRef peptideEvidence_ref="DBSeq_tr|B7ZM21|B7ZM21_HUMAN_PEP_3"/>
+            <cvParam cvRef="MS" accession="MS:1001121" name="number of matched peaks" value="5"/>
+            <cvParam cvRef="MS" accession="MS:1001362" name="number of unmatched peaks" value="6"/>
+            <cvParam cvRef="MS" accession="MS:1001589" name="MyriMatch:MVH" value="7.041799227122"/>
+            <cvParam cvRef="MS" accession="MS:1001590" name="MyriMatch:mzFidelity" value="10.875437966852"/>
+            <userParam name="xcorr" value="0.52331839010948311"/>
+          </SpectrumIdentificationItem>
+          <SpectrumIdentificationItem id="SIR_1_SII_4" rank="2" chargeState="2" peptide_ref="PEP_4" experimentalMassToCharge="363.710357666016" calculatedMassToCharge="363.71648767768" passThreshold="true" massTable_ref="MT">
+            <PeptideEvidenceRef peptideEvidence_ref="DBSeq_sp|Q9ULS6|KCNS2_HUMAN_PEP_4"/>
+            <cvParam cvRef="MS" accession="MS:1001121" name="number of matched peaks" value="3"/>
+            <cvParam cvRef="MS" accession="MS:1001362" name="number of unmatched peaks" value="7"/>
+            <cvParam cvRef="MS" accession="MS:1001589" name="MyriMatch:MVH" value="6.404081333884"/>
+            <cvParam cvRef="MS" accession="MS:1001590" name="MyriMatch:mzFidelity" value="6.22441948387"/>
+            <userParam name="xcorr" value="0.31704575632014315"/>
+          </SpectrumIdentificationItem>
+          <cvParam cvRef="MS" accession="MS:1000016" name="scan start time" value="0.037551666667" unitCvRef="UO" unitAccession="UO:0000031" unitName="minute"/>
+          <userParam name="num_target_comparisons" value="0"/>
+          <userParam name="num_decoy_comparisons" value="0"/>
+        </SpectrumIdentificationResult>
+        <SpectrumIdentificationResult id="SIR_2" spectrumID="controllerType=0 controllerNumber=1 scan=5" spectraData_ref="SD">
+          <SpectrumIdentificationItem id="SIR_2_SII_1" rank="1" chargeState="2" peptide_ref="PEP_5" experimentalMassToCharge="425.248811891041" calculatedMassToCharge="425.24868326308" passThreshold="true" massTable_ref="MT">
+            <PeptideEvidenceRef peptideEvidence_ref="DBSeq_sp|Q9UQ35|SRRM2_HUMAN_PEP_5"/>
+            <PeptideEvidenceRef peptideEvidence_ref="DBSeq_tr|I3L2L6|I3L2L6_HUMAN_PEP_5"/>
+            <PeptideEvidenceRef peptideEvidence_ref="DBSeq_tr|O60382|O60382_HUMAN_PEP_5"/>
+            <cvParam cvRef="MS" accession="MS:1001121" name="number of matched peaks" value="4"/>
+            <cvParam cvRef="MS" accession="MS:1001362" name="number of unmatched peaks" value="8"/>
+            <cvParam cvRef="MS" accession="MS:1001589" name="MyriMatch:MVH" value="7.438401652475"/>
+            <cvParam cvRef="MS" accession="MS:1001590" name="MyriMatch:mzFidelity" value="8.745806912037"/>
+            <userParam name="xcorr" value="0.27294589335168712"/>
+          </SpectrumIdentificationItem>
+          <SpectrumIdentificationItem id="SIR_2_SII_2" rank="2" chargeState="2" peptide_ref="PEP_6" experimentalMassToCharge="425.248811891041" calculatedMassToCharge="425.25564262793" passThreshold="true" massTable_ref="MT">
+            <PeptideEvidenceRef peptideEvidence_ref="DBSeq_tr|B2R729|B2R729_HUMAN_PEP_6"/>
+            <cvParam cvRef="MS" accession="MS:1001121" name="number of matched peaks" value="4"/>
+            <cvParam cvRef="MS" accession="MS:1001362" name="number of unmatched peaks" value="11"/>
+            <cvParam cvRef="MS" accession="MS:1001589" name="MyriMatch:MVH" value="7.046976739331"/>
+            <cvParam cvRef="MS" accession="MS:1001590" name="MyriMatch:mzFidelity" value="7.217255835235"/>
+            <userParam name="xcorr" value="0.27796004721419887"/>
+          </SpectrumIdentificationItem>
+          <SpectrumIdentificationItem id="SIR_2_SII_3" rank="2" chargeState="2" peptide_ref="PEP_7" experimentalMassToCharge="425.248811891041" calculatedMassToCharge="425.25069463578" passThreshold="true" massTable_ref="MT">
+            <PeptideEvidenceRef peptideEvidence_ref="DBSeq_REV_43088_PEP_7"/>
+            <PeptideEvidenceRef peptideEvidence_ref="DBSeq_REV_7129_PEP_7"/>
+            <PeptideEvidenceRef peptideEvidence_ref="DBSeq_REV_81808_PEP_7"/>
+            <PeptideEvidenceRef peptideEvidence_ref="DBSeq_REV_99197_PEP_7"/>
+            <cvParam cvRef="MS" accession="MS:1001121" name="number of matched peaks" value="4"/>
+            <cvParam cvRef="MS" accession="MS:1001362" name="number of unmatched peaks" value="11"/>
+            <cvParam cvRef="MS" accession="MS:1001589" name="MyriMatch:MVH" value="7.046976739331"/>
+            <cvParam cvRef="MS" accession="MS:1001590" name="MyriMatch:mzFidelity" value="5.830961474115"/>
+            <userParam name="xcorr" value="0.62617018460379914"/>
+          </SpectrumIdentificationItem>
+          <cvParam cvRef="MS" accession="MS:1000016" name="scan start time" value="0.110851666667" unitCvRef="UO" unitAccession="UO:0000031" unitName="minute"/>
+          <userParam name="num_target_comparisons" value="3225"/>
+          <userParam name="num_decoy_comparisons" value="2956"/>
+        </SpectrumIdentificationResult>
+        <SpectrumIdentificationResult id="SIR_3" spectrumID="controllerType=0 controllerNumber=1 scan=14" spectraData_ref="SD">
+          <SpectrumIdentificationItem id="SIR_3_SII_1" rank="1" chargeState="2" peptide_ref="PEP_8" experimentalMassToCharge="363.710540771484" calculatedMassToCharge="363.71648767768" passThreshold="true" massTable_ref="MT">
+            <PeptideEvidenceRef peptideEvidence_ref="DBSeq_sp|Q5T7B8|KIF24_HUMAN_PEP_8"/>
+            <cvParam cvRef="MS" accession="MS:1001121" name="number of matched peaks" value="3"/>
+            <cvParam cvRef="MS" accession="MS:1001362" name="number of unmatched peaks" value="9"/>
+            <cvParam cvRef="MS" accession="MS:1001589" name="MyriMatch:MVH" value="6.28598063694"/>
+            <cvParam cvRef="MS" accession="MS:1001590" name="MyriMatch:mzFidelity" value="5.641972534447"/>
+            <userParam name="xcorr" value="0.22181994866051247"/>
+          </SpectrumIdentificationItem>
+          <SpectrumIdentificationItem id="SIR_3_SII_2" rank="2" chargeState="2" peptide_ref="PEP_9" experimentalMassToCharge="362.701875855884" calculatedMassToCharge="362.69742925728" passThreshold="true" massTable_ref="MT">
+            <PeptideEvidenceRef peptideEvidence_ref="DBSeq_REV_43650_PEP_9"/>
+            <PeptideEvidenceRef peptideEvidence_ref="DBSeq_REV_5589_PEP_9"/>
+            <cvParam cvRef="MS" accession="MS:1001121" name="number of matched peaks" value="3"/>
+            <cvParam cvRef="MS" accession="MS:1001362" name="number of unmatched peaks" value="8"/>
+            <cvParam cvRef="MS" accession="MS:1001589" name="MyriMatch:MVH" value="4.571560160447"/>
+            <cvParam cvRef="MS" accession="MS:1001590" name="MyriMatch:mzFidelity" value="6.077142641978"/>
+            <userParam name="xcorr" value="0.13468793104295618"/>
+          </SpectrumIdentificationItem>
+          <SpectrumIdentificationItem id="SIR_3_SII_3" rank="2" chargeState="2" peptide_ref="PEP_10" experimentalMassToCharge="362.701875855884" calculatedMassToCharge="362.70866264558" passThreshold="true" massTable_ref="MT">
+            <PeptideEvidenceRef peptideEvidence_ref="DBSeq_REV_11287_PEP_10"/>
+            <cvParam cvRef="MS" accession="MS:1001121" name="number of matched peaks" value="3"/>
+            <cvParam cvRef="MS" accession="MS:1001362" name="number of unmatched peaks" value="8"/>
+            <cvParam cvRef="MS" accession="MS:1001589" name="MyriMatch:MVH" value="4.571560160447"/>
+            <cvParam cvRef="MS" accession="MS:1001590" name="MyriMatch:mzFidelity" value="7.463437003098"/>
+            <userParam name="xcorr" value="0.30458260072474369"/>
+          </SpectrumIdentificationItem>
+          <cvParam cvRef="MS" accession="MS:1000016" name="scan start time" value="0.393535" unitCvRef="UO" unitAccession="UO:0000031" unitName="minute"/>
+          <userParam name="num_target_comparisons" value="3290"/>
+          <userParam name="num_decoy_comparisons" value="3022"/>
+        </SpectrumIdentificationResult>
+        <SpectrumIdentificationResult id="SIR_4" spectrumID="controllerType=0 controllerNumber=1 scan=16" spectraData_ref="SD">
+          <SpectrumIdentificationItem id="SIR_4_SII_1" rank="1" chargeState="2" peptide_ref="PEP_11" experimentalMassToCharge="405.239899719934" calculatedMassToCharge="405.24627795988" passThreshold="true" massTable_ref="MT">
+            <PeptideEvidenceRef peptideEvidence_ref="DBSeq_sp|A6NEQ2|F181B_HUMAN_PEP_11"/>
+            <cvParam cvRef="MS" accession="MS:1001121" name="number of matched peaks" value="5"/>
+            <cvParam cvRef="MS" accession="MS:1001362" name="number of unmatched peaks" value="6"/>
+            <cvParam cvRef="MS" accession="MS:1001589" name="MyriMatch:MVH" value="7.273611831037"/>
+            <cvParam cvRef="MS" accession="MS:1001590" name="MyriMatch:mzFidelity" value="11.117100528878"/>
+            <userParam name="xcorr" value="0.46360180633813142"/>
+          </SpectrumIdentificationItem>
+          <SpectrumIdentificationItem id="SIR_4_SII_2" rank="2" chargeState="2" peptide_ref="PEP_12" experimentalMassToCharge="405.744232177734" calculatedMassToCharge="405.74524511713" passThreshold="true" massTable_ref="MT">
+            <PeptideEvidenceRef peptideEvidence_ref="DBSeq_tr|B5MC82|B5MC82_HUMAN_PEP_12"/>
+            <cvParam cvRef="MS" accession="MS:1001121" name="number of matched peaks" value="5"/>
+            <cvParam cvRef="MS" accession="MS:1001362" name="number of unmatched peaks" value="8"/>
+            <cvParam cvRef="MS" accession="MS:1001589" name="MyriMatch:MVH" value="7.162156752473"/>
+            <cvParam cvRef="MS" accession="MS:1001590" name="MyriMatch:mzFidelity" value="10.166737058323"/>
+            <userParam name="xcorr" value="0.70671338180452581"/>
+          </SpectrumIdentificationItem>
+          <SpectrumIdentificationItem id="SIR_4_SII_3" rank="3" chargeState="2" peptide_ref="PEP_13" experimentalMassToCharge="404.735567262134" calculatedMassToCharge="404.73742008503" passThreshold="true" massTable_ref="MT">
+            <PeptideEvidenceRef peptideEvidence_ref="DBSeq_REV_20135_PEP_13"/>
+            <cvParam cvRef="MS" accession="MS:1001121" name="number of matched peaks" value="5"/>
+            <cvParam cvRef="MS" accession="MS:1001362" name="number of unmatched peaks" value="8"/>
+            <cvParam cvRef="MS" accession="MS:1001589" name="MyriMatch:MVH" value="6.469009571913"/>
+            <cvParam cvRef="MS" accession="MS:1001590" name="MyriMatch:mzFidelity" value="9.473589877763"/>
+            <userParam name="xcorr" value="0.73094104701951146"/>
+          </SpectrumIdentificationItem>
+          <cvParam cvRef="MS" accession="MS:1000016" name="scan start time" value="0.432873333333" unitCvRef="UO" unitAccession="UO:0000031" unitName="minute"/>
+          <userParam name="num_target_comparisons" value="2619"/>
+          <userParam name="num_decoy_comparisons" value="2875"/>
+        </SpectrumIdentificationResult>
+        <SpectrumIdentificationResult id="SIR_5" spectrumID="controllerType=0 controllerNumber=1 scan=21" spectraData_ref="SD">
+          <SpectrumIdentificationItem id="SIR_5_SII_1" rank="1" chargeState="2" peptide_ref="PEP_14" experimentalMassToCharge="426.762083922644" calculatedMassToCharge="426.76176084858" passThreshold="true" massTable_ref="MT">
+            <PeptideEvidenceRef peptideEvidence_ref="DBSeq_sp|Q9UL40|ZN346_HUMAN_PEP_14"/>
+            <PeptideEvidenceRef peptideEvidence_ref="DBSeq_tr|B7Z6B6|B7Z6B6_HUMAN_PEP_14"/>
+            <PeptideEvidenceRef peptideEvidence_ref="DBSeq_tr|B7Z6Q2|B7Z6Q2_HUMAN_PEP_14"/>
+            <PeptideEvidenceRef peptideEvidence_ref="DBSeq_tr|D6RJ07|D6RJ07_HUMAN_PEP_14"/>
+            <cvParam cvRef="MS" accession="MS:1001121" name="number of matched peaks" value="5"/>
+            <cvParam cvRef="MS" accession="MS:1001362" name="number of unmatched peaks" value="8"/>
+            <cvParam cvRef="MS" accession="MS:1001589" name="MyriMatch:MVH" value="6.631833659091"/>
+            <cvParam cvRef="MS" accession="MS:1001590" name="MyriMatch:mzFidelity" value="10.95873630849"/>
+            <userParam name="xcorr" value="0.70671013185479681"/>
+          </SpectrumIdentificationItem>
+          <SpectrumIdentificationItem id="SIR_5_SII_2" rank="1" chargeState="2" peptide_ref="PEP_15" experimentalMassToCharge="425.249086549244" calculatedMassToCharge="425.24234667493" passThreshold="true" massTable_ref="MT">
+            <PeptideEvidenceRef peptideEvidence_ref="DBSeq_sp|P13349|MYF5_HUMAN_PEP_15"/>
+            <PeptideEvidenceRef peptideEvidence_ref="DBSeq_sp|P15172|MYOD1_HUMAN_PEP_15"/>
+            <PeptideEvidenceRef peptideEvidence_ref="DBSeq_tr|B2RC72|B2RC72_HUMAN_PEP_15"/>
+            <PeptideEvidenceRef peptideEvidence_ref="DBSeq_tr|Q5U0P5|Q5U0P5_HUMAN_PEP_15"/>
+            <cvParam cvRef="MS" accession="MS:1001121" name="number of matched peaks" value="5"/>
+            <cvParam cvRef="MS" accession="MS:1001362" name="number of unmatched peaks" value="8"/>
+            <cvParam cvRef="MS" accession="MS:1001589" name="MyriMatch:MVH" value="6.631833659091"/>
+            <cvParam cvRef="MS" accession="MS:1001590" name="MyriMatch:mzFidelity" value="10.488732679244"/>
+            <userParam name="xcorr" value="0.22324881647238509"/>
+          </SpectrumIdentificationItem>
+          <SpectrumIdentificationItem id="SIR_5_SII_3" rank="2" chargeState="2" peptide_ref="PEP_16" experimentalMassToCharge="425.753419007044" calculatedMassToCharge="425.75254722048" passThreshold="true" massTable_ref="MT">
+            <PeptideEvidenceRef peptideEvidence_ref="DBSeq_sp|Q8TDD1|DDX54_HUMAN_PEP_16"/>
+            <cvParam cvRef="MS" accession="MS:1001121" name="number of matched peaks" value="5"/>
+            <cvParam cvRef="MS" accession="MS:1001362" name="number of unmatched peaks" value="7"/>
+            <cvParam cvRef="MS" accession="MS:1001589" name="MyriMatch:MVH" value="6.234097080458"/>
+            <cvParam cvRef="MS" accession="MS:1001590" name="MyriMatch:mzFidelity" value="10.348179834603"/>
+            <userParam name="xcorr" value="0.41552432824103164"/>
+          </SpectrumIdentificationItem>
+          <SpectrumIdentificationItem id="SIR_5_SII_4" rank="3" chargeState="2" peptide_ref="PEP_17" experimentalMassToCharge="425.753419007044" calculatedMassToCharge="425.75201590423" passThreshold="true" massTable_ref="MT">
+            <PeptideEvidenceRef peptideEvidence_ref="DBSeq_REV_109239_PEP_17"/>
+            <PeptideEvidenceRef peptideEvidence_ref="DBSeq_REV_120027_PEP_17"/>
+            <PeptideEvidenceRef peptideEvidence_ref="DBSeq_REV_15547_PEP_17"/>
+            <PeptideEvidenceRef peptideEvidence_ref="DBSeq_REV_27205_PEP_17"/>
+            <cvParam cvRef="MS" accession="MS:1001121" name="number of matched peaks" value="5"/>
+            <cvParam cvRef="MS" accession="MS:1001362" name="number of unmatched peaks" value="7"/>
+            <cvParam cvRef="MS" accession="MS:1001589" name="MyriMatch:MVH" value="6.1287365648"/>
+            <cvParam cvRef="MS" accession="MS:1001590" name="MyriMatch:mzFidelity" value="11.734474195723"/>
+            <userParam name="xcorr" value="0.51728720808355133"/>
+          </SpectrumIdentificationItem>
+          <cvParam cvRef="MS" accession="MS:1000016" name="scan start time" value="0.576015" unitCvRef="UO" unitAccession="UO:0000031" unitName="minute"/>
+          <userParam name="num_target_comparisons" value="3208"/>
+          <userParam name="num_decoy_comparisons" value="2938"/>
+        </SpectrumIdentificationResult>
+      </SpectrumIdentificationList>
+    </AnalysisData>
+  </DataCollection>
+</MzIdentML>

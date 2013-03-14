@@ -1,0 +1,2 @@
+DEFAULT_MASS_TOLERANCE = 0.5
+DEFAULT_MASS_TYPE = 'monoisotopic'
