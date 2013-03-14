@@ -77,7 +77,7 @@ class IonsMatched(ColumnProvider, AggregatesMatches, FiltersPeaks, MatchesIons):
 
     def __init__(self, settings, **kwds):
         super(IonsMatched, self).__init__(**kwds)
-        self._setup_aggregate_by(**kwds)
+        self._setup_aggregate_by(aggregate_what='ions', **kwds)
         self._setup_peak_filters(**kwds)
         self._setup_ion_series(settings, **kwds)
         self._setup_ion_matcher(settings, **kwds)
@@ -102,10 +102,11 @@ class NumPeaks(ColumnProvider, FiltersPeaks):
 
 
 @register_column_provider(name="peaks_matched")
-class PeaksMatched(NumPeaks, MatchesIons):
+class PeaksMatched(NumPeaks, MatchesIons, AggregatesMatches):
 
     def __init__(self, settings, **kwds):
         super(PeaksMatched, self).__init__(**kwds)
+        self._setup_aggregate_by(aggregate_what='peaks', **kwds)
         self._setup_ion_series(settings, **kwds)
         self._setup_ion_matcher(settings, **kwds)
 
@@ -113,7 +114,7 @@ class PeaksMatched(NumPeaks, MatchesIons):
         filtered_peaks = self._filtered_peaks(spectra)
         ions = self._get_ions(psm)
         peaks_matched = self._peaks_matched(ions, filtered_peaks)
-        return len([1 for peak_matched in peaks_matched if peak_matched])
+        return self._aggregate(peaks_matched)
 
 
 @register_column_provider(name="total_ion_current")

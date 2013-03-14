@@ -1,17 +1,18 @@
 
-AGGREGATE_METHODS = ['count', 'count_longest_stretch', 'percent', 'count_missed', 'percent_missed']
+AGGREGATE_ION_METHODS = ['count', 'count_longest_stretch', 'percent', 'count_missed', 'percent_missed']
+AGGREGATE_PEAKS_METHODS = ['count', 'percent', 'count_missed', 'percent_missed']
 
 
 class AggregatesMatches(object):
     """
 
     >>> object = AggregatesMatches()
-    >>> object._setup_aggregate_by(aggregate_by='count')
+    >>> object._setup_aggregate_by(aggregate_what='ions', aggregate_by='count')
     >>> object._aggregate([True, False, True])
     2
     >>> object._aggregate([False, False, False])
     0
-    >>> object._setup_aggregate_by(aggregate_by='count_longest_stretch')
+    >>> object._setup_aggregate_by(aggregate_what='ions', aggregate_by='count_longest_stretch')
     >>> object._aggregate([True, False, True, True, True, False, True, True])
     3
     >>> object._aggregate([False, False, False])
@@ -20,7 +21,7 @@ class AggregatesMatches(object):
     1
     >>> object._aggregate([True, True, True])
     3
-    >>> object._setup_aggregate_by(aggregate_by='percent')
+    >>> object._setup_aggregate_by(aggregate_what='ions', aggregate_by='percent')
     >>> object._aggregate([False, False])
     0.0
     >>> object._aggregate([True, True])
@@ -28,10 +29,14 @@ class AggregatesMatches(object):
     >>> object._aggregate([True, False])
     0.5
     """
-    def _setup_aggregate_by(self, **kwds):
+    def _setup_aggregate_by(self, aggregate_what, **kwds):
         # Parse out who to aggregate matches - count, count longest stretch, of compute percent matched.
         aggregate_by = kwds.get('aggregate_by', 'count')
-        if aggregate_by not in AGGREGATE_METHODS:
+        if aggregate_what == 'ions':
+            aggregate_methods = AGGREGATE_ION_METHODS
+        else:  # aggregate_what == 'peaks':
+            aggregate_methods = AGGREGATE_PEAKS_METHODS
+        if aggregate_by not in aggregate_methods:
             self._raise_cannot_aggregate_by(aggregate_by)
         self.aggregate_by = aggregate_by
 
