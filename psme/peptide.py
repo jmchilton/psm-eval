@@ -61,6 +61,15 @@ class Peptide(object):
             mass += self.__sum_modifications(self.c_term_modifications, **kwds)
         return mass
 
+    def sum_of_modifications(self, position, **kwds):
+        if position == "n":
+            sum = self.__sum_modifications(self.n_term_modifications, **kwds)
+        elif position == "c":
+            sum = self.__sum_modifications(self.c_term_modifications, **kwds)
+        else:
+            sum = self.__sum_modifications(self.modifications[position], **kwds)
+        return sum
+
     def __sum_modifications(self, modifications, **kwds):
         average = kwds.get('average', False)
         mass_adjust = 0.0

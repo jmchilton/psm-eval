@@ -19,6 +19,7 @@ class LinkBuilder(object):
         link_prefix_template = "%s%s?user_id=None&app_name=%s&link_name=%s"
         link_prefix_params = (galaxy_url, controller, app_name, link_name)
         self.link_prefix = link_prefix_template % link_prefix_params
+        self.kwds = builder_settings
 
     def get_link(self, scan, psm):
         spectrum = quote(self.__spectrum_rep(scan))
@@ -32,7 +33,17 @@ class LinkBuilder(object):
         return str(scan.index)
 
     def __peptide_rep(self, psm):
-        return str(psm.peptide.sequence)
+        peptide = psm.peptide
+        sequence = peptide.sequence
+        rep = str(sequence)
+        if peptide.n_term_modifications:
+            rep += ";%f@n" % peptide.sum_of_modifications("n", **self.kwds)
+        if peptide.c_term_modifications:
+            rep += ";%f@c" % peptide.sum_of_modifications("c", **self.kwds)
+        for i, modifications in enumerate(peptide.modifications):
+            if modifications:
+                rep += ";%f@%d" % (peptide.sum_of_modifications(i, **self.kwds), i + 1)
+        return rep
 
     def __dataset_id(self, scan):
         return scan.source.encoded_id
