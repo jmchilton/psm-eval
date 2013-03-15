@@ -37,6 +37,9 @@ class MzIdLoader(object):
         return psm
 
     def _convert_modifications(self, modifications):
-        to_mod = lambda modification: {"position": modification['location'],
+        to_mod = lambda modification: {"position": self._get_position(modification),
                                        "mod_mass": modification['monoisotopicMassDelta']}
         return map(to_mod, modifications)
+
+    def _get_position(self, modification):
+        return int(modification['location']) - 1
