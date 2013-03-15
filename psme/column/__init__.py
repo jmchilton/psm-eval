@@ -59,8 +59,28 @@ class ScanIdColumnProvider(ColumnProvider):
     def __init__(self, **kwds):
         super(ScanIdColumnProvider, self).__init__(**kwds)
 
-    def calculate(self, spectra, psm):
-        return spectra.id
+    def calculate(self, scan, psm):
+        return scan.id
+
+
+@register_column_provider(name="scan_number")
+class ScanNumberColumnProvider(ColumnProvider):
+
+    def __init__(self, **kwds):
+        super(ScanNumberColumnProvider, self).__init__(**kwds)
+
+    def calculate(self, scan, psm):
+        return scan.number
+
+
+@register_column_provider(name="scan_index")
+class ScanIndexColumnProvider(ColumnProvider):
+
+    def __init__(self, **kwds):
+        super(ScanIndexColumnProvider, self).__init__(**kwds)
+
+    def calculate(self, scan, psm):
+        return scan.index
 
 
 @register_column_provider(name="scan_source")
@@ -69,8 +89,8 @@ class ScanSourceColumnProvider(ColumnProvider):
     def __init__(self, **kwds):
         super(ScanSourceColumnProvider, self).__init__(**kwds)
 
-    def calculate(self, spectra, psm):
-        return spectra.source.name
+    def calculate(self, scan, psm):
+        return scan.source.name
 
 
 @register_column_provider(name="ions_matched")

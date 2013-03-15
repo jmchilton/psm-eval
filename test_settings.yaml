@@ -27,6 +27,10 @@ columns:
     type: scan_id
   - title: "Peak List"
     type: scan_source
+  - title: "Scan #"
+    type: scan_number
+  - title: "Scan Index"
+    type: scan_index
   - title: "Number of Peaks"
     type: num_peaks
   - title: "Total Ion Current"
