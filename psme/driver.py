@@ -15,7 +15,7 @@ def evaluate(settings, output_formatter=OutputFormatter):
         __collect_statistics(scan_source_manager, psm_manager, columns)
     with output_formatter(settings) as output:
         for row in collected_statistics:
-            output.write_line(row)
+            output.write_row(row)
 
 
 def __find_referenced_source_statistics(columns):

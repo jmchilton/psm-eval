@@ -1,4 +1,5 @@
 from urllib import quote
+from psme.column.link import Link
 
 
 class LinkBuilder(object):
@@ -24,8 +25,8 @@ class LinkBuilder(object):
         peptide = quote(self.__peptide_rep(psm))
         dataset_id = quote(self.__dataset_id(scan))
         link_template = "%s&dataset_id=%s&app_spectrum=%s&app_peptide=%s"
-        link = link_template % (self.link_prefix, dataset_id, spectrum, peptide)
-        return link
+        link_url = link_template % (self.link_prefix, dataset_id, spectrum, peptide)
+        return Link(url=link_url, label="View peptide %s on spectrum %s" % (peptide, spectrum))
 
     def __spectrum_rep(self, scan):
         return str(scan.index)

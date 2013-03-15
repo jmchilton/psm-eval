@@ -12,3 +12,12 @@ def find_link_builder(**builder_settings):
     link_builder_module = \
         __import__(link_builder_module_name, fromlist=['LinkBuilder'])
     return link_builder_module.LinkBuilder(**builder_settings)
+
+
+class Link(object):
+
+    value_type = "link"
+
+    def __init__(self, url, label):
+        self.url = url
+        self.label = label

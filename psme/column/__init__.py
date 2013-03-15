@@ -1,6 +1,7 @@
 from .aggregates_matches import AggregatesMatches
 from .filters_peaks import FiltersPeaks
 from .matches_ions import MatchesIons
+from .link import find_link_builder
 from psme.spectra_utils import tic
 
 
@@ -136,6 +137,17 @@ class SourceStatistic(ColumnProvider):
 
     def calculate(self, spectra, psm):
         return psm.get_source_statistic(self.source_statistic_name, "")
+
+
+@register_column_provider(name="link")
+class Link(ColumnProvider):
+
+    def __init__(self, settings, **kwds):
+        super(Link, self).__init__(**kwds)
+        self.link_builder = find_link_builder(**kwds)
+
+    def calculate(self, scan, psm):
+        return self.link_builder.get_link(scan, psm)
 
 
 __all__ = [build_column_providers, build_column_provider]

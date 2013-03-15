@@ -1,4 +1,3 @@
-
 AGGREGATE_ION_METHODS = ['count', 'count_longest_stretch', 'percent', 'count_missed', 'percent_missed']
 AGGREGATE_PEAKS_METHODS = ['count', 'percent', 'count_missed', 'percent_missed']
 

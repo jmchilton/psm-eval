@@ -1,7 +1,7 @@
 from yaml import load
 from optparse import OptionParser
 
-ARG_PROPERTIES = ['peak_list', 'psms', 'psms_type', 'output']
+ARG_PROPERTIES = ['psms', 'psms_type', 'output']
 
 
 def load_settings():
@@ -19,6 +19,7 @@ def load_settings():
         __copy_arg_to_options(settings, options, property)
 
     __preprocess(settings)
+
     return settings
 
 
@@ -33,7 +34,6 @@ def __option_parser():
     '/path/to/settings.yaml'
     """
     parser = OptionParser()
-    parser.add_option("--peak_list", default=None)
     parser.add_option("--psms", default=None)
     parser.add_option("--psms_type", default="mzid")
     parser.add_option("--output", default=None)  # defauts to stdout
@@ -87,7 +87,7 @@ def __preprocess(settings):
     __yaml_replace(settings, "peak_filter_ref", None, peak_filter_defs)
     __yaml_expand_list(settings, 'series')
     __yaml_expand_list(settings, 'losses')
-    for key, value in settings.iteritems():
+    for key, value in dict(settings).iteritems():
         if key == "peak_list":
             del settings[key]
             settings["peak_lists"] = [value]
