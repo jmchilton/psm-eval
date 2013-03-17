@@ -15,16 +15,15 @@ class TabularLoader(object):
                 csv_opts[csv_opt_name] = settings[csv_opt_name]
         self.csv_opts = csv_opts
 
-    def load(self, path, source_statistic_names):
+    def load(self, f, source_statistic_names):
         psms = []
         row_parser = self._get_row_parser(source_statistic_names)
-        with open(path, 'r') as f:
-            for row in reader(f, **self.csv_opts):
-                if not row:
-                    continue
-                psm = row_parser.get_psm(row)
-                if psm:
-                    psms.append(psm)
+        for row in reader(f, **self.csv_opts):
+            if not row:
+                continue
+            psm = row_parser.get_psm(row)
+            if psm:
+                psms.append(psm)
         return psms
 
     def _get_row_parser(self, source_statistic_names):
