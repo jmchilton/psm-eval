@@ -35,7 +35,7 @@ def __option_parser():
     """
     parser = OptionParser()
     parser.add_option("--psms", default=None)
-    parser.add_option("--psms_type", default="mzid")
+    parser.add_option("--psms_type", default=None)
     parser.add_option("--output", default=None)  # defauts to stdout
     parser.add_option("--settings")
     return parser
