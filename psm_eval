@@ -1,13 +1,20 @@
 #!/bin/bash
 
-project_directory="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-cd $project_directory
+# http://stackoverflow.com/questions/59895/can-a-bash-script-tell-what-directory-its-stored-in                            
+SOURCE="${BASH_SOURCE[0]}"
+app_dir="$( dirname "$SOURCE" )"
+while [ -h "$SOURCE" ]
+do
+  SOURCE="$(readlink "$SOURCE")"
+  [[ $SOURCE != /* ]] && SOURCE="$DIR/$SOURCE"
+  app_dir="$( cd -P "$( dirname "$SOURCE"  )" && pwd )"
+done
 
 # If a virtualenv exists, activate it.
-if [ -d .venv ];
+if [ -d "$app_dir/.venv" ];
 then
-    . .venv/bin/activate
+    . "$app_dir/.venv/bin/activate"
 fi
 
-export PYTHONPATH=.:$PYTHONPATH
-python $project_directory/psme/main.py "$@"
+export PYTHONPATH="$app_dir":$PYTHONPATH
+python "$app_dir/psme/main.py" "$@"
