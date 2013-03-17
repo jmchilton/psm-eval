@@ -71,21 +71,26 @@ class Peptide(object):
         return sum
 
     def __sum_modifications(self, modifications, **kwds):
-        average = kwds.get('average', False)
         mass_adjust = 0.0
         for modification in modifications:
-            if isinstance(modification, (float, int)):
-                mod_mass = modification
-            elif 'mod_mass' in modification:
-                mod_mass = modification['mod_mass']
-            else:
-                ## Unimod entry
-                if average:
-                    mod_mass = modification["avge_mass"]
-                else:
-                    mod_mass = modification["mono_mass"]
+            mod_mass = self.modification_mass(modification, **kwds)
             mass_adjust += mod_mass
         return mass_adjust
+
+    def modification_mass(self, modification, **kwds):
+        # TODO: Move to a more appropriate place.
+        average = kwds.get('average', False)
+        if isinstance(modification, (float, int)):
+            mod_mass = modification
+        elif 'mod_mass' in modification:
+            mod_mass = modification['mod_mass']
+        else:
+            ## Unimod entry
+            if average:
+                mod_mass = modification["avge_mass"]
+            else:
+                mod_mass = modification["mono_mass"]
+        return mod_mass
 
     def get_seq_mass_avg(self, end, term):
         return self.get_seq_mass(None, end, term, average=True)

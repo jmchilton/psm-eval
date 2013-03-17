@@ -56,7 +56,7 @@ class TabularFormatter(object):
     def _format_value(self, value):
         value_type = getattr(value, 'value_type', 'str')
         if value_type == 'link':
-            return value.url
+            return _format_link(value)
         else:
             return str(value)
 
@@ -79,9 +79,13 @@ class HtmlFormatter(TabularFormatter):
     def _format_value(self, value):
         value_type = getattr(value, 'value_type', 'str')
         if value_type == 'link':
-            return '''<a href="%s">%s</a>''' % (value.url, value.label)
+            return _format_link(value)
         else:
             return str(value)
+
+
+def _format_link(link):
+    return '''<a href="%s">%s</a>''' % (link.url, link.label)
 
 
 FORMATTERS = {

@@ -24,10 +24,11 @@ class LinkBuilder(object):
     def get_link(self, scan, psm):
         spectrum = quote(self.__spectrum_rep(scan))
         peptide = quote(self.__peptide_rep(psm))
+        peptide_label = self.__peptide_label(psm)
         dataset_id = quote(self.__dataset_id(scan))
         link_template = "%s&dataset_id=%s&app_spectrum=%s&app_peptide=%s"
         link_url = link_template % (self.link_prefix, dataset_id, spectrum, peptide)
-        return Link(url=link_url, label="View peptide %s on spectrum %s" % (peptide, spectrum))
+        return Link(url=link_url, label="View peptide %s on spectrum %s" % (peptide_label, spectrum))
 
     def __spectrum_rep(self, scan):
         return str(scan.index)
@@ -44,6 +45,29 @@ class LinkBuilder(object):
             if modifications:
                 rep += ";%f@%d" % (peptide.sum_of_modifications(i, **self.kwds), i + 1)
         return rep
+
+    def __peptide_label(self, psm):
+        peptide = psm.peptide
+        modifications_label = self.__peptide_modifications_label(peptide)
+        return "%s%s" % (peptide.sequence, "" if not modifications_label else " (with modifications %s)" % modifications_label)
+
+    def __peptide_modifications_label(self, peptide):
+        rep = ""
+
+        def append_rep(str, rest):
+            return "%s%s" % (("%s, " % str) if str else "", rest)
+
+        for modification in peptide.n_term_modifications:
+            rep = append_rep(rep, "%s @ N terminal" % self.__format_decimal(peptide.modification_mass(modification, **self.kwds)))
+        for modification in peptide.c_term_modifications:
+            rep = append_rep(rep, "%s @ C terminal" % self.__format_decimal(peptide.modification_mass(modification, **self.kwds)))
+        for i, modification_list in enumerate(peptide.modifications):
+            for modification in modification_list:
+                rep = append_rep(rep, "%s @ %d" % (self.__format_decimal(peptide.modification_mass(modification, **self.kwds)), i + 1))
+        return rep
+
+    def __format_decimal(self, number):
+        return ('%f' % number).rstrip('0').rstrip('.')
 
     def __dataset_id(self, scan):
         return scan.source.encoded_id
