@@ -29,7 +29,7 @@ class PsmeTestCase(TestCase):
             source_manager = TestScanSourceManager()
         loader = loader_cls(settings, source_manager)
         test_path = self._test_data_path(test_data)
-        return loader.load(test_path, source_statistics)
+        return loader.load(open(test_path, "r"), source_statistics)
 
 
 class TestScanSourceManager():
