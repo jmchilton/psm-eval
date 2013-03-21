@@ -1,6 +1,6 @@
 from pyteomics.mass import calculate_mass, std_ion_comp, Composition
 
-ION_COMP = std_ion_comp
+ION_COMP = std_ion_comp.copy()
 ION_COMP['M-CO'] = Composition(formula='C-1O-1')
 ION_COMP['M-NH3'] = Composition(formula='N-1H-3')
 ION_COMP['M-H2O'] = Composition(formula='H-2O-1')
@@ -8,8 +8,6 @@ ION_COMP['M-H2O'] = Composition(formula='H-2O-1')
 # Lorikeet & ProteinProspector compute Z-dot ions (though I don't actually
 # know what that means).
 ION_COMP['z'] = Composition(formula='H-2O-1' + 'ON-1')
-
-H2O = Composition(formula='H2O')
 
 
 class Peptide(object):
@@ -30,7 +28,7 @@ class Peptide(object):
         # kwds could be average, ion_type, etc...
         slice = _Slice(self.sequence, start, end, term)
         sub_sequence = self.sub_sequence(slice=slice)
-        composition = Composition(parsed_sequence=sub_sequence) + H2O
+        composition = Composition(list(sub_sequence))
         # Why is adding H2O needed, is there a more pyteomics way of doing this?
         kwds['ion_comp'] = ION_COMP
         mass = calculate_mass(composition=composition, **kwds)
