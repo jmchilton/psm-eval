@@ -20,7 +20,7 @@ class UsesIonSeries(object):
     """
 
     def _setup_ion_series(self, settings, **kwds):
-        ion_options = kwds.get('ions', {})
+        ion_options = kwds.get('ions', {}) or {}
         self.ion_options = ion_options
 
         if 'mass_type' in kwds:

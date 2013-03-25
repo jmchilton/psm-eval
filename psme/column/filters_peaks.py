@@ -5,7 +5,7 @@ from numpy import array_split, min, sort
 class FiltersPeaks(object):
 
     def _setup_peak_filters(self, **options):
-        filter_options = options.get('peak_filters', [])
+        filter_options = options.get('peak_filters', []) or []
         peak_filter_factories = []
         for filter_option in filter_options:
             filter_type = filter_option.get('type')
