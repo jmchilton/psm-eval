@@ -72,11 +72,12 @@ class ScanSource(object):
 
 class Scan(object):
 
-    def __init__(self, source, index, intensity_array, mz_array, number=None, id=None):
+    def __init__(self, source, index, intensity_array, mz_array, rt=None, number=None, id=None):
         self.source = source
         self.index = index
         self.intensity_array = intensity_array
         self.mz_array = mz_array
+        self.rt = rt
         self._number = number
         self._id = id
 
