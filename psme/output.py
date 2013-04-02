@@ -1,5 +1,6 @@
 from __future__ import print_function
 from sys import stdout as sys_stdout
+import numpy as np
 
 
 class OutputFormatter(object):
@@ -35,6 +36,13 @@ class OutputFormatter(object):
         self.file.write(content)
 
 
+def format_number(value):
+    if np.issubdtype(type(value), float):
+        return "{:f}".format(value)
+    else:
+        return str(value)
+
+
 class TabularFormatter(object):
 
     def __init__(self, settings):
@@ -58,7 +66,7 @@ class TabularFormatter(object):
         if value_type == 'link':
             return _format_link(value)
         else:
-            return str(value)
+            return format_number(value)
 
 
 class HtmlFormatter(TabularFormatter):
@@ -81,7 +89,7 @@ class HtmlFormatter(TabularFormatter):
         if value_type == 'link':
             return _format_link(value)
         else:
-            return str(value)
+            return format_number(value)
 
 
 def _format_link(link):
