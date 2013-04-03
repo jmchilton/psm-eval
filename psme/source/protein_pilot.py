@@ -43,7 +43,7 @@ class ProteinPilotRowParser(object):
         peptide_mod_args = self.__convert_modifications(modifications_str)
         spectrum_str = row[self.__get_index('Spectrum', 22)]
         scan_id, scan_source_index = self.__split_spectrum(spectrum_str)
-        scan_source = self.scan_source_manager.match_by_index(scan_source_index)
+        scan_source = self.scan_source_manager.match_by_index(int(scan_source_index) - 1)
         scan_reference = ScanReference(number=int(scan_id), source=scan_source)
         source_statistics = {}
         for source_statistic_name in self.source_statistic_names:
