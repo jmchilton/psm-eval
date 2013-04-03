@@ -1,4 +1,4 @@
-AGGREGATE_ION_METHODS = ['count', 'count_longest_stretch', 'percent', 'count_missed', 'percent_missed']
+AGGREGATE_ION_METHODS = ['count', 'count_longest_stretch', 'percent', 'count_missed', 'percent_missed', 'list_matches', 'list_misses']
 AGGREGATE_PEAKS_METHODS = ['count', 'percent', 'count_missed', 'percent_missed']
 
 
@@ -42,17 +42,30 @@ class AggregatesMatches(object):
     def _raise_cannot_aggregate_by(self, aggregate_by):
         raise Exception("Statistic doesn't know how to aggregate by [%s]." % aggregate_by)
 
-    def _aggregate(self, matched):
+    def _divide(self, num, den):
+        if den != 0.0:
+            return float(num) / float(den)
+        else:
+            return float('nan')
+
+    def _aggregate(self, matched, ions=None):
         if self.aggregate_by == 'count':
             return self._count_matched(matched)
         elif self.aggregate_by == 'count_missed':
             return self._count_missed(matched)
         elif self.aggregate_by == 'percent':
-            return self._count_matched(matched) / (1.0 * len(matched))
+            num_matched = len(matched)
+            if num_matched == 0.0:
+                return float('nan')
+            return self._divide(self._count_matched(matched), num_matched)
         elif self.aggregate_by == 'percent_missed':
-            return self._count_missed(matched) / (1.0 * len(matched))
+            return self._divide(self._count_missed(matched), num_matched)
         elif self.aggregate_by == 'count_longest_stretch':
             return self._longest_stretch(matched)
+        elif self.aggregate_by == 'list_matches':
+            return ",".join([ion.label for (was_matched, ion) in zip(matched, ions) if was_matched])
+        elif self.aggregate_by == 'list_misses':
+            return ",".join([ion.label for (was_matched, ion) in zip(matched, ions) if not was_matched])
         else:
             self._raise_cannot_aggregate_by(self.aggregate_by)
 

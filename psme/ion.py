@@ -33,7 +33,9 @@ class MainSeriesIterator(object):
         if self.index >= len(self.peptide.sequence) - 1:
             raise StopIteration()
         self.index += 1
-        return PeptideContext(peptide=self.peptide, start=None, stop=self.index, term=self.ion_type)
+        context = PeptideContext(peptide=self.peptide, start=None, stop=self.index, term=self.ion_type)
+        index = str(self.index + 1)
+        return (context, index)
 
 
 class InternalIonIterator(object):
@@ -55,7 +57,7 @@ class InternalIonIterator(object):
                 if not labeled_sequence in labeled_sequences:
                     contexts.append(context)
                     labeled_sequences.add(labeled_sequence)
-        return contexts
+        return [(context, "_%s" % context.sequence) for context in contexts]
 
 
 class WholeIonIterator(object):
@@ -65,19 +67,20 @@ class WholeIonIterator(object):
 
     def __iter__(self):
         context = PeptideContext(peptide=self.peptide, start=0, stop=len(self.peptide.sequence), term=None)
-        return [context].__iter__()
+        return [(context, "")].__iter__()
 
 
 class Ion(object):
 
-    def __init__(self, peptide_context, type, charge=1, loss=NO_LOSS, **calc_kwds):
+    def __init__(self, peptide_context, type, index="", charge=1, loss=NO_LOSS, **calc_kwds):
         self.type = type
         self.peptide_context = peptide_context
         ion_type = calc_kwds["ion_type"]
+        self.charge = charge
+        self.label = "%s%s%s%s" % (ion_type, index, "+" * self.charge, loss.label)
         ion_type = "%s%s" % (ion_type, loss.label)
         calc_kwds["ion_type"] = ion_type
         self.calc_kwds = calc_kwds
-        self.charge = charge
 
     def get_mz(self):
         mass = self.peptide_context.calc_mass(**self.calc_kwds)
@@ -92,8 +95,8 @@ class IonBuilder(object):
         self.charge = charge
         self.calc_kwds = calc_kwds
 
-    def get(self, peptide_context, loss=NO_LOSS, **calc_kwds):
-        ion = Ion(peptide_context, type=self.type, charge=self.charge, loss=loss, **self.calc_kwds)
+    def get(self, peptide_context, loss=NO_LOSS, index="", **calc_kwds):
+        ion = Ion(peptide_context, type=self.type, charge=self.charge, loss=loss, index=index, **self.calc_kwds)
         ion.calc_kwds.update(**calc_kwds)
         return ion
 
@@ -187,10 +190,10 @@ def get_ions(peptide, calc_args={}, **options):
         else:
             raise NotImplementedError("ions of type [%s] not implemented." % ion_type)
         series_ions = []
-        for peptide_context in peptide_iter:
+        for peptide_context, index in peptide_iter:
             for loss in losses:
                 if loss.applicable(ion_type, peptide_context):
-                    series_ions.append(ion_builder.get(peptide_context, loss, **calc_args))
+                    series_ions.append(ion_builder.get(peptide_context, loss, index=index, **calc_args))
         if ion_type == ION_TYPE_C_TERM:
             series_ions.reverse()
         ions.extend(series_ions)

@@ -107,7 +107,7 @@ class IonsMatched(ColumnProvider, AggregatesMatches, FiltersPeaks, MatchesIons):
         filtered_peaks = self._filtered_peaks(spectra)
         ions = self._get_ions(psm)
         matched = self._ions_matched(ions, filtered_peaks)
-        return self._aggregate(matched)
+        return self._aggregate(matched, ions)
 
 
 @register_column_provider(name="num_peaks")

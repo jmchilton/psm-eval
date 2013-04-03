@@ -1,5 +1,5 @@
 from psme.spectra_utils import tic
-from numpy import array_split, min, sort
+from numpy import array_split, sort
 
 
 class FiltersPeaks(object):
@@ -31,11 +31,11 @@ class PercentTicFilterFactory(object):
         self.percent_tic = filter_options.get('percent', 0.0)
 
     def _get_intensity_threshold(self, scan):
-        return tic(scan) * self.percent_tic
+        return (tic(scan) * self.percent_tic, float("inf"))
 
     def get(self, scan):
-        intensity_threshold = self._get_intensity_threshold(scan)
-        return lambda peak: peak[1] > intensity_threshold
+        (min_inten, max_inten) = self._get_intensity_threshold(scan)
+        return lambda peak: (max_inten >= peak[1]) and (peak[1] >= min_inten)
 
 
 class QuantileFilterFactory(PercentTicFilterFactory):
@@ -48,8 +48,12 @@ class QuantileFilterFactory(PercentTicFilterFactory):
     def _get_intensity_threshold(self, scan):
         intensity_array = scan.intensity_array
         intensity_threshold = tic(scan) * self.percent_tic
-        intensity_array = intensity_array[intensity_array > intensity_threshold]
-        return min(array_split(sort(intensity_array), self.q)[self.q - self.k])
+        intensity_array = intensity_array[intensity_array >= intensity_threshold]
+        quantile = array_split(sort(intensity_array), self.q)[self.q - self.k]
+        if len(quantile) > 0:
+            return quantile[0], quantile[-1]
+        else:
+            return float("inf"), float("-inf")
 
 
 class RangeThresoldFilterFactory(object):
