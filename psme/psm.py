@@ -35,7 +35,7 @@ class PsmManager(object):
 
     def psms_for_scan(self, scan):
         scan_source = scan.source
-        possible_psms = self.scans_references_by_source[scan_source]
+        possible_psms = self.scans_references_by_source.get(scan_source, [])
         psms = []
         for possible_psm in possible_psms:
             if possible_psm.scan_reference.matches_scan_from_same_source(scan):
