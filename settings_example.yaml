@@ -73,12 +73,20 @@ columns:
     mass_tolerance: 1.5
     peak_filters:
       - peak_filter_ref: top_third
+  - title: "Number ITraq Peaks"
+    type: num_peaks
+    peak_filters:
+      - type: mz_range
+        min: 113.5
+        max: 121.5
+  - title: "Number of peaks greater than 10% intensity of Maximum Peak Intensity"
+    type: num_peaks
+    peak_filters:
+      - type: percent_max_intensity
+        percent: 0.1
   - type: source_statistic
     statistic_name: MyriMatch:mzFidelity
   - type: source_statistic
     statistic_name: MyriMatch:MVH
   - type: source_statistic
     statistic_name: xcorr
-  - type: link
-    link_type: galaxy
-    base_url: "http://localhost:8080/"

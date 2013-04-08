@@ -1,4 +1,4 @@
-from psme.spectra_utils import tic
+from psme.spectra_utils import tic, max_intensity
 from numpy import array_split, sort
 
 
@@ -24,7 +24,27 @@ class FiltersPeaks(object):
         return [peak for peak in self._peaks(scan) if all([filter(peak) for filter in filters])]
 
 
-class PercentTicFilterFactory(object):
+class IntensityThresholdFilterFactory(object):
+
+    def __init__(self, **filter_options):
+        super(IntensityThresholdFilterFactory, self).__init__()
+
+    def get(self, scan):
+        (min_inten, max_inten) = self._get_intensity_threshold(scan)
+        return lambda peak: (max_inten >= peak[1]) and (peak[1] >= min_inten)
+
+
+class PercentMaxSpectrumIntensityFilterFactory(IntensityThresholdFilterFactory):
+
+    def __init__(self, **filter_options):
+        super(PercentMaxSpectrumIntensityFilterFactory, self).__init__()
+        self.percent_max = filter_options.get('percent', 0.0)
+
+    def _get_intensity_threshold(self, scan):
+        return (max_intensity(scan) * self.percent_max, float("inf"))
+
+
+class PercentTicFilterFactory(IntensityThresholdFilterFactory):
 
     def __init__(self, **filter_options):
         super(PercentTicFilterFactory, self).__init__()
@@ -32,10 +52,6 @@ class PercentTicFilterFactory(object):
 
     def _get_intensity_threshold(self, scan):
         return (tic(scan) * self.percent_tic, float("inf"))
-
-    def get(self, scan):
-        (min_inten, max_inten) = self._get_intensity_threshold(scan)
-        return lambda peak: (max_inten >= peak[1]) and (peak[1] >= min_inten)
 
 
 class QuantileFilterFactory(PercentTicFilterFactory):
@@ -82,6 +98,7 @@ class IntensityRangeFilterFactory(RangeThresoldFilterFactory):
 
 FILTER_FACTORY_CLASSES = {
     "percent_tic": PercentTicFilterFactory,
+    "percent_max_intensity": PercentMaxSpectrumIntensityFilterFactory,
     "quantile": QuantileFilterFactory,
     "mz_range": MzRangeFilterFactory,
     "intensity_range": IntensityRangeFilterFactory,
