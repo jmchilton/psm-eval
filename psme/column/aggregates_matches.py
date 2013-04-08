@@ -43,7 +43,7 @@ class AggregatesMatches(object):
         raise Exception("Statistic doesn't know how to aggregate by [%s]." % aggregate_by)
 
     def _divide(self, num, den):
-        if den != 0.0:
+        if float(den) != 0.0:
             return float(num) / float(den)
         else:
             return float('nan')
@@ -55,10 +55,9 @@ class AggregatesMatches(object):
             return self._count_missed(matched)
         elif self.aggregate_by == 'percent':
             num_matched = len(matched)
-            if num_matched == 0.0:
-                return float('nan')
             return self._divide(self._count_matched(matched), num_matched)
         elif self.aggregate_by == 'percent_missed':
+            num_matched = len(matched)
             return self._divide(self._count_missed(matched), num_matched)
         elif self.aggregate_by == 'count_longest_stretch':
             return self._longest_stretch(matched)
