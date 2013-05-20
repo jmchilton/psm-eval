@@ -7,6 +7,14 @@ from psme.peptide import Peptide
 from psme.unimod import load_unimod
 
 
+PEPTIDE_REPORT_DEFAULT_COLUMN_INDICES = {
+    'Sequence':      12,
+    'Modifications': 13,
+    'Spectrum':      22,
+    'Conf':          11,
+}
+
+
 class ProteinPilotPeptideReportLoader(TabularLoader):
 
     def __init__(self, settings, scan_source_manager):
@@ -38,10 +46,10 @@ class ProteinPilotRowParser(object):
         return None
 
     def __get_psm(self, row):
-        sequence = row[self.__get_index('Sequence', 12)]
-        modifications_str = row[self.__get_index('Modifications', 13)]
+        sequence = row[self.__get_index('Sequence')]
+        modifications_str = row[self.__get_index('Modifications')]
         peptide_mod_args = self.__convert_modifications(modifications_str)
-        spectrum_str = row[self.__get_index('Spectrum', 22)]
+        spectrum_str = row[self.__get_index('Spectrum')]
         scan_id, scan_source_index = self.__split_spectrum(spectrum_str)
         scan_source = self.scan_source_manager.match_by_index(int(scan_source_index) - 1)
         scan_reference = ScanReference(number=int(scan_id), source=scan_source)
@@ -82,8 +90,10 @@ class ProteinPilotRowParser(object):
         spectrum_parts = spectrum_str.split(".")
         return spectrum_parts[3], spectrum_parts[0]
 
-    def __get_index(self, name, default_index=None):
-        return self.source_column_indices.get(name, default_index)
+    def __get_index(self, name):
+        default_index = PEPTIDE_REPORT_DEFAULT_COLUMN_INDICES[name]
+        value = self.source_column_indices.get(name, default_index)
+        return value
 
     def _find_unimod_entry(self, label):
         entry = self._find_unimod_entry_exact(label)
