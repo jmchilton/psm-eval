@@ -25,9 +25,10 @@ class LinkBuilder(object):
         spectrum = quote(self.__spectrum_rep(scan))
         peptide = quote(self.__peptide_rep(psm))
         peptide_label = self.__peptide_label(psm)
-        dataset_id = quote(self.__dataset_id(scan))
-        link_template = "%s&dataset_id=%s&app_spectrum=%s&app_peptide=%s"
-        link_url = link_template % (self.link_prefix, dataset_id, spectrum, peptide)
+        (dataset_id, file_name) = self.__dataset_parts(scan)
+        file_name_arg = "" if not file_name else ("&file_name=%s" % quote(file_name))
+        link_template = "%s&dataset_id=%s&app_spectrum=%s&app_peptide=%s%s"
+        link_url = link_template % (self.link_prefix, quote(dataset_id), spectrum, peptide, file_name_arg)
         return Link(url=link_url, label="View peptide %s on spectrum %s" % (peptide_label, spectrum))
 
     def __spectrum_rep(self, scan):
@@ -69,5 +70,10 @@ class LinkBuilder(object):
     def __format_decimal(self, number):
         return ('%f' % number).rstrip('0').rstrip('.')
 
-    def __dataset_id(self, scan):
-        return scan.source.encoded_id
+    def __dataset_parts(self, scan):
+        encoded_id = scan.source.encoded_id
+        dataset_parts = encoded_id.split("|", 1)
+        if len(dataset_parts) > 1:
+            return dataset_parts
+        else:
+            return (dataset_parts[0], None)
