@@ -10,8 +10,9 @@ class mainFrame(wx.Frame):
     def __init__(self, parent, id, title):
         # global counter for the sequence of files being evaluated
         self.evalNum = 0
+        
         wx.Frame.__init__(self, parent, -1, title, size=(1000,800))
-        self.nb = wx.Notebook(self)
+        self.nb = wx.Notebook(self, name='toplevel')
         self.makeMenuBar()
         self.SetMenuBar(self.menubar)
         

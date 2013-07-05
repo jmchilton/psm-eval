@@ -5,7 +5,7 @@ class mainPanel(scrolled.ScrolledPanel):
     # ToDo: When initiating, pass in all list of choices for setting up the choices box
     # ToDo: Error handling
     def __init__(self, parent, id, title):
-        scrolled.ScrolledPanel.__init__(self, parent)
+        scrolled.ScrolledPanel.__init__(self, parent, name=title)
         self.SetAutoLayout(True)
         self.parent = parent
 
