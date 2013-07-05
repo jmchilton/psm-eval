@@ -1,5 +1,9 @@
 import wx
 from numPeaks_panel import *
+from peaksMatched_panel import *
+from ionsMatched_panel import *
+from psmSource_panel import *
+
 class colPanel(wx.Panel):
     # ToDo: When initiating, pass in all list of choices for setting up the choices box
     # ToDo: Error handling
@@ -34,13 +38,11 @@ class colPanel(wx.Panel):
         self.grid.Add(self.removeCol, userData=self.removeCol.GetName())
         self.removeCol.Bind(wx.EVT_BUTTON, self.onRemoveCol)
         self.Fit()
-        #self.grid.AddSpacer(20,20)
-        self.Fit()
     
     def onRemoveCol(self, event):
         self.parent.numCols -= 1
         self.Hide()
-        self.parent.SetSizerAndFit(self.parent.grid)
+        self.parent.Fit()
         self.Destroy()
         #self.removeItem(event)
         #self.numCols -= 1
@@ -49,19 +51,44 @@ class colPanel(wx.Panel):
     
     # Helper function for removing columns
     def removeItem(self,event):
-        Childrens=self.grid.GetChildren()
+        Childrens = self.grid.GetChildren()
+        #TODO: complete the list
+        nameList = ['pkList', 'pkMatched', 'ionMatched', 'psmSource']
         for child in Childrens:
-            if child.GetWindow()!=None and child.GetWindow().GetName()=='pkList':
+            if child.GetWindow()!=None and child.GetWindow().GetName() in nameList:
                 self.grid.Hide(child.GetWindow())
                 self.grid.Remove(child.GetWindow())
     
     def EvtColType(self, event):
         self.removeItem(event)
         self.Fit()
-        if event.GetString()=='Number of Peaks':
+        selection = event.GetString()
+        if selection==self.colType[5]:
             self.handleNumPeaks(event)
+        if selection==self.colType[6]:
+            self.handlePeaksMatched(event)
+        if selection==self.colType[7]:
+            self.handleIonsMatched(event)
+        if selection==self.colType[9]:
+            self.handlePSM(event)
 
     def handleNumPeaks(self, event):
         self.grid.Add(numPeaksPanel(self), wx.EXPAND)
         self.Fit()
         self.parent.Fit()
+
+    def handlePeaksMatched(self, event):
+        self.grid.Add(peaksMatchedPanel(self), wx.EXPAND)
+        self.Fit()
+        self.parent.Fit()
+    
+    def handleIonsMatched(self, event):
+        self.grid.Add(ionsMatchedPanel(self), wx.EXPAND)
+        self.Fit()
+        self.parent.Fit()
+    
+    def handlePSM(self, event):
+        self.grid.Add(psmSourcePanel(self), wx.EXPAND)
+        self.Fit()
+        self.parent.Fit()
+    
