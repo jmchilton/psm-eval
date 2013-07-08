@@ -29,6 +29,7 @@ class mainPanel(scrolled.ScrolledPanel):
         self.grid.Add(self.lblPsmType)
         self.editPsmType = wx.ComboBox(self, size=(-1, -1), choices=self.psmType, style=wx.CB_DROPDOWN)
         self.grid.Add(self.editPsmType)
+        self.editPsmType.SetValue(self.psmType[0])
         self.Bind(wx.EVT_COMBOBOX, self.EvtPsmType, self.editPsmType)
         self.grid.AddSpacer(5,5)
         self.itemIndex += 3
@@ -53,16 +54,25 @@ class mainPanel(scrolled.ScrolledPanel):
         self.lblPeakList = wx.StaticText(self, label="Peak List (mzML):")
         self.grid.Add(self.lblPeakList)
         self.itemIndex += 1
+        
         # Add option to select dierectly or by multifile
-        self.ListBox = wx.RadioBox(self, label="select ", choices=self.fType, style=wx.RA_SPECIFY_COLS)
-        self.grid.Add(self.ListBox)
-        self.Bind(wx.EVT_RADIOBOX, self.EvtFType, self.ListBox)
-
-        self.editPeakList = wx.ListBox(self, size=(-1, -1), choices=self.peakList, style=wx.LB_MULTIPLE)
+        self.fTypeBox = wx.RadioBox(self, label="select ", choices=self.fType, style=wx.RA_SPECIFY_COLS)
+        self.grid.Add(self.fTypeBox)
+        self.Bind(wx.EVT_RADIOBOX, self.EvtFType, self.fTypeBox)
+        # Default to select by file directly
+        self.editPeakList = wx.ListBox(self, size=(-1, -1), choices=self.peakList, style=wx.LB_MULTIPLE, name='direct')
         self.grid.Add(self.editPeakList)
         self.Bind(wx.EVT_LISTBOX, self.EvtPeakList, self.editPeakList)
+
+        # by multifile
+        self.editMultiList = wx.ComboBox(self, size=(-1, -1), choices=self.multiList, style=wx.CB_DROPDOWN)
+        self.Bind(wx.EVT_COMBOBOX, self.EvtMultiList, self.editMultiList)
+        self.grid.Add(self.editMultiList)
+        self.grid.Hide(self.editMultiList)
+        
         self.grid.AddSpacer(5,5)
         self.itemIndex += 3
+        
         # Output type combobox
         self.outType = ['Tabular (tsv)', 'HTML']
         self.lblOutType = wx.StaticText(self, label="Output Type:")
@@ -70,8 +80,10 @@ class mainPanel(scrolled.ScrolledPanel):
         self.editOutType = wx.ComboBox(self, size=(-1, -1), choices=self.outType, style=wx.CB_DROPDOWN)
         self.grid.Add(self.editOutType)
         self.Bind(wx.EVT_COMBOBOX, self.EvtOutType, self.editOutType)
+        self.editOutType.SetValue(self.outType[0])
         self.grid.AddSpacer(5,5)
         self.itemIndex += 3
+        
         # Default mass tolerance edit control
         self.lblMass = wx.StaticText(self, label="Default Mass Tolerance:")
         self.grid.Add(self.lblMass)
@@ -87,8 +99,10 @@ class mainPanel(scrolled.ScrolledPanel):
         self.editMassType = wx.ComboBox(self, size=(-1, -1), choices=self.massType, style=wx.CB_DROPDOWN)
         self.grid.Add(self.editMassType)
         self.Bind(wx.EVT_COMBOBOX, self.EvtMassType, self.editMassType)
+        self.editMassType.SetValue(self.massType[0])
         self.grid.AddSpacer(5,5)
         self.itemIndex += 3
+        
         # Columns
         # Static line
         self.lblCol = wx.StaticText(self, label="Columns")
@@ -98,46 +112,35 @@ class mainPanel(scrolled.ScrolledPanel):
         self.addCol.Bind(wx.EVT_BUTTON, self.onAddCol)
         self.grid.Add(self.addCol)
         self.itemIndex += 2
+        self.grid.AddSpacer(10,10)
         # self.removeCol = wx.Button(self, label="Remove Column %d" % self.numCols)
         # self.grid.Add(self.removeCol)
         # self.removeCol.Bind(wx.EVT_BUTTON, self.onRemoveCol)
+        self.buttonExe = wx.Button(self, -1, label="Execute", size=(-1, -1))
+        self.buttonExe.Bind(wx.EVT_BUTTON, self.onButtonExe)
+        self.grid.Add(self.buttonExe, 0)
+        self.itemIndex += 1
         
-        self.buttonDone = wx.Button(self, -1, label="Done", size=(80,25))
-        self.buttonDone.Bind(wx.EVT_BUTTON, self.onButtonDone)
-        self.grid.Add(self.buttonDone, 0, wx.ALIGN_BOTTOM, 200)
-        self.grid.AddSpacer(20,20)
-        self.itemIndex += 2
+        self.buttonCancel = wx.Button(self, -1, label="Cancel", size=(-1, -1))
+        self.buttonCancel.Bind(wx.EVT_BUTTON, self.onButtonCancel)
+        self.grid.Add(self.buttonCancel, 0)
+        self.itemIndex += 1
         # Define other variables / lists /widgets to be used
+
+        
         # Coltype combobox list
         self.colType = ['Peptide Sequence', 'Scan Index', 'Scan Number', 'Scan ID', 'Peak List', 'Number of Peaks', 'Peaks Matched Statistics', 'Ions Matched Statistics', 'Total Ion Current', 'Statistic from PSM Source', 'Protvis Link']
         
-        
-    def onAddCol(self, event):
-        self.numCols += 1
-        self.grid.Add(colPanel(self, self.numCols), wx.EXPAND)
-        self.grid.AddSpacer(5,5)
-        self.Fit()
-        '''
-        self.numCols += 1
-        self.colTypeLbl = wx.StaticText(self, label="Column %d \n \n Column Type:" % self.numCols, name=str(self.numCols))
+    def onButtonExe(self, event):
+        pass
 
-        self.grid.Add(self.colTypeLbl, userData=self.colTypeLbl.GetName())    
-        self.grid.Layout()
+    def onAddCol(self, event):
+        self.itemIndex += 1
+        self.numCols += 1
+        self.grid.Insert(self.itemIndex-2, colPanel(self, self.numCols), wx.EXPAND)
+        #self.grid.AddSpacer(5,5)
         self.Fit()
-        self.editColType = wx.ComboBox(self, size=(-1, -1), choices=self.colType, style=wx.CB_DROPDOWN, name=str(self.numCols))
-        # Create Column type comboBox
-        self.grid.Add(self.editColType, userData=self.editColType.GetName())
-        self.Bind(wx.EVT_COMBOBOX, self.EvtColType, self.editColType)
-        self.removeCol = wx.Button(self, label="Remove Column %d" % self.numCols, name=str(self.numCols))
-        self.grid.Add(self.removeCol, userData=self.removeCol.GetName())
-        self.removeCol.Bind(wx.EVT_BUTTON, self.onRemoveCol)
-        self.grid.Layout()
-        self.Fit()
-        #self.grid.AddSpacer(20,20)
-        self.grid.Layout()
-        self.Fit()
-        self.itemIndex += 3
-        '''
+       
     
     # Helper function for removing columns
     def removeItem(self,event):
@@ -147,13 +150,33 @@ class mainPanel(scrolled.ScrolledPanel):
                 self.itemIndex -= 1
                 self.grid.Hide(child.GetWindow())
                 self.grid.Remove(child.GetWindow())
-    '''
-    def onRemoveCol(self, event):
-        self.removeItem(event)
-        self.numCols -= 1
-        self.grid.Layout()
-        self.Fit()
-        '''
+    
+    def EvtFType(self, event):        
+        value = self.fTypeBox.GetSelection()
+        if value == 0:
+            if self.editMultiList.IsShown():
+                self.grid.Hide(self.editMultiList)
+                self.grid.Show(self.editPeakList)
+                self.Fit()
+        else:
+            if self.editPeakList.IsShown():
+                self.grid.Hide(self.editPeakList)
+                self.grid.Show(self.editMultiList)
+                self.Fit()
+            
+        pass
+    # Helper function to rename col button numbers after removing
+    def rename(self):
+        childrens = self.grid.GetChildren()
+        colChildrens = []
+        for child in childrens:
+            if child.GetWindow() != None and child.GetWindow().GetName() == 'colPanel':
+                colChildrens.append(child)
+        for i in range(len(colChildrens)):
+            colChildrens[i].GetWindow().colTypeLbl.SetLabel("Column %d \n \n Column Type:" % (i+1))
+            colChildrens[i].GetWindow().removeCol.SetLabel("Remove Column %d" % (i+1))
+            colChildrens[i].GetWindow().colTypeLbl.SetName("Column %d \n \n Column Type:" % (i+1))
+            colChildrens[i].GetWindow().removeCol.SetName("Remove Column %d" % (i+1))
             
     def EvtPsmType(self, event):
         # need to record variable, prolly sth like self.type=
@@ -164,14 +187,16 @@ class mainPanel(scrolled.ScrolledPanel):
     def EvtPeakList(self, event):
         # Same
         pass
+    def EvtMultiList(self, event):
+        pass
     def EvtOutType(self, event):
         pass
     def EvtMass(self, event):
         pass
     def EvtMassType(self, event):
         pass
-    def EvtFType(self, event):        
-        pass
+                              
+    
 
     # A helper function to find the insert position
     # GetEventObject
@@ -190,39 +215,8 @@ class mainPanel(scrolled.ScrolledPanel):
                 break
         print insertIndex
         return insertIndex
-    '''
-    def EvtColType(self, event):
-        eventName=event.GetEventObject().GetName()
-        InsertObjectPos=self.findIndex(event)
-        if event.GetString()=='Number of Peaks':
-            label = wx.StaticText(self, label="Peak Filters", name=eventName)
-            
-            self.grid.Insert(InsertObjectPos, label, userData=eventName)
-            self.grid.Layout()
-            self.Fit()
-            # Maybe use button name?
-            addPeakFilter = wx.Button(self, label="Add new Peak Filter", name=eventName)
-            self.grid.Insert(InsertObjectPos+1, addPeakFilter, userData=eventName)
-            addPeakFilter.Bind(wx.EVT_BUTTON, self.onAddPeakFilter)
-            self.grid.Layout()
-            self.Fit()
-            self.itemIndex += 2
-    # handling addPeakFilter
-    '''
+
     def onAddPeakFilter(self, event):
         pass
-    def onButtonDone(self, event):
+    def onButtonCancel(self, event):
         self.parent.DeletePage(0)
-
-        
-        #self.label = wx.StaticText(parent, -1, "Peptide-Spectrum-Matches Evaluation of File:")
-        # self.text = wx.TextCtrl(parent, -1, "Filename", size=(175, -1))
-
-        #grid = wx.GridBagSizer(hgap=10, vgap=10)
-        #hSizer = wx.BoxSizer(wx.HORIZONTAL)
-        
-        #grid.Add(self.label, pos=(10,0))
-        # sizer.Add(self.text)
-        
-        
-        #self.Show()

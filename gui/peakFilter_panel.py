@@ -5,15 +5,16 @@ from intensityPercent_panel import *
 
 class peakFilterPanel(wx.Panel):
     def __init__(self, parent, filterNum):
-        wx.Panel.__init__(self, parent)
-        self.parent = parent
+        wx.Panel.__init__(self, parent, name='peakFilterPanel')
         self.SetAutoLayout(True)
+        self.parent = parent
+        
         self.filterNum = filterNum
         
         self.grid = wx.BoxSizer(wx.VERTICAL)
-        
-        self.SetSizer(self.grid)
         self.grid.AddSpacer(5,5)
+
+        self.SetSizer(self.grid)
         
         self.filterOnLbl = wx.StaticText(self, label="Peak Filter %d \n \n Filter Peaks On:" % self.filterNum, name=str(self.filterNum))
         self.grid.Add(self.filterOnLbl, userData=self.filterOnLbl.GetName())
@@ -23,24 +24,25 @@ class peakFilterPanel(wx.Panel):
         self.grid.Add(self.editFilterType, userData=self.editFilterType.GetName())
         self.Bind(wx.EVT_COMBOBOX, self.EvtFilterType, self.editFilterType)
         
-        self.addRemoveButton()
-        # Todo: determine fit, layout, and show sequence
-        self.Show()
-
-    def addRemoveButton(self):
         self.removeFilter = wx.Button(self, label="Remove Peak Filter %d" % self.filterNum, name=str(self.filterNum))
         self.grid.Add(self.removeFilter, userData=self.removeFilter.GetName())
         self.removeFilter.Bind(wx.EVT_BUTTON, self.onRemoveFilter)
+        # Todo: determine fit, layout, and show sequence
+        
         self.Fit()
         self.parent.Fit()
+        self.Show()
 
     def onRemoveFilter(self, event):
         self.parent.numFilters -= 1
+        self.parent.itemIndex -= 1
+        parent = self.parent
         self.Hide()
         self.parent.Fit()
         self.parent.parent.Fit()
         #self.parent.SetSizerAndFit(self.parent.grid)
         self.Destroy()
+        parent.rename()
         
         # Helper function for removing columns
     def removeItem(self,event):

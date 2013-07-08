@@ -8,21 +8,20 @@ class colPanel(wx.Panel):
     # ToDo: When initiating, pass in all list of choices for setting up the choices box
     # ToDo: Error handling
     def __init__(self, parent, colNum):
-        wx.Panel.__init__(self, parent)
+        wx.Panel.__init__(self, parent, name='colPanel')
         self.SetAutoLayout(True)
         self.colNum = colNum
         self.parent = parent
-        self.numPeaks = 0
         
         self.grid = wx.BoxSizer(wx.VERTICAL)
         self.grid.AddSpacer(5,5)
-
         self.SetSizer(self.grid)
         
         # Define other variables / lists /widgets to be used
         # Coltype combobox list
         self.colType = ['Peptide Sequence', 'Scan Index', 'Scan Number', 'Scan ID', 'Peak List', 'Number of Peaks', 'Peaks Matched Statistics', 'Ions Matched Statistics', 'Total Ion Current', 'Statistic from PSM Source', 'Protvis Link']
         
+        # ToDo: Might need to Get rid of name string for incorrespondence after removing buttons and relabelling
         self.colTypeLbl = wx.StaticText(self, label="Column %d \n \n Column Type:" % self.colNum, name=str(self.colNum))
 
         self.grid.Add(self.colTypeLbl, userData=self.colTypeLbl.GetName())    
@@ -30,32 +29,33 @@ class colPanel(wx.Panel):
         # Create Column type comboBox
         self.grid.Add(self.editColType, userData=self.editColType.GetName())
         self.Bind(wx.EVT_COMBOBOX, self.EvtColType, self.editColType)
-        self.addRemoveButton()
-        self.Show()
+        self.grid.AddSpacer(5,5)
         
-    def addRemoveButton(self):
+        # Remove col button
         self.removeCol = wx.Button(self, label="Remove Column %d" % self.colNum, name=str(self.colNum))
         self.grid.Add(self.removeCol, userData=self.removeCol.GetName())
         self.removeCol.Bind(wx.EVT_BUTTON, self.onRemoveCol)
-        self.Fit()
+        self.grid.AddSpacer(5,5)
+        self.Show()
     
+    # Remove column event
     def onRemoveCol(self, event):
         self.parent.numCols -= 1
+        self.parent.itemIndex -= 1
+        parent = self.parent
         self.Hide()
         self.parent.Fit()
         self.Destroy()
-        #self.removeItem(event)
-        #self.numCols -= 1
-        #self.grid.Layout()
-        #self.Fit()
-    
-    # Helper function for removing columns
+        parent.rename()
+        
+        
+    # Helper function for removing childrens when reselecting
     def removeItem(self,event):
         Childrens = self.grid.GetChildren()
         #TODO: complete the list
         nameList = ['pkList', 'pkMatched', 'ionMatched', 'psmSource']
         for child in Childrens:
-            if child.GetWindow()!=None and child.GetWindow().GetName() in nameList:
+            if child.GetWindow() != None and child.GetWindow().GetName() in nameList:
                 self.grid.Hide(child.GetWindow())
                 self.grid.Remove(child.GetWindow())
     
