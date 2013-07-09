@@ -13,6 +13,8 @@ class colPanel(wx.Panel):
         self.colNum = colNum
         self.parent = parent
         
+        font1 = wx.Font(9, wx.ROMAN, wx.NORMAL, wx.BOLD)
+
         self.grid = wx.BoxSizer(wx.VERTICAL)
         self.grid.AddSpacer(5,5)
         self.SetSizer(self.grid)
@@ -23,7 +25,7 @@ class colPanel(wx.Panel):
         
         # ToDo: Might need to Get rid of name string for incorrespondence after removing buttons and relabelling
         self.colTypeLbl = wx.StaticText(self, label="Column %d \n \n Column Type:" % self.colNum, name=str(self.colNum))
-
+        self.colTypeLbl.SetFont(font1)
         self.grid.Add(self.colTypeLbl, userData=self.colTypeLbl.GetName())    
         self.editColType = wx.ComboBox(self, size=(-1, -1), choices=self.colType, style=wx.CB_DROPDOWN, name=str(self.colNum))
         # Create Column type comboBox

@@ -16,7 +16,7 @@ class peakFilterPanel(wx.Panel):
 
         self.SetSizer(self.grid)
         
-        self.filterOnLbl = wx.StaticText(self, label="Peak Filter %d \n \n Filter Peaks On:" % self.filterNum, name=str(self.filterNum))
+        self.filterOnLbl = wx.StaticText(self, label="  Peak Filter %d \n \n   Filter Peaks On:" % self.filterNum, name=str(self.filterNum))
         self.grid.Add(self.filterOnLbl, userData=self.filterOnLbl.GetName())
         self.filterType = ['Intensity as a Percent of Total Ion Current', 'Intensity Quantile', 'Intensity as a Percent of Maximum Spectrum Peak Intensity']
         self.editFilterType = wx.ComboBox(self, size=(-1, -1), choices=self.filterType, style=wx.CB_DROPDOWN, name=str(self.filterNum))
