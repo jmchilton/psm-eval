@@ -13,7 +13,7 @@ class numPeaksPanel(wx.Panel):
 
         self.SetSizer(self.grid)
         self.grid.AddSpacer(5,5)
-        self.label = wx.StaticText(self, label="Peak Filters")
+        self.label = wx.StaticText(self, label="  Peak Filters")
         self.grid.Add(self.label)
         
         self.grid.AddSpacer(5,5)
@@ -41,11 +41,10 @@ class numPeaksPanel(wx.Panel):
         colChildrens = []
         for child in childrens:
             if child.GetWindow() != None and child.GetWindow().GetName() == 'peakFilterPanel':
-                print "here"
                 colChildrens.append(child)
         for i in range(len(colChildrens)):
-            colChildrens[i].GetWindow().filterOnLbl.SetLabel("Peak Filter %d \n \n Filter Peaks On:" % (i+1))
+            colChildrens[i].GetWindow().filterOnLbl.SetLabel("  Peak Filter %d \n \n Filter Peaks On:" % (i+1))
             colChildrens[i].GetWindow().removeFilter.SetLabel("Remove Peak Filter %d" % (i+1))
-            colChildrens[i].GetWindow().filterOnLbl.SetName("Peak Filter %d \n \n Filter Peaks On:" % (i+1))
+            colChildrens[i].GetWindow().filterOnLbl.SetName("  Peak Filter %d \n \n Filter Peaks On:" % (i+1))
             colChildrens[i].GetWindow().removeFilter.SetName("Remove Column %d" % (i+1))
         

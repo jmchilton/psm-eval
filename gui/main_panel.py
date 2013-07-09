@@ -1,6 +1,7 @@
 import wx
 import wx.lib.scrolledpanel as scrolled
 from col_panel import *
+import wx.lib.buttons as buttons
 class mainPanel(scrolled.ScrolledPanel):
     # ToDo: When initiating, pass in all list of choices for setting up the choices box
     # ToDo: Error handling
@@ -14,8 +15,11 @@ class mainPanel(scrolled.ScrolledPanel):
         self.numCols = 0
 
         self.grid = wx.BoxSizer(wx.VERTICAL)
+        font1 = wx.Font(12, wx.ROMAN, wx.NORMAL, wx.BOLD)
+        font2 = wx.Font(10, wx.ROMAN, wx.NORMAL, wx.BOLD)
         
         t = wx.StaticText(self, -1, "Please specify requirements:")
+        t.SetFont(font1)
         self.grid.Add(t)
         self.grid.AddSpacer(5,5)
         self.itemIndex += 2
@@ -23,9 +27,11 @@ class mainPanel(scrolled.ScrolledPanel):
         self.SetSizer(self.grid)
         self.SetupScrolling()
        
+        font1 = wx.Font(12, wx.ROMAN, wx.NORMAL, wx.BOLD)
         # PSMs Type combobox
         self.psmType = ['MzidentML (mzid)', 'ProteinPilot Peptide Report']
         self.lblPsmType = wx.StaticText(self, label="PSMs Type:")
+        self.lblPsmType.SetFont(font2)
         self.grid.Add(self.lblPsmType)
         self.editPsmType = wx.ComboBox(self, size=(-1, -1), choices=self.psmType, style=wx.CB_DROPDOWN)
         self.grid.Add(self.editPsmType)
@@ -38,6 +44,7 @@ class mainPanel(scrolled.ScrolledPanel):
         # Need to replace contents dynamically
         self.report = ['1', '2', '3']
         self.lblReport = wx.StaticText(self, label="ProteinPilot Peptide Report:")
+        self.lblReport.SetFont(font2)
         self.grid.Add(self.lblReport)
         self.editReport = wx.ComboBox(self,size=(-1, -1), choices=self.report, style=wx.CB_DROPDOWN)
         self.grid.Add(self.editReport)
@@ -52,6 +59,7 @@ class mainPanel(scrolled.ScrolledPanel):
         self.multiList = ['d', 'e']
         
         self.lblPeakList = wx.StaticText(self, label="Peak List (mzML):")
+        self.lblPeakList.SetFont(font2)
         self.grid.Add(self.lblPeakList)
         self.itemIndex += 1
         
@@ -76,6 +84,7 @@ class mainPanel(scrolled.ScrolledPanel):
         # Output type combobox
         self.outType = ['Tabular (tsv)', 'HTML']
         self.lblOutType = wx.StaticText(self, label="Output Type:")
+        self.lblOutType.SetFont(font2)
         self.grid.Add(self.lblOutType)
         self.editOutType = wx.ComboBox(self, size=(-1, -1), choices=self.outType, style=wx.CB_DROPDOWN)
         self.grid.Add(self.editOutType)
@@ -86,6 +95,7 @@ class mainPanel(scrolled.ScrolledPanel):
         
         # Default mass tolerance edit control
         self.lblMass = wx.StaticText(self, label="Default Mass Tolerance:")
+        self.lblMass.SetFont(font2)
         self.grid.Add(self.lblMass)
         self.editMass = wx.TextCtrl(self, value='0.01')
         self.grid.Add(self.editMass)
@@ -95,6 +105,7 @@ class mainPanel(scrolled.ScrolledPanel):
         # Mass type combobox
         self.massType = ['Monoisotopic', 'Average (has known problem)']
         self.lblmassType = wx.StaticText(self, label="Mass Type")
+        self.lblmassType.SetFont(font2)
         self.grid.Add(self.lblmassType)
         self.editMassType = wx.ComboBox(self, size=(-1, -1), choices=self.massType, style=wx.CB_DROPDOWN)
         self.grid.Add(self.editMassType)
@@ -106,6 +117,7 @@ class mainPanel(scrolled.ScrolledPanel):
         # Columns
         # Static line
         self.lblCol = wx.StaticText(self, label="Columns")
+        self.lblCol.SetFont(font2)
         self.grid.Add(self.lblCol)
         
         self.addCol = wx.Button(self, label="Add new Column")
@@ -118,6 +130,9 @@ class mainPanel(scrolled.ScrolledPanel):
         # self.removeCol.Bind(wx.EVT_BUTTON, self.onRemoveCol)
         self.buttonExe = wx.Button(self, -1, label="Execute", size=(-1, -1))
         self.buttonExe.Bind(wx.EVT_BUTTON, self.onButtonExe)
+        
+        self.buttonExe.SetForegroundColour(wx.WHITE)
+        self.buttonExe.SetBackgroundColour(wx.BLUE)
         self.grid.Add(self.buttonExe, 0)
         self.itemIndex += 1
         
