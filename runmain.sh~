@@ -1,3 +1,0 @@
-# !/bin/bash
-chmod 755 './psme/main.py'
-python -m psme.main
