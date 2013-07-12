@@ -1,0 +1,34 @@
+columns:
+- title: Peptide
+  type: peptide
+- title: Scan Number
+  type: scan_number
+- peak_filters:
+  - percent: 0.02
+    type: percent_tic
+  title: Number of Peaks
+  type: num_peaks
+ions_defs:
+  aggressive:
+    losses:
+    - H2O
+    - CO
+    - NH3
+    series:
+    - y1
+    - b1
+    - internal
+    - m1
+    - m2
+mass_tolerance: 1.5
+masstype: Monoisotopic
+outtype: Tabular (tsv)
+peak_filter_defs:
+  top_third:
+    k: 1
+    percent: 0.02
+    q: 3
+    type: quantile
+peak_list: test-data/test2.mzML
+psms: test-data/test2.mzid
+psms_type: mzid

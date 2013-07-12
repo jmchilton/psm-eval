@@ -1,6 +1,6 @@
 #!/usr/bin/env python
-from driver import evaluate
-from settings import load_settings
+from ..psme.driver import evaluate
+from ..psme.settings import load_settings
 
 
 def main(evaluator=evaluate, settings_loader=load_settings):

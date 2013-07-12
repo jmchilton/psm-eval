@@ -5,7 +5,6 @@ from main_panel import *
 from driver import evaluate
 from settings import load_settings
 
-
 # Main Frame
 
 class mainFrame(wx.Frame):
@@ -119,9 +118,12 @@ class mainFrame(wx.Frame):
         self.evalNum += 1
         curPage = self.nb.AddPage(mainPanel(self.nb, -1, "Evaluation"), "Evaluation %d" % self.evalNum)
     
-    
 
-app = wx.App(False)
-frame = mainFrame(None, -1, 'Peptide-Spectrum-Matches (PSMs) Evaluation (version 0.1.0) ')
-frame.Show()
-app.MainLoop()
+def main():
+    app = wx.App(False)
+    frame = mainFrame(None, -1, 'Peptide-Spectrum-Matches (PSMs) Evaluation (version 0.1.0) ')
+    frame.Show()
+    app.MainLoop()
+
+if __name__ == '__main__':
+    main()

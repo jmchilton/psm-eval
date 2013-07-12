@@ -59,7 +59,7 @@ columns:
       series:
         - b1
     mass_tolerance: 0.2
-    aggregate_by: count_lngest_stretch
+    aggregate_by: count_longest_stretch
   - title: "Percent of b & y Ions Unmatched"
     type: ions_matched
     ions:

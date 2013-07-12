@@ -1,0 +1,3 @@
+Peptide
+Scan Number
+Number of Peaks

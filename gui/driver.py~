@@ -17,6 +17,7 @@ def evaluate(settings, output_formatter=OutputFormatter):
     columns = []
     for line in f:
         columns.append(line[:-1])
+    print columns
     with output_formatter(settings) as output:
         output.write_row(columns)
         for row in collected_statistics:

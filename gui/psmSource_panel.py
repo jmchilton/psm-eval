@@ -16,10 +16,12 @@ class psmSourcePanel(wx.Panel):
         
         self.editSourcesLbl = wx.ComboBox(self, size=(-1,-1), choices=self.sources, style = wx.CB_DROPDOWN)
         self.grid.Add(self.editSourcesLbl)
+        self.editSourcesLbl.SetValue(self.sources[0])
+        self.parent.colVal['statistic_name'] = str(self.editSourcesLbl.GetValue())
         self.Bind(wx.EVT_COMBOBOX, self.EvtSources, self.editSourcesLbl)
         self.grid.AddSpacer(5,5)
         
         self.Show(True)
        
     def EvtSources(self, event):
-        pass
+        self.parent.colVal['statistic_name'] = str(self.editSourcesLbl.GetValue())
