@@ -19,6 +19,7 @@ class peaksMatchedPanel(wx.Panel):
         self.grid.Add(self.editStatsLbl)
         self.Bind(wx.EVT_COMBOBOX, self.EvtStats, self.editStatsLbl)
         
+        
         self.grid.AddSpacer(5,5)
         
         # Ion series
@@ -28,8 +29,12 @@ class peaksMatchedPanel(wx.Panel):
         
         self.editIonsLbl = wx.CheckListBox(self, size=(-1, -1), choices=self.ions)
         self.grid.Add(self.editIonsLbl)
+        self.checklist = [3, 12, 18, 19, 20]
+        self.editIonsLbl.SetChecked(self.checklist)
         self.Bind(wx.EVT_CHECKLISTBOX, self.EvtIons, self.editIonsLbl)
 
+        self.seriesVal = [self.ions[i] for i in self.editIonsLbl.GetChecked()]
+        
         self.grid.AddSpacer(5,5)
 
         # Losses
@@ -39,6 +44,11 @@ class peaksMatchedPanel(wx.Panel):
         
         self.editLossLbl = wx.ListBox(self, size=(-1,-1), choices=self.losses, style=wx.LB_EXTENDED)
         self.grid.Add(self.editLossLbl)
+        for i in range(len(self.losses)):
+            self.editLossLbl.Select(i)
+        
+        self.lossesVal = self.losses
+        
         self.Bind(wx.EVT_LISTBOX, self.EvtLosses, self.editLossLbl)
         self.grid.AddSpacer(5,5)
 
@@ -52,18 +62,29 @@ class peaksMatchedPanel(wx.Panel):
         self.massTolerance = wx.CheckBox(self, size=(-1,-1), label='Specify Mass Tolerance:')
         self.grid.Add(self.massTolerance)
         self.Bind(wx.EVT_CHECKBOX, self.EvtMassTolerance, self.massTolerance)
+        self.massTolerance.SetValue(True)
+        
         self.grid.AddSpacer(5,5)
         self.Show(True)
     
     #TODO: fill in event details
     def EvtMassTolerance(self, event):
-        pass
+        if self.massTolerance.GetValue():
+            self.parent.colVal['mass_tolerance'] = float(self.parent.parent.editMass.GetValue())
+        else:
+            del self.parent.colVal['mass_tolerance']
 
     def EvtLosses(self, event):
-        pass
+        if 'ions_ref' in self.parent.colVal: del self.parent.colVal['ions_ref']
+        self.lossesVal = [self.losses[i] for i in self.editLossLbl.GetSelections()]
+        self.parent.colVal['losses'] = self.lossesVal
+        self.parent.colVal['series'] = self.seriesVal
 
-    def EvtIons(self, event):     
-        pass
+    def EvtIons(self, event): 
+        if 'ions_ref' in self.parent.colVal: del self.parent.colVal['ions_ref']
+        self.seriesVal =  self.seriesVal = [self.ions[i] for i in self.editIonsLbl.GetChecked()]
+        self.parent.colVal['losses'] = self.lossesVal
+        self.parent.colVal['series'] = self.seriesVal
         
     def EvtStats(self, event):
         pass

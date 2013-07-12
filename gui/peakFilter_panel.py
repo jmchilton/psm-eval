@@ -16,12 +16,24 @@ class peakFilterPanel(wx.Panel):
 
         self.SetSizer(self.grid)
         
+        self.filterVal = {}
+        self.top_third = {'type': 'quantile', 'q': 3, 'k': 1, 'percent': 0.02}
+        
         self.filterOnLbl = wx.StaticText(self, label="  Peak Filter %d \n \n   Filter Peaks On:" % self.filterNum, name=str(self.filterNum))
         self.grid.Add(self.filterOnLbl, userData=self.filterOnLbl.GetName())
         self.filterType = ['Intensity as a Percent of Total Ion Current', 'Intensity Quantile', 'Intensity as a Percent of Maximum Spectrum Peak Intensity']
+        # Based on psme/column/filters_peaks.py.Filter_factory_classes
+        self.typeNames = ['percent_tic', 'quantile', 'percent_max_intensity', 'mz_range', 'intensity_range']
         self.editFilterType = wx.ComboBox(self, size=(-1, -1), choices=self.filterType, style=wx.CB_DROPDOWN, name=str(self.filterNum))
         # Create Column type comboBox
         self.grid.Add(self.editFilterType, userData=self.editFilterType.GetName())
+        self.editFilterType.SetValue(self.filterType[0])
+        self.grid.Add(ionCurrentPanel(self), wx.EXPAND)
+        
+        self.filterVal['type'] = self.typeNames[0]        
+        
+        self.parent.filters.insert(self.filterNum-1, self.filterVal)
+        #self.parent.parent.columns[self.parent.colNum-1] = self.parent.colVal
         self.Bind(wx.EVT_COMBOBOX, self.EvtFilterType, self.editFilterType)
         
         self.removeFilter = wx.Button(self, label="Remove Peak Filter %d" % self.filterNum, name=str(self.filterNum))
@@ -34,12 +46,13 @@ class peakFilterPanel(wx.Panel):
         self.Show()
 
     def onRemoveFilter(self, event):
-        self.parent.numFilters -= 1
-        self.parent.itemIndex -= 1
         parent = self.parent
+        del parent.filters[self.filterNum-1]
+        parent.numFilters -= 1
+        parent.itemIndex -= 1
         self.Hide()
-        self.parent.Fit()
-        self.parent.parent.Fit()
+        parent.Fit()
+        parent.parent.Fit()
         #self.parent.SetSizerAndFit(self.parent.grid)
         self.Destroy()
         parent.rename()
@@ -58,10 +71,21 @@ class peakFilterPanel(wx.Panel):
         self.Fit()
         selection = event.GetString()
         if selection==self.filterType[0]:
+            if 'top_third' in self.filterVal: del self.filterVal['top_third']
+            if 'q' in self.filterVal: del self.filterVal['q']
+            if 'k' in self.filterVal: del self.filterVal['k']
+            self.filterVal['type'] = self.typeNames[0]
             self.handleFilter1(event)
         if selection==self.filterType[1]:
+            if 'type' in self.filterVal: del self.filterVal['type']
+            if 'percent' in self.filterVal: del self.filterVal['percent']
+            self.filterVal['peak_filter_ref'] = 'top_third'
             self.handleFilter2(event)
         if selection==self.filterType[2]:
+            if 'q' in self.filterVal: del self.filterVal['q']
+            if 'k' in self.filterVal: del self.filterVal['k']
+            if 'top_third' in self.filterVal: del self.filterVal['top_third']
+            self.filterVal['type'] = self.typeNames[2]
             self.handleFilter3(event)
 
     def FitWindows(self):

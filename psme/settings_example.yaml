@@ -1,7 +1,7 @@
 peak_list: test-data/test2.mzML
 psms: test-data/test2.mzid
 psms_type: mzid
-mass_tolerance: 0.1
+mass_tolerance: 1.5
 ions_defs:
   aggressive:
     series:
@@ -17,7 +17,7 @@ ions_defs:
 peak_filter_defs:
   top_third:
     type: quantile
-    q: 2
+    q: 3
     k: 1
     percent: 0.02
 columns:
@@ -58,8 +58,8 @@ columns:
     ions:
       series:
         - b1
-    mass_tolerance: 0.2
-    aggregate_by: count_lngest_stretch
+    mass_tolerance: 1.5
+    aggregate_by: count_longest_stretch
   - title: "Percent of b & y Ions Unmatched"
     type: ions_matched
     ions:
@@ -70,7 +70,7 @@ columns:
   - title: "Aggressively Matched Peaks in Top Third of Peaks Above 2% TIC"
     type: peaks_matched
     ions_ref: aggressive
-    mass_tolerance: 0.2
+    mass_tolerance: 1.5
     peak_filters:
       - peak_filter_ref: top_third
   - title: "Number ITraq Peaks"
@@ -78,12 +78,12 @@ columns:
     peak_filters:
       - type: mz_range
         min: 113.5
-        max: 134.8
+        max: 121.5
   - title: "Number of peaks greater than 10% intensity of Maximum Peak Intensity"
     type: num_peaks
     peak_filters:
       - type: percent_max_intensity
-        percent: 0.4
+        percent: 0.1
   - type: source_statistic
     statistic_name: MyriMatch:mzFidelity
   - type: source_statistic
