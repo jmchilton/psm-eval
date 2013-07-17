@@ -4,16 +4,18 @@ import yaml
 from col_panel import *
 import wx.lib.buttons as buttons
 import os
+from table_panel import *
 
 
 class mainPanel(scrolled.ScrolledPanel):
     # ToDo: When initiating, pass in all list of choices for setting up the choices box
     # ToDo: Error handling
-    def __init__(self, parent, id, title):
+    def __init__(self, parent, id, title, evalNum):
         scrolled.ScrolledPanel.__init__(self, parent, name=title)
         self.SetAutoLayout(True)
         self.parent = parent
-
+        self.evalNum = evalNum
+        
         self.itemIndex = 0
         # Variable to keep track of number of columns added
         self.numCols = 0
@@ -192,6 +194,8 @@ class mainPanel(scrolled.ScrolledPanel):
         self.columns = []
         self.columnTitles = []
     def onButtonExe(self, event):
+        self.buttonExe.SetLabel('Working...')
+        wx.Yield()
         self.submission['peak_list'] = self.peak_listVal
         self.submission['psms_type'] = self.psms_typeVal
         self.submission['psms'] = self.psmsVal
@@ -209,8 +213,32 @@ class mainPanel(scrolled.ScrolledPanel):
         yaml.dump(self.submission, stream, default_flow_style=False)
         #This can be made better and cleaner?
         #python 2.7 needed to run pyteomics, but 2.6 needed to run the installed version of wxpython
+        # Add a progress bar
+        
+        # while result file not generated: keep going
         os.system('module load python-epd && cd .. && python -m psme.main')
+        self.buttonExe.SetLabel('Execute')
+        f2 = open('../results.tsv', 'r')
+        curPage = self.parent.AddPage(tablePanel(self.parent, 1, f2), "Result %d" % self.evalNum, select = True)
+        
 
+
+
+        '''
+        progressMax = 50
+        self.dialog = wx.ProgressDialog("A progress box", "Gathering information...", progressMax, parent = self, style=wx.PD_CAN_ABORT)
+        keepGoing = True
+        count = 0
+        while keepGoing and count < progressMax and os.path.exists("/home/support/wangco/psm-eval/'results.tsv'")==False:
+            count = count + 2
+            wx.Sleep(1)
+            keepGoing = self.dialog.Update(count)
+
+        
+        # Finish on ok, then display option to open file in Excel.
+        self.dialog.Destroy()
+        '''
+        
     def onAddCol(self, event):
         self.itemIndex += 1
         self.numCols += 1

@@ -2,6 +2,8 @@ import wx
 from ids import *
 import os
 from main_panel import *
+#import mMass
+#import mMass.gui.panel_spectrum
 
 # Main Frame
 
@@ -10,7 +12,8 @@ class mainFrame(wx.Frame):
     def __init__(self, parent, id, title):
         # global counter for the sequence of files being evaluated
         self.evalNum = 0
-        
+        self.spectrumNum = 0
+
         wx.Frame.__init__(self, parent, -1, title, size=(1000,800))
         self.nb = wx.Notebook(self, name='toplevel')
         self.makeMenuBar()
@@ -27,19 +30,18 @@ class mainFrame(wx.Frame):
 
         # file menu
         filemenu = wx.Menu()
-        filemenu.Append(ID_docOpen, "Open"+HK_docOpen, "Open a Peptide Report")
+        filemenu.Append(ID_documentOpen, "Open"+HK_documentOpen, "Open a Peptide Report")
         filemenu.AppendSeparator()
-        filemenu.Append(ID_docClose, "Close"+HK_docClose, "Close the current report document")
-        filemenu.Append(ID_docCloseAll, "Close All"+HK_docCloseAll, "Close all report documents")
+        filemenu.Append(ID_documentClose, "Close"+HK_documentClose, "Close the current report document")
+        filemenu.Append(ID_documentCloseAll, "Close All"+HK_documentCloseAll, "Close all report documents")
         filemenu.AppendSeparator()
-        filemenu.Append(ID_docPrintSpectrum, "Print Spectrum"+HK_docPrintSpectrum, "")
-        filemenu.Append(ID_docReport, "Analysis Report"+HK_docReport, "")
+        filemenu.Append(ID_documentPrintSpectrum, "Print Spectrum"+HK_documentPrintSpectrum, "")
+        filemenu.Append(ID_documentReport, "Analysis Report"+HK_documentReport, "")
         filemenu.AppendSeparator()
         filemenu.Append(ID_quit, "Quit"+HK_quit, "Quit PSME")
         
-        # Bind events with objects
         
-        self.Bind(wx.EVT_MENU, self.onDocOpen, id=ID_docOpen)
+        self.Bind(wx.EVT_MENU, self.onDocOpen, id=ID_documentOpen)
         # self.Bind(wx.EVT_MENU, self.onDocClose, id=ID_docClose)
         # self.Bind(wx.EVT_MENU, self.onDocCloseAll, id=ID_docCloseAll)
         # self.Bind(wx.EVT_MENU, self.onDocPrintSpectrum, id=ID_docPrintSpectrum)
@@ -54,12 +56,14 @@ class mainFrame(wx.Frame):
         viewPeakListColumns = wx.Menu()
         # fill in details of the viewPeakListColumns submenu
         viewmenu.AppendMenu(-1, "Peak List Columns", viewPeakListColumns)
+        viewmenu.Append(-1, "Spectrum Viewer")
         '''
         self.Bind(wx.EVT_MENU, self.onView, id=ID_view)
         self.Bind(wx.EVT_MENU, self.onViewPeakListColumns, id=ID_viewPeakListColumn)
         '''
         
         self.menubar.Append(viewmenu, "View")
+        self.Bind(wx.EVT_MENU, self.onViewSpect)
 
     
         # Evaluation menu
@@ -69,7 +73,7 @@ class mainFrame(wx.Frame):
         self.Bind(wx.EVT_MENU, self.onEvalRes, id=ID_evalRes)
         
         self.menubar.Append(evalmenu, "Evaluation")
-        
+    
     # Default events
     def onQuit(self, event):
 
@@ -114,7 +118,12 @@ class mainFrame(wx.Frame):
     
     def onEvalRes(self, event=None):
         self.evalNum += 1
-        curPage = self.nb.AddPage(mainPanel(self.nb, -1, "Evaluation"), "Evaluation %d" % self.evalNum)
+        curPage = self.nb.AddPage(mainPanel(self.nb, -1, "Evaluation", self.evalNum), "Evaluation %d" % self.evalNum, select = True)
+    
+    def onViewSpect(self, event):
+        pass
+        self.spectrumNum += 1
+        curPage = self.nb.AddPage(mMass.gui.panel_spectrum.panelSpectrum(self.nb, None))
     
     
 

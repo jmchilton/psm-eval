@@ -46,14 +46,13 @@ class colPanel(wx.Panel):
         # Remove col button
         self.removeCol = wx.Button(self, label="Remove Column %d" % self.colNum, name=str(self.colNum))
         self.grid.Add(self.removeCol, userData=self.removeCol.GetName())
-        self.removeCol.Bind(wx.EVT_BUTTON, self.onRemoveCol)
+        self.removeCol.Bind(wx.EVT_BUTTON, self.onRemoveCol, self.removeCol)
         self.grid.AddSpacer(5,5)
         self.Show()
     
     # Remove column event
     def onRemoveCol(self, event):
         parent = self.parent
-        print self.colNum
         del parent.columns[self.colNum-1]
         parent.numCols -= 1
         parent.itemIndex -= 1

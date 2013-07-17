@@ -3,11 +3,8 @@ columns:
   type: peptide
 - title: Scan Number
   type: scan_number
-- peak_filters:
-  - percent: 0.02
-    type: percent_tic
-  title: Number of Peaks
-  type: num_peaks
+- title: Scan Index
+  type: scan_index
 ions_defs:
   aggressive:
     losses:
