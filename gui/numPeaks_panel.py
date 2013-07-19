@@ -39,8 +39,10 @@ class numPeaksPanel(wx.Panel):
         self.parent.Fit()
         # Known bug: C++ assertion "increment > 0" failed at /panfs/roc/groups/2/support/wangco/Downloads/wxPython-src-2.9.4.0/src/gtk/window.cpp(4573) in IsScrollIncrement(): 
         self.parent.parent.Fit()
+        
         if self.parent.parent.parent.GetName()=='Evaluation':
-            self.parent.parent.parent.Fit()
+            self.parent.parent.parent.FitInside()
+        self.parent.parent.parent.Layout()
 
     def rename(self):
         childrens = self.grid.GetChildren()

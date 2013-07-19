@@ -83,24 +83,29 @@ class ionsMatchedPanel(wx.Panel):
                 self.grid.Show(self.lblMass)
                 self.Fit()
                 self.parent.Fit()
-                self.parent.parent.Fit()
+                self.parent.parent.FitInside()
+                self.parent.parent.parent.Layout()
+                print self.parent.parent.GetName()
             if self.editMass.IsShown() == False:
                 self.grid.Show(self.editMass)
                 self.Fit()
                 self.parent.Fit()
-                self.parent.parent.Fit()
+                self.parent.parent.FitInside()
+                self.parent.parent.parent.Layout()
             self.parent.colVal['mass_tolerance'] = float(self.editMass.GetValue())
         else:
             if self.lblMass.IsShown():
                 self.grid.Hide(self.lblMass)
                 self.Fit()
                 self.parent.Fit()
-                self.parent.parent.Fit()
+                self.parent.parent.FitInside()
+                self.parent.parent.parent.Layout()
             if self.editMass.IsShown():
                 self.grid.Hide(self.editMass)
                 self.Fit()
                 self.parent.Fit()
-                self.parent.parent.Fit()
+                self.parent.parent.FitInside()
+                self.parent.parent.parent.Layout()
             del self.parent.colVal['mass_tolerance']
 
     def EvtLosses(self, event):

@@ -115,6 +115,7 @@ ID_viewNormalize = wx.NewId()
 ID_viewRange = wx.NewId()
 ID_viewCanvasProperties = wx.NewId()
 
+ID_viewSpectrum = wx.NewId()
 ID_viewSpectrumRulerMz = wx.NewId()
 ID_viewSpectrumRulerDist = wx.NewId()
 ID_viewSpectrumRulerPpm = wx.NewId()

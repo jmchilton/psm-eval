@@ -53,9 +53,14 @@ class peakFilterPanel(wx.Panel):
         self.Hide()
         parent.Fit()
         parent.parent.Fit()
-        #self.parent.SetSizerAndFit(self.parent.grid)
         self.Destroy()
         parent.rename()
+        if parent.parent.parent.GetName() == 'Evaluation':
+            parent.parent.parent.FitInside()
+            parent.parent.parent.parent.Layout()
+        else:
+            parent.parent.parent.parent.FitInside()
+            parent.parent.parent.parent.parent.Layout()
         
         # Helper function for removing columns
     def removeItem(self,event):
@@ -94,7 +99,8 @@ class peakFilterPanel(wx.Panel):
         while parent.GetName() != 'Evaluation':
             parent.Fit()
             parent = parent.parent
-        parent.Fit()
+        parent.FitInside()
+        parent.parent.Layout()
         
     def handleFilter1(self, event):
         self.grid.Add(ionCurrentPanel(self), wx.EXPAND)

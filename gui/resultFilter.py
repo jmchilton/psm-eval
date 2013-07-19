@@ -62,6 +62,7 @@ class resultFilter(wx.Panel):
         print "Current Filter(s): "
         print [(key, value) for key, value in self.parent.specified.iteritems()]
         self.filter(self.parent)
+        
     # Actually filter
     def filter(self, parent):
         reqs = parent.specified

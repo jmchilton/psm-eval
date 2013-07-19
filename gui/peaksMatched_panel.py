@@ -62,10 +62,64 @@ class peaksMatchedPanel(wx.Panel):
         self.massTolerance = wx.CheckBox(self, size=(-1,-1), label='Specify Mass Tolerance:')
         self.grid.Add(self.massTolerance)
         self.Bind(wx.EVT_CHECKBOX, self.EvtMassTolerance, self.massTolerance)
+        self.grid.AddSpacer(5,5)
+        self.Show(True)
+
+        # Mass Tolerance TextCtrl
+        self.lblMass = wx.StaticText(self, label="Tolerance:")
+        self.grid.Add(self.lblMass)
+        self.editMass = wx.TextCtrl(self, value="0.5")
+        self.grid.Add(self.editMass)
+        self.Bind(wx.EVT_TEXT, self.EvtMass, self.editMass)
+        self.grid.Hide(self.lblMass)
+        self.grid.Hide(self.editMass)
+        self.grid.AddSpacer(5,5)
+        
+    def EvtMass(self, event):
+        self.parent.colVal['mass_tolerance'] = float(self.editMass.GetValue())
+    #TODO: fill in event details
+    def EvtMassTolerance(self, event):
+        if self.massTolerance.GetValue():
+            if self.lblMass.IsShown() == False:
+                self.grid.Show(self.lblMass)
+                self.Fit()
+                self.parent.Fit()
+                self.parent.parent.FitInside()
+                self.parent.parent.parent.Layout()
+                print self.parent.parent.GetName()
+            if self.editMass.IsShown() == False:
+                self.grid.Show(self.editMass)
+                self.Fit()
+                self.parent.Fit()
+                self.parent.parent.FitInside()
+                self.parent.parent.parent.Layout()
+            self.parent.colVal['mass_tolerance'] = float(self.editMass.GetValue())
+        else:
+            if self.lblMass.IsShown():
+                self.grid.Hide(self.lblMass)
+                self.Fit()
+                self.parent.Fit()
+                self.parent.parent.FitInside()
+                self.parent.parent.parent.Layout()
+            if self.editMass.IsShown():
+                self.grid.Hide(self.editMass)
+                self.Fit()
+                self.parent.Fit()
+                self.parent.parent.FitInside()
+                self.parent.parent.parent.Layout()
+            del self.parent.colVal['mass_tolerance']
+        
+
+
+        '''
+        self.massTolerance = wx.CheckBox(self, size=(-1,-1), label='Specify Mass Tolerance:')
+        self.grid.Add(self.massTolerance)
+        self.Bind(wx.EVT_CHECKBOX, self.EvtMassTolerance, self.massTolerance)
         self.massTolerance.SetValue(True)
         
         self.grid.AddSpacer(5,5)
         self.Show(True)
+        
     
     #TODO: fill in event details
     def EvtMassTolerance(self, event):
@@ -73,6 +127,7 @@ class peaksMatchedPanel(wx.Panel):
             self.parent.colVal['mass_tolerance'] = float(self.parent.parent.editMass.GetValue())
         else:
             del self.parent.colVal['mass_tolerance']
+    '''
 
     def EvtLosses(self, event):
         if 'ions_ref' in self.parent.colVal: del self.parent.colVal['ions_ref']
