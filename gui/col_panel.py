@@ -57,9 +57,10 @@ class colPanel(wx.Panel):
         parent.numCols -= 1
         parent.itemIndex -= 1
         self.Hide()
-        parent.Fit()
+        parent.FitInside()
         self.Destroy()
         parent.rename()
+        parent.parent.Layout()
         
         
     # Helper function for removing childrens when reselecting
@@ -112,24 +113,29 @@ class colPanel(wx.Panel):
             self.colVal['title'] = self.colType[9]
             self.colVal['type'] = self.types[9]
             self.handlePSM(event)
+        
 
     def handleNumPeaks(self, event):
         self.grid.Add(numPeaksPanel(self), wx.EXPAND)
         self.Fit()
         self.parent.Fit()
+        self.parent.parent.Layout()
 
     def handlePeaksMatched(self, event):
         self.grid.Add(peaksMatchedPanel(self), wx.EXPAND)
         self.Fit()
         self.parent.Fit()
+        self.parent.parent.Layout()
     
     def handleIonsMatched(self, event):
         self.grid.Add(ionsMatchedPanel(self), wx.EXPAND)
         self.Fit()
         self.parent.Fit()
+        self.parent.parent.Layout()
     
     def handlePSM(self, event):
         self.grid.Add(psmSourcePanel(self), wx.EXPAND)
         self.Fit()
         self.parent.Fit()
+        self.parent.parent.Layout()
     

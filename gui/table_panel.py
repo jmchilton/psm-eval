@@ -9,7 +9,7 @@ class tablePanel(scrolled.ScrolledPanel):
     #----------------------------------------------------------------------
     def __init__(self, parent, evalNum, dataFile):
         """Constructor"""
-        scrolled.ScrolledPanel.__init__(self, parent, name='Result of Evaluation %d' % evalNum)
+        scrolled.ScrolledPanel.__init__(self, parent, name='Result %d' % evalNum)
         self.SetAutoLayout(True)
         self.evalNum = evalNum
         self.parent = parent
@@ -39,11 +39,12 @@ class tablePanel(scrolled.ScrolledPanel):
         self.myGrid.AutoSize()
  
         self.sizer = wx.BoxSizer(wx.VERTICAL)
-        self.sizer.Add(self.myGrid, 1)
+        self.sizer.Add(self.myGrid)
+
         self.SetSizer(self.sizer)
         self.SetupScrolling()
         
-        self.sizer.AddSpacer(5,5)
+        self.sizer.AddSpacer(15,15)
         # Add filtering functions
         self.filterCount = 0
         self.filter = wx.Button(self, label="Add Filter (by columns)")
@@ -53,15 +54,14 @@ class tablePanel(scrolled.ScrolledPanel):
         self.reset = wx.Button(self, label="Reset")
         self.sizer.Add(self.reset)
         self.reset.Bind(wx.EVT_BUTTON, self.onReset)
-
-	
         
         self.specified = {}
         
     def onFilter(self, event):
         self.filterCount += 1
         self.sizer.Add(resultFilter(self, self.filterCount))
-        self.Fit()
+        self.FitInside()
+        self.parent.Layout()
         
     def onReset(self, event):
         Childrens = self.GetChildren()
@@ -75,6 +75,7 @@ class tablePanel(scrolled.ScrolledPanel):
             for j in range(self.cols):
                 self.myGrid.SetCellValue(i, j, self.data[i][j])
         self.Fit()
+        self.parent.Layout()
         
         
 

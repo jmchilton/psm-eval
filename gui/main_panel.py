@@ -194,7 +194,7 @@ class mainPanel(scrolled.ScrolledPanel):
         self.columns = []
         self.columnTitles = []
     def onButtonExe(self, event):
-        self.buttonExe.SetLabel('Working...')
+        self.buttonExe.SetLabel('Matching...')
         wx.Yield()
         self.submission['peak_list'] = self.peak_listVal
         self.submission['psms_type'] = self.psms_typeVal
@@ -244,7 +244,8 @@ class mainPanel(scrolled.ScrolledPanel):
         self.numCols += 1
         self.grid.Insert(self.itemIndex-2, colPanel(self, self.numCols), wx.EXPAND)
         #self.grid.AddSpacer(5,5)
-        self.Fit()
+        self.FitInside()
+        self.parent.Layout()
        
     
     # Helper function for removing columns
@@ -263,15 +264,15 @@ class mainPanel(scrolled.ScrolledPanel):
                 self.grid.Hide(self.editMultiList)
                 self.grid.Show(self.editPeakList)
                 self.peak_listVal = [self.peakList[i] for i in self.editPeakList.GetSelections()]
-                self.Fit()
+                self.FitInside()
         else:
             if self.editPeakList.IsShown():
                 self.grid.Hide(self.editPeakList)
                 self.grid.Show(self.editMultiList)
                 self.peak_listVal = str(self.editMultiList.GetValue())
-                self.Fit()
-            
-        pass
+                self.FitInside()
+        self.parent.Layout()
+
     # Helper function to rename col button numbers after removing
     def rename(self):
         childrens = self.grid.GetChildren()
