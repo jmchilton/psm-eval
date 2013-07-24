@@ -1,3 +1,2 @@
-Peptide
+Peptide Sequence
 Scan Index
-Scan Number

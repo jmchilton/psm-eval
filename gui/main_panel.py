@@ -4,90 +4,107 @@ import yaml
 from col_panel import *
 import wx.lib.buttons as buttons
 import os
+import exceptions
 from table_panel import *
 
 
 class mainPanel(scrolled.ScrolledPanel):
-    # ToDo: When initiating, pass in all list of choices for setting up the choices box
+    # ToDo: Set default values, including for the filter
     # ToDo: Error handling
     def __init__(self, parent, id, title, evalNum):
         scrolled.ScrolledPanel.__init__(self, parent, name=title)
+        
+        # This might not be necessary
         self.SetAutoLayout(True)
+        
         self.parent = parent
+       
+        # keep track of the number of eavaluation pages added
         self.evalNum = evalNum
         
+        # keep track of the index of each widget
         self.itemIndex = 0
-        # Variable to keep track of number of columns added
+        
+        # keep track of number of columns added
         self.numCols = 0
 
-        self.grid = wx.BoxSizer(wx.VERTICAL)
+        # set up the sizer
+        self.grid = wx.BoxSizer(wx.VERTICAL)        
+        self.SetSizer(self.grid)
+        self.SetupScrolling()
+
+        # set up fonts
         font1 = wx.Font(12, wx.ROMAN, wx.NORMAL, wx.BOLD)
         font2 = wx.Font(10, wx.ROMAN, wx.NORMAL, wx.BOLD)
         
-        t = wx.StaticText(self, -1, "Please specify requirements:")
-        t.SetFont(font1)
-        self.grid.Add(t)
-        self.grid.AddSpacer(5,5)
-        self.itemIndex += 2
-
-        self.SetSizer(self.grid)
-        self.SetupScrolling()
-       
-        font1 = wx.Font(12, wx.ROMAN, wx.NORMAL, wx.BOLD)
-
-        # List of variables
+        # init list of variables
         self.psms_typeVal = ''
         self.psmsVal = ''
-        self.mass_toleranceVal = ''
+        self.mass_toleranceVal = 0.0
         self.columns = ''
         self.peak_listVal = ''
         self.outtypeVal = ''
         self.masstypeVal = ''
+
+        self.submission = {}
+        self.columns = []
+        
         # Define peak_filterVals for reference
         self.top_third = {'type': 'quantile', 'q': 3, 'k': 1, 'percent': 0.02}
         self.peak_filter_defs = {'top_third': self.top_third}
+        
         # Define ion_defs for reference
         self.ionseries = ['y1', 'b1', 'internal', 'm1', 'm2']
         self.ionlosses = ['H2O', 'CO', 'NH3']
         self.aggressive = {'series': self.ionseries, 'losses': self.ionlosses}
         self.ions_defs = {'aggressive': self.aggressive}
         
+        # Prompt at top
+        t = wx.StaticText(self, -1, "Please specify requirements:")
+        t.SetFont(font1)
+        self.grid.Add(t)
+        self.grid.AddSpacer(5,5)
+        self.itemIndex += 2
+        
         # PSMs Type combobox
-        self.psmType = ['mzid', 'ProteinPilot Peptide Report']
+        self.psmType = ['mzid', 'proteinpilot_peptide_report']
         self.lblPsmType = wx.StaticText(self, label="PSMs Type:")
         self.lblPsmType.SetFont(font2)
         self.grid.Add(self.lblPsmType)
-        self.editPsmType = wx.ComboBox(self, size=(-1, -1), choices=self.psmType, style=wx.CB_DROPDOWN)
-        self.grid.Add(self.editPsmType)
-        self.editPsmType.SetValue(self.psmType[0])
-        
-        self.psms_typeVal = self.psmType[0]
-        
+        self.editPsmType = wx.ComboBox(self, size=(-1, -1), choices=self.psmType, style=wx.CB_DROPDOWN)        
         self.Bind(wx.EVT_COMBOBOX, self.EvtPsmType, self.editPsmType)
+        self.grid.Add(self.editPsmType)
+
+        self.editPsmType.SetValue(self.psmType[0])        
+        self.psms_typeVal = self.psmType[0]
+                
         self.grid.AddSpacer(5,5)
+       
         self.itemIndex += 3
         
         # ProteinPilot Peptide Report combobox
-        # Need to replace contents dynamically
-        self.report = ['test-data/test2.mzid']
+        # TESTING doesnt work
+        # TODO: add import function for available choices of files
+        self.report = ['test-data/test2.mzid', 'test-data/summary.tabular', 'test-data/test4Summary.tabular']
         self.lblReport = wx.StaticText(self, label="ProteinPilot Peptide Report:")
         self.lblReport.SetFont(font2)
         self.grid.Add(self.lblReport)
         self.editReport = wx.ComboBox(self,size=(-1, -1), choices=self.report, style=wx.CB_DROPDOWN)
+        self.Bind(wx.EVT_COMBOBOX, self.EvtReport, self.editReport)
         self.grid.Add(self.editReport)
-        self.editReport.SetValue(self.report[0])
         
+        self.editReport.SetValue(self.report[0])
         self.psmsVal = str(self.report[0])
         
-        self.Bind(wx.EVT_COMBOBOX, self.EvtReport, self.editReport)
         self.grid.AddSpacer(5,5)
+       
         self.itemIndex += 3
 
         # Peak list listbox
-        # Need to replace contents dynamically
+        # TODO: add import function for available choices of files
         self.fType = ['files directly', 'by multifile']
-        self.peakList = ['test-data/test2.mzML']
-        self.multiList = ['test-data/test2.mzML', 'e']
+        self.peakList = ['test-data/test2.mzML', 'test-data/data34.mzml', 'test-data/data41.mzml']
+        self.multiList = ['test-data/test2.mzML', 'test-data/data34.mzml', 'test-data/data41.mzml']
         
         self.lblPeakList = wx.StaticText(self, label="Peak List (mzML):")
         self.lblPeakList.SetFont(font2)
@@ -96,22 +113,23 @@ class mainPanel(scrolled.ScrolledPanel):
         
         # Add option to select dierectly or by multifile
         self.fTypeBox = wx.RadioBox(self, label="select ", choices=self.fType, style=wx.RA_SPECIFY_COLS)
-        self.grid.Add(self.fTypeBox)
         self.Bind(wx.EVT_RADIOBOX, self.EvtFType, self.fTypeBox)
+        self.grid.Add(self.fTypeBox)
+        
         # Default to select by file directly
         self.editPeakList = wx.ListBox(self, size=(-1, -1), choices=self.peakList, style=wx.LB_MULTIPLE, name='direct')
+        self.Bind(wx.EVT_LISTBOX, self.EvtPeakList, self.editPeakList)
+        self.grid.Add(self.editPeakList)
+        
         for i in range(len(self.peakList)):
             self.editPeakList.Select(i)
-        
         self.peak_listVal = [self.peakList[i] for i in self.editPeakList.GetSelections()]
         
-        self.grid.Add(self.editPeakList)
-        self.Bind(wx.EVT_LISTBOX, self.EvtPeakList, self.editPeakList)
-
         # by multifile
         self.editMultiList = wx.ComboBox(self, size=(-1, -1), choices=self.multiList, style=wx.CB_DROPDOWN)
         self.Bind(wx.EVT_COMBOBOX, self.EvtMultiList, self.editMultiList)
         self.grid.Add(self.editMultiList)
+        
         self.editMultiList.SetValue(self.multiList[0])
         self.grid.Hide(self.editMultiList)
         
@@ -123,11 +141,12 @@ class mainPanel(scrolled.ScrolledPanel):
         self.lblOutType = wx.StaticText(self, label="Output Type:")
         self.lblOutType.SetFont(font2)
         self.grid.Add(self.lblOutType)
+        
         self.editOutType = wx.ComboBox(self, size=(-1, -1), choices=self.outType, style=wx.CB_DROPDOWN)
-        self.grid.Add(self.editOutType)
         self.Bind(wx.EVT_COMBOBOX, self.EvtOutType, self.editOutType)
+        self.grid.Add(self.editOutType)
+       
         self.editOutType.SetValue(self.outType[0])
-
         self.outtypeVal = self.outType[0]
 
         self.grid.AddSpacer(5,5)
@@ -137,28 +156,32 @@ class mainPanel(scrolled.ScrolledPanel):
         self.lblMass = wx.StaticText(self, label="Default Mass Tolerance:")
         self.lblMass.SetFont(font2)
         self.grid.Add(self.lblMass)
+        
         self.editMass = wx.TextCtrl(self, value="1.5")
-
-        self.grid.Add(self.editMass)
+        self.mass_toleranceVal = 1.5
         self.Bind(wx.EVT_TEXT, self.EvtMass, self.editMass)
+        self.grid.Add(self.editMass)
+        
         self.grid.AddSpacer(5,5)
+        self.itemIndex += 3
         
         # Mass type combobox
         self.massType = ['Monoisotopic', 'Average (has known problem)']
         self.lblmassType = wx.StaticText(self, label="Mass Type")
         self.lblmassType.SetFont(font2)
         self.grid.Add(self.lblmassType)
-        self.editMassType = wx.ComboBox(self, size=(-1, -1), choices=self.massType, style=wx.CB_DROPDOWN)
-        self.grid.Add(self.editMassType)
-        self.Bind(wx.EVT_COMBOBOX, self.EvtMassType, self.editMassType)
-        self.editMassType.SetValue(self.massType[0])
         
+        self.editMassType = wx.ComboBox(self, size=(-1, -1), choices=self.massType, style=wx.CB_DROPDOWN)
+        self.Bind(wx.EVT_COMBOBOX, self.EvtMassType, self.editMassType)
+        self.grid.Add(self.editMassType)
+       
+        self.editMassType.SetValue(self.massType[0])
         self.masstypeVal = self.massType[0]
         
         self.grid.AddSpacer(5,5)
         self.itemIndex += 3
         
-        # Columns
+        # Add Columns button
         # Static line
         self.lblCol = wx.StaticText(self, label="Columns")
         self.lblCol.SetFont(font2)
@@ -167,63 +190,65 @@ class mainPanel(scrolled.ScrolledPanel):
         self.addCol = wx.Button(self, label="Add new Column")
         self.addCol.Bind(wx.EVT_BUTTON, self.onAddCol)
         self.grid.Add(self.addCol)
-        self.itemIndex += 2
-        self.grid.AddSpacer(10,10)
-        # self.removeCol = wx.Button(self, label="Remove Column %d" % self.numCols)
-        # self.grid.Add(self.removeCol)
-        # self.removeCol.Bind(wx.EVT_BUTTON, self.onRemoveCol)
-        self.buttonExe = wx.Button(self, -1, label="Execute", size=(-1, -1))
-        self.buttonExe.Bind(wx.EVT_BUTTON, self.onButtonExe)
         
+        self.grid.AddSpacer(10,10)
+        self.itemIndex += 3
+        
+        # Execute button
+        self.buttonExe = wx.Button(self, -1, label="Execute", size=(-1, -1))
         self.buttonExe.SetForegroundColour(wx.WHITE)
         self.buttonExe.SetBackgroundColour(wx.BLUE)
+        self.buttonExe.Bind(wx.EVT_BUTTON, self.onButtonExe)        
         self.grid.Add(self.buttonExe, 0)
+        
         self.itemIndex += 1
         
+        # Cancel button
         self.buttonCancel = wx.Button(self, -1, label="Cancel", size=(-1, -1))
         self.buttonCancel.Bind(wx.EVT_BUTTON, self.onButtonCancel)
         self.grid.Add(self.buttonCancel, 0)
         self.itemIndex += 1
-        # Define other variables / lists /widgets to be used
-
         
-        # Coltype combobox list
-        self.colType = ['Peptide Sequence', 'Scan Index', 'Scan Number', 'Scan ID', 'Peak List', 'Number of Peaks', 'Peaks Matched Statistics', 'Ions Matched Statistics', 'Total Ion Current', 'Statistic from PSM Source', 'Protvis Link']
-        
-        self.submission = {}
-        self.columns = []
-        self.columnTitles = []
+# ========================================================================= #
+# Events        
+                
     def onButtonExe(self, event):
+        # Wait till analysis finishes before changing back to original button label
         self.buttonExe.SetLabel('Matching...')
         wx.Yield()
+        
+        # create submission list
         self.submission['peak_list'] = self.peak_listVal
         self.submission['psms_type'] = self.psms_typeVal
         self.submission['psms'] = self.psmsVal
-        self.submission['mass_tolerance'] = float(self.editMass.GetValue())
+        self.submission['mass_tolerance'] = self.mass_toleranceVal
         self.submission['ions_defs'] = self.ions_defs
         self.submission['peak_filter_defs'] = self.peak_filter_defs
         self.submission['columns'] = self.columns
+        self.submission['outtype'] = self.outtypeVal
+        self.submission['masstype'] = self.masstypeVal
+        
+        # store column titles in a file
         f = open('../columns.txt', 'w')
         for col in self.submission['columns']:
             f.write("%s\n" % col['title'])
         f.close()
-        self.submission['outtype'] = self.outtypeVal
-        self.submission['masstype'] = self.masstypeVal
+        
+        # create yaml file based on submission
         stream = file('settings2.yaml', 'w')
         yaml.dump(self.submission, stream, default_flow_style=False)
-        #This can be made better and cleaner?
-        #python 2.7 needed to run pyteomics, but 2.6 needed to run the installed version of wxpython
-        # Add a progress bar
         
-        # while result file not generated: keep going
+        # This can be made better and cleaner?
+        # python 2.7 needed to run pyteomics, but 2.6 needed to run the installed version of wxpython
+        # TODO: Maybe add a progress bar
+        # call psme core functions
         os.system('module load python-epd && cd .. && python -m psme.main')
         self.buttonExe.SetLabel('Execute')
+        
+        # write results to file, then open in new notebook page
         f2 = open('../results.tsv', 'r')
         curPage = self.parent.AddPage(tablePanel(self.parent, 1, f2), "Result %d" % self.evalNum, select = True)
         
-
-
-
         '''
         progressMax = 50
         self.dialog = wx.ProgressDialog("A progress box", "Gathering information...", progressMax, parent = self, style=wx.PD_CAN_ABORT)
@@ -238,24 +263,17 @@ class mainPanel(scrolled.ScrolledPanel):
         # Finish on ok, then display option to open file in Excel.
         self.dialog.Destroy()
         '''
-        
+       
+    # ----
+
     def onAddCol(self, event):
         self.itemIndex += 1
         self.numCols += 1
-        self.grid.Insert(self.itemIndex-2, colPanel(self, self.numCols), wx.EXPAND)
-        #self.grid.AddSpacer(5,5)
+        self.grid.Insert(self.itemIndex-4, colPanel(self, self.numCols), wx.EXPAND)
         self.FitInside()
         self.parent.Layout()
        
-    
-    # Helper function for removing columns
-    def removeItem(self,event):
-        Childrens=self.grid.GetChildren()
-        for child in Childrens:
-            if child.GetUserData()==event.GetEventObject().GetName():
-                self.itemIndex -= 1
-                self.grid.Hide(child.GetWindow())
-                self.grid.Remove(child.GetWindow())
+    # ----
     
     def EvtFType(self, event):        
         value = self.fTypeBox.GetSelection()
@@ -272,8 +290,49 @@ class mainPanel(scrolled.ScrolledPanel):
                 self.peak_listVal = str(self.editMultiList.GetValue())
                 self.FitInside()
         self.parent.Layout()
-
-    # Helper function to rename col button numbers after removing
+            
+    # ----
+    def EvtPsmType(self, event):
+        self.psms_typeVal = str(self.editPsmType.GetValue())
+    
+    # ----
+    def EvtReport(self, event):
+        self.psmsVal = str(self.editReport.GetValue())
+        
+    # ----
+    def EvtPeakList(self, event):
+        self.peak_listVal = [self.peakList[i] for i in self.editPeakList.GetSelections()]
+    
+    # ----
+    def EvtMultiList(self, event):
+        self.peak_listVal = str(self.editMultiList.GetValue())
+        
+    # ----
+    def EvtOutType(self, event):
+        self.outtypeVal = str(self.editOutType.GetValue())
+    
+    # Helper function for turning field into float value
+    def toFloat(self, value):
+        try:
+            return float(value)
+        except exceptions.ValueError:
+            print "field empty or contains invalid character: using 0.0"
+            return 0.0
+   
+    # ----
+    def EvtMass(self, event):
+        self.mass_toleranceVal = self.toFloat(self.editMass.GetValue())
+        
+    # ----            
+    def EvtMassType(self, event):
+        self.masstypeVal = str(self.editMassType.GetValue())
+        
+    # ----
+    def onButtonCancel(self, event):
+        index = self.parent.GetPageIndex(self)
+        self.parent.DeletePage(index)
+    
+    # Helper function to rename col button numbers after removing (called by column childrens)
     def rename(self):
         childrens = self.grid.GetChildren()
         colChildrens = []
@@ -286,44 +345,3 @@ class mainPanel(scrolled.ScrolledPanel):
             colChildrens[i].GetWindow().removeCol.SetLabel("Remove Column %d" % (i+1))
             colChildrens[i].GetWindow().colTypeLbl.SetName("Column %d \n \n Column Type:" % (i+1))
             colChildrens[i].GetWindow().removeCol.SetName("Remove Column %d" % (i+1))
-            
-    def EvtPsmType(self, event):
-        self.psm_typeVal = self.editPsmType.GetValue()
-        # need to record variable, prolly sth like self.type=
-    def EvtReport(self, event):
-        self.psmsVal = self.editReport.GetValue()
-        # again, set variable
-    def EvtPeakList(self, event):
-        # Same
-        self.peak_listVal = [self.peakList[i] for i in self.editPeakList.GetSelections()]
-    def EvtMultiList(self, event):
-        self.peak_listVal = str(self.editMultiList.GetValue())
-    def EvtOutType(self, event):
-        self.outtypeVal = self.editOutType.GetValue()
-    def EvtMass(self, event):
-        self.mass_toleranceVal = self.editMass.GetValue()
-    def EvtMassType(self, event):
-        self.masstypeVal = self.editMassType.GetValue()
-                              
-    
-
-    # A helper function to find the insert position
-    # GetEventObject
-        #Useless function
-    def findIndex(self, event):
-        # Get event's object (window)
-        # go through the panel and find child's window matching the event object window
-        # keep a counter that increments until that point
-        eventWindow=event.GetEventObject()
-        childrens=self.grid.GetChildren()
-        insertIndex=0
-        for i in range(len(childrens)):
-            if childrens[i].GetWindow() != eventWindow:
-                insertIndex += 1
-            else:
-                insertIndex += 1
-                break
-        return insertIndex
-
-    def onButtonCancel(self, event):
-        self.parent.DeletePage(0)

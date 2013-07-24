@@ -1,12 +1,14 @@
-# load Python lilbraries
+# load sytem functions
 import time
 import threading
+import os
+
+# import Python lilbraries
 import wx
 import wx.aui
-import os
 import re
 
-# load gui
+# load gui modules
 from main_panel import *
 
 # load mMass modules
@@ -14,7 +16,6 @@ import mMass
 from mMass.gui.panel_spectrum import *
 from mMass.gui.panel_documents import panelDocuments
 from mMass.gui.panel_document_info import panelDocumentInfo
-from mMass.gui.panel_compare_peaklists import panelComparePeaklists
 from mMass.gui.panel_peaklist import panelPeaklist
 from ids import *
 from mMass.gui.mwx import *
@@ -34,8 +35,7 @@ class mainFrame(wx.Frame):
 
         # global counter for the sequence of files being evaluated
         self.evalNum = 0
-        
-        self.spectrumNum = 0
+
         # init images
         images.loadImages()
         
@@ -69,11 +69,11 @@ class mainFrame(wx.Frame):
         self.tmpCompassXport = None
         self.tmpLibrarySaved = None
 
-
-        #self.nb = wx.Notebook(self, name='toplevel')
+        # Notebook widget for PSM-evaluations
         self.nb = wx.aui.AuiNotebook(self)
         self.makeMenuBar()
-
+        
+        # setup menubar
         self.SetMenuBar(self.menubar)
         self.updateControls()
 
@@ -83,6 +83,7 @@ class mainFrame(wx.Frame):
     def makeMenuBar(self):
         # init menubar
         # HK_ indicates hotkeys
+
         self.menubar = wx.MenuBar()
 
         # file
@@ -357,9 +358,7 @@ class mainFrame(wx.Frame):
         self.peaklistPanel = panelPeaklist(self)
         
         # init other tools
-        self.comparePeaklistsPanel = None
         self.documentInfoPanel = None
-        self.documentExportPanel = None
         
         # manage frames
         self.AUIManager = wx.aui.AuiManager()
@@ -510,8 +509,6 @@ class mainFrame(wx.Frame):
 #==========================================================================================#
 
     # View events
-
-    # -----
 
     def onView(self, evt):
         """Update view parameters in the spectrum."""
@@ -672,6 +669,7 @@ class mainFrame(wx.Frame):
         
         # update menubar
         self.menubar.Check(ID, bool(item in config.main['cursorInfo']))
+
     # ----
     
     
@@ -737,6 +735,7 @@ class mainFrame(wx.Frame):
         
         # update peaklist
         self.peaklistPanel.updatePeaklistColumns()
+
     # ----
     
     
@@ -781,8 +780,6 @@ class mainFrame(wx.Frame):
 #===============================================================================#
    
     # File events helper
-
-    # ----
 
     def updateNotationMarks(self, refresh=True):
         """Highlight annotations and sequence matches in canvas."""
@@ -861,10 +858,11 @@ class mainFrame(wx.Frame):
                 self.usedColours.append(colour)
                 return colour
 
+    # ----
+
 
 #=====================================================================================================#
     # File events
-    # ---
 
     def onDocumentNew(self, evt=None, document=None, select=True):
         """Create blank document."""
@@ -882,6 +880,7 @@ class mainFrame(wx.Frame):
         
         # update gui
         self.onDocumentLoaded(select)
+ 
     # ----
     
     def onDocumentOpen(self, evt=None, path=None):
@@ -908,7 +907,9 @@ class mainFrame(wx.Frame):
         
         # import documents in queue
         self.importDocumentQueue()
+
     # ----
+
     def onDocumentClose(self, evt=None, docIndex=None, review=False, selectPrevious=True):
         """Close current document."""
         
@@ -942,10 +943,6 @@ class mainFrame(wx.Frame):
                     self.documentsPanel.selectDocument(docIndex)
                     break
         
-        # update compare panel
-        if self.comparePeaklistsPanel:
-            self.comparePeaklistsPanel.setData(self.documents)
-        
         # update menubar and toolbar
         self.updateControls()
         
@@ -953,16 +950,13 @@ class mainFrame(wx.Frame):
         return True
 
     # ----
+    
     def onDocumentCloseAll(self, evt=None):
         """Close all documents."""
         
         # close panels
-        if self.comparePeaklistsPanel:
-            self.comparePeaklistsPanel.Close()
         if self.documentInfoPanel:
             self.documentInfoPanel.Close()
-        if self.documentExportPanel:
-            self.documentExportPanel.Close()
         
             
         # close documents
@@ -972,26 +966,16 @@ class mainFrame(wx.Frame):
                 return False
         
         return True
+   
     # ----
 
 
     def onQuit(self, evt):
         """Close all documents and quit application."""
-        
-        # close all documents
-        if not self.onDocumentCloseAll():
-            return
-        
-        # save panels' sizes
-        config.main['documentsWidth'], config.main['documentsHeight'] = self.documentsPanel.GetSize()
-        config.main['peaklistWidth'], config.main['peaklistHeight'] = self.peaklistPanel.GetSize()
-        
-        # save config
-        config.saveConfig()
-        
-        # quit application
+
         evt.Skip()
         self.Destroy()
+    
     # ----
 
     # DOCUMENT IMPORT
@@ -1010,6 +994,7 @@ class mainFrame(wx.Frame):
         
         # release processing flag
         self.processingDocumentQueue = False
+    
     # ----
 
     def importDocument(self, path):
@@ -1097,6 +1082,7 @@ class mainFrame(wx.Frame):
             dlg = mwx.dlgMessage(self, title="Unable to open the document.", message="There were some errors while reading selected document\nor it contains no data.")
             dlg.ShowModal()
             dlg.Destroy()
+    
     # ----
     
     def getDocumentType(self, path):
@@ -1213,6 +1199,7 @@ class mainFrame(wx.Frame):
         if self.tmpScanlist:
             self.bufferedScanlists[path] = (modified, self.tmpScanlist)
     # ----
+    
     def runDocumentParser(self, path, docType, scan=None):
         """Load spectrum document."""
         
@@ -1296,6 +1283,7 @@ class mainFrame(wx.Frame):
                 )
    
     # ----
+
     def onDocumentLoaded(self, select=True):
         """Update GUI after document loaded."""
         
@@ -1348,9 +1336,9 @@ class mainFrame(wx.Frame):
             
             # update menubar and toolbar
             self.updateControls()
+
     # ----
         
-
     def onDocumentChanged(self, items=()):
         """Document content has changed."""
         
@@ -1399,15 +1387,6 @@ class mainFrame(wx.Frame):
             # update document info panel
             if self.documentInfoPanel:
                 self.documentInfoPanel.setData(docData)
-
-        # update compare peaklists tool
-        if 'spectrum' in items \
-        or 'notations' in items \
-        or 'annotations' in items \
-        or 'sequences' in items \
-        or 'matches' in items:
-            if self.comparePeaklistsPanel:
-                self.comparePeaklistsPanel.setData(self.documents)
         
         # disable undo
         if 'sequence' in items:
@@ -1423,6 +1402,7 @@ class mainFrame(wx.Frame):
         
         # update controls
         self.updateControls()
+
     # ----
     
     def onDocumentInfo(self, evt=None):
@@ -1451,6 +1431,7 @@ class mainFrame(wx.Frame):
         else:
             self.documentInfoPanel.setData(None)
             self.documentInfoPanel.Raise()
+    
     # ----
 
     def onDocumentFlip(self, evt):
@@ -1466,6 +1447,7 @@ class mainFrame(wx.Frame):
         
         # update spectrum panel
         self.spectrumPanel.updateSpectrumProperties(self.currentDocument)
+   
     # ----
     
     def onDocumentOffset(self, evt):
@@ -1501,6 +1483,7 @@ class mainFrame(wx.Frame):
         else:
             wx.Bell()
             return
+   
     # ----
 
     def onDocumentDropped(self, evt=None, paths=None):
@@ -1514,9 +1497,9 @@ class mainFrame(wx.Frame):
         if paths:
             self.tmpDocumentQueue += list(paths)
             wx.CallAfter(self.importDocumentQueue)
+   
     # ----
     
-
     def onDocumentAnnotationsDelete(self, evt=None, annotIndex=None):
         """Delete annotations."""
         
@@ -1533,6 +1516,7 @@ class mainFrame(wx.Frame):
         
         # update GUI
         self.onDocumentChanged(items=('annotations'))
+   
     # ----
 
     def onDocumentNotationsDelete(self, evt=None):
@@ -1554,11 +1538,14 @@ class mainFrame(wx.Frame):
         
         # update GUI
         self.onDocumentChanged(items=('notations'))
+   
     # ----
 
 
 #================================================================================#    
-    # Instead, switch between windows
+   
+    # Switch between windows for spectrum viewer and PSME
+
     def onSpectViewer(self, event=None):
         if hasattr(self, 'spectrumPanel') == False:
             self.makeGUI()
@@ -1573,6 +1560,7 @@ class mainFrame(wx.Frame):
             self.peaklistPanel.Show(True)
             self.updateControls()
             
+    # ----
 
     def onEvalRes(self, event=None):
         if hasattr(self, 'spectrumPanel') and self.spectrumPanel.IsShown():
@@ -1586,6 +1574,7 @@ class mainFrame(wx.Frame):
     
     
 
+# Run
 app = wx.App(False)
 frame = mainFrame(None, -1, 'Peptide-Spectrum-Matches (PSMs) Evaluation (version 0.1.0) ')
 frame.Show()

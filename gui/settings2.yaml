@@ -1,10 +1,8 @@
 columns:
-- title: Peptide
+- title: Peptide Sequence
   type: peptide
 - title: Scan Index
   type: scan_index
-- title: Scan Number
-  type: scan_number
 ions_defs:
   aggressive:
     losses:
