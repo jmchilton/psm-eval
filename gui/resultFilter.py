@@ -5,30 +5,37 @@ class resultFilter(wx.Panel):
     def __init__(self, parent, filterNum):
         wx.Panel.__init__(self, parent, name='filter')
         self.SetAutoLayout(True)
+        
+        # set the index of filter and its parent
         self.filterNum = filterNum
         self.parent = parent
 
+        # set sizer
         self.grid = wx.BoxSizer(wx.HORIZONTAL)
         self.SetSizer(self.grid)
 
+        # set col label combobox
         self.columns = self.parent.colLbls
         self.editCol = wx.ComboBox(self, choices=self.columns, style=wx.CB_DROPDOWN)
-        self.grid.Add(self.editCol)
         self.Bind(wx.EVT_COMBOBOX, self.EvtCol, self.editCol)
+        self.grid.Add(self.editCol)
         self.grid.AddSpacer(3,3)
         
+        # set specifiers
         self.specifiers = ['>', '<', '=', '>=', '<=']
         self.editSpec = wx.ComboBox(self, choices=self.specifiers, style=wx.CB_DROPDOWN)
-        self.grid.Add(self.editSpec)
         self.Bind(wx.EVT_COMBOBOX, self.EvtSpec, self.editSpec)
-        
+        self.grid.Add(self.editSpec)
+          
         self.grid.AddSpacer(3,3)
 
+        # set value field
         self.editBound = wx.TextCtrl(self, value='0')
-        self.grid.Add(self.editBound)
         self.Bind(wx.EVT_TEXT, self.EvtBound, self.editBound)
+        self.grid.Add(self.editBound)
         self.grid.AddSpacer(3,3)
 
+        # execute button
         self.execute = wx.Button(self, label="Execute")
         self.grid.Add(self.execute)
         self.Bind(wx.EVT_BUTTON, self.onExecute, self.execute)
@@ -37,18 +44,31 @@ class resultFilter(wx.Panel):
 
         self.Fit()
         
+
+# =================================================================== #
+
+# Events
+
     def EvtCol(self, event):
         pass
+
+    # ----
     def EvtSpec(self, event):
         pass
+
+    # ----
     def EvtBound(self, event):
         pass
+
     # Helper function for turning strings from cells to floats
     def num(self, string):
         try:
             return float(string)
         except exceptions.ValueError:
             return str(string)
+
+    # ----
+
     def onExecute(self, event):
         field1 = self.editCol.GetValue()
         field2 = self.editSpec.GetValue()
@@ -62,8 +82,9 @@ class resultFilter(wx.Panel):
         print "Current Filter(s): "
         print [(key, value) for key, value in self.parent.specified.iteritems()]
         self.filter(self.parent)
-        
-    # Actually filter
+    
+    # Actual filter function--refills the table based on specified standards
+
     def filter(self, parent):
         reqs = parent.specified
         parent.myGrid.ClearGrid()
@@ -81,6 +102,8 @@ class resultFilter(wx.Panel):
                 self.parent.myGrid.SetCellValue(i, j, filteredData[i][j])
         self.parent.myGrid.AutoSize()
 
+    # compare rows against requirements
+    
     def check(self, toFilter, colIndexDict, requirements):
         passed = []
         for key in requirements:
@@ -90,6 +113,8 @@ class resultFilter(wx.Panel):
             if value == False:
                 return False
         return True
+    
+    # actual comparison
 
     def compare(self, value, symbol, threshold):
         if symbol == '>':

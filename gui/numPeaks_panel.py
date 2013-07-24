@@ -1,31 +1,44 @@
 import wx
 from peakFilter_panel import *
+
 class numPeaksPanel(wx.Panel):
     def __init__(self, parent):
-        #print evtId
-        wx.Panel.__init__(self, parent, name='pkList')
-        self.parent = parent
-        self.SetAutoLayout(True)
-        self.grid = wx.BoxSizer(wx.VERTICAL)
+        wx.Panel.__init__(self, parent, name='pkList', style=wx.BORDER_SUNKEN)
         
+        # set parent
+        self.parent = parent
+        
+        self.SetAutoLayout(True)
+        
+        # set filter number
         self.numFilters = 0
+        
+        # set index of widgets added
         self.itemIndex = 0
 
+        # set sizer
+        self.grid = wx.BoxSizer(wx.VERTICAL)
         self.SetSizer(self.grid)
-        self.grid.AddSpacer(5,5)
+        
+        # peak filter button
+        self.grid.AddSpacer(2,2)
         self.label = wx.StaticText(self, label="  Peak Filters")
         self.grid.Add(self.label)
         
-        self.grid.AddSpacer(5,5)
+        self.grid.AddSpacer(3,3)
         self.addPeakFilter = wx.Button(self, label="Add new Peak Filter")
-        self.grid.Add(self.addPeakFilter)
         self.addPeakFilter.Bind(wx.EVT_BUTTON, self.onAddPeakFilter)
-        self.grid.AddSpacer(5,5)
+        self.grid.Add(self.addPeakFilter)
+        self.grid.AddSpacer(3,3)
         self.Show()
         self.itemIndex += 5
-
-        self.filters = []
         
+        # keep a list of filter criteria
+        self.filters = []
+
+# ========================================================================== #
+    # events
+
     def onAddPeakFilter(self, event):
         self.numFilters += 1
         self.itemIndex += 1
@@ -37,13 +50,15 @@ class numPeaksPanel(wx.Panel):
         # else
         self.Fit()
         self.parent.Fit()
-        # Known bug: C++ assertion "increment > 0" failed at /panfs/roc/groups/2/support/wangco/Downloads/wxPython-src-2.9.4.0/src/gtk/window.cpp(4573) in IsScrollIncrement(): 
         self.parent.parent.Fit()
         
         if self.parent.parent.parent.GetName()=='Evaluation':
             self.parent.parent.parent.FitInside()
         self.parent.parent.parent.Layout()
 
+    # ----
+
+    # helper function called by children(peakfilter) panel to rename after deletion
     def rename(self):
         childrens = self.grid.GetChildren()
         colChildrens = []
