@@ -85,16 +85,24 @@ class mainPanel(scrolled.ScrolledPanel):
         # ProteinPilot Peptide Report combobox
         # TESTING doesnt work
         # TODO: add import function for available choices of files
-        self.report = ['test-data/test2.mzid', 'test-data/summary.tabular', 'test-data/test4Summary.tabular']
+
+        self.report = []
         self.lblReport = wx.StaticText(self, label="ProteinPilot Peptide Report:")
         self.lblReport.SetFont(font2)
         self.grid.Add(self.lblReport)
+
+        # load button
+        self.load = wx.Button(self, label="load")
+        self.load.Bind(wx.EVT_BUTTON, self.onLoad)
+        self.grid.Add(self.load)
+        self.itemIndex += 1
+
         self.editReport = wx.ComboBox(self,size=(-1, -1), choices=self.report, style=wx.CB_DROPDOWN)
         self.Bind(wx.EVT_COMBOBOX, self.EvtReport, self.editReport)
         self.grid.Add(self.editReport)
         
-        self.editReport.SetValue(self.report[0])
-        self.psmsVal = str(self.report[0])
+        #self.editReport.SetValue(self.report[0])
+        #self.psmsVal = self.str(self.report[0])
         
         self.grid.AddSpacer(5,5)
        
@@ -103,13 +111,19 @@ class mainPanel(scrolled.ScrolledPanel):
         # Peak list listbox
         # TODO: add import function for available choices of files
         self.fType = ['files directly', 'by multifile']
-        self.peakList = ['test-data/test2.mzML', 'test-data/data34.mzml', 'test-data/data41.mzml']
-        self.multiList = ['test-data/test2.mzML', 'test-data/data34.mzml', 'test-data/data41.mzml']
+        self.peakList = []
+        self.multiList = []
         
         self.lblPeakList = wx.StaticText(self, label="Peak List (mzML):")
         self.lblPeakList.SetFont(font2)
         self.grid.Add(self.lblPeakList)
         self.itemIndex += 1
+
+        # load button
+        self.load2 = wx.Button(self, label="load")
+        self.load2.Bind(wx.EVT_BUTTON, self.onLoad2)
+        self.grid.Add(self.load2)
+        self.itemIndex +=1
         
         # Add option to select dierectly or by multifile
         self.fTypeBox = wx.RadioBox(self, label="select ", choices=self.fType, style=wx.RA_SPECIFY_COLS)
@@ -130,7 +144,7 @@ class mainPanel(scrolled.ScrolledPanel):
         self.Bind(wx.EVT_COMBOBOX, self.EvtMultiList, self.editMultiList)
         self.grid.Add(self.editMultiList)
         
-        self.editMultiList.SetValue(self.multiList[0])
+        #self.editMultiList.SetValue(self.multiList[0])
         self.grid.Hide(self.editMultiList)
         
         self.grid.AddSpacer(5,5)
@@ -210,7 +224,37 @@ class mainPanel(scrolled.ScrolledPanel):
         self.itemIndex += 1
         
 # ========================================================================= #
-# Events        
+# Events 
+    
+    def onLoad(self, event):
+        filters = 'mzid file (*.mzid) |*.mzid| text files (*.txt) |*.txt| All files (*.*)|*.*'
+        dialog = wx.FileDialog(None, message = 'Load report for PSME', wildcard = filters, style = wx.FD_OPEN | wx.FD_MULTIPLE)
+        if dialog.ShowModal() == wx.ID_OK:
+            selected = dialog.GetPaths()
+            for selection in selected:
+                self.editReport.Append(selection)
+                self.report.append(selection)
+        else:
+            print 'Nothing Selected'
+        pass
+
+    # ----
+
+    def onLoad2(self, event):
+        filters = 'mzml files (*.mzML) |*.mzML| mgf files (*.mgf) |*.mgf| text files (*.txt) |*.txt| All files (*.*)|*.*'
+        dialog = wx.FileDialog(None, message = 'Load Peak List for PSME', wildcard = filters, style = wx.FD_OPEN | wx.FD_MULTIPLE)
+        if dialog.ShowModal() == wx.ID_OK:
+            selected = dialog.GetPaths()
+            for selection in selected:
+                self.editMultiList.Append(selection)
+                self.editPeakList.Append(selection)
+                self.multiList.append(selection)
+                self.peakList.append(selection)
+        else:
+            print 'Nothing Selected'
+        pass
+    
+    # ----
                 
     def onButtonExe(self, event):
         # Wait till analysis finishes before changing back to original button label
