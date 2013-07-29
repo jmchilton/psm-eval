@@ -3,6 +3,10 @@ import time
 import threading
 import os
 
+# TODO: cleanup
+import sys
+sys.path.append("/home/ubuntu/venv/lib/python2.7/site-packages/mMass")
+
 # import Python lilbraries
 import wx
 import wx.aui
@@ -13,6 +17,7 @@ from main_panel import *
 
 # load mMass modules
 import mMass
+import mMass.mspy
 from mMass.gui.panel_spectrum import *
 from mMass.gui.panel_documents import panelDocuments
 from mMass.gui.panel_document_info import panelDocumentInfo
@@ -24,6 +29,10 @@ from mMass.gui.config import *
 from mMass.gui.dlg_select_scans import dlgSelectScans
 from mMass.gui.dlg_clipboard_editor import dlgClipboardEditor
 import mMass.gui.doc as doc
+
+# Sequence
+from mMass.gui.panel_sequence import panelSequence
+from mMass.gui.dlg_select_sequences import dlgSelectSequences
 
 # Main Frame
 
@@ -71,6 +80,7 @@ class mainFrame(wx.Frame):
 
         # Notebook widget for PSM-evaluations
         self.nb = wx.aui.AuiNotebook(self)
+	self.nb.parent = self
         self.makeMenuBar()
         
         # setup menubar
@@ -283,6 +293,35 @@ class mainFrame(wx.Frame):
         self.menubar.Check(ID_viewAutoscale, bool(config.spectrum['autoscale']))
         self.menubar.Check(ID_viewNormalize, bool(config.spectrum['normalize']))
 
+        # sequence
+        sequence = wx.Menu()
+        sequence.Append(ID_sequenceNew, "New...", "")
+        sequence.Append(ID_sequenceImport, "Import...", "")
+        sequence.AppendSeparator()
+        sequence.Append(ID_sequenceEditor, "Edit Sequence...", "")
+        sequence.Append(ID_sequenceModifications, "Edit Modifications...", "")
+        sequence.AppendSeparator()
+        sequence.Append(ID_sequenceDigest, "Digest Protein...", "")
+        sequence.Append(ID_sequenceFragment, "Fragment Peptide...", "")
+        sequence.Append(ID_sequenceSearch, "Mass Search...", "")
+        sequence.AppendSeparator()
+        sequence.Append(ID_sequenceMatchesDelete, "Delete All Matches", "")
+        sequence.Append(ID_sequenceDelete, "Delete Sequence", "")
+        sequence.AppendSeparator()
+        sequence.Append(ID_sequenceSort, "Sort by Titles", "")
+        
+        self.Bind(wx.EVT_MENU, self.onSequenceNew, id=ID_sequenceNew)
+        self.Bind(wx.EVT_MENU, self.onSequenceImport, id=ID_sequenceImport)
+        self.Bind(wx.EVT_MENU, self.onToolsSequence, id=ID_sequenceEditor)
+        self.Bind(wx.EVT_MENU, self.onToolsSequence, id=ID_sequenceModifications)
+        self.Bind(wx.EVT_MENU, self.onToolsSequence, id=ID_sequenceDigest)
+        self.Bind(wx.EVT_MENU, self.onToolsSequence, id=ID_sequenceFragment)
+        self.Bind(wx.EVT_MENU, self.onToolsSequence, id=ID_sequenceSearch)
+        self.Bind(wx.EVT_MENU, self.onSequenceMatchesDelete, id=ID_sequenceMatchesDelete)
+        self.Bind(wx.EVT_MENU, self.onSequenceDelete, id=ID_sequenceDelete)
+        self.Bind(wx.EVT_MENU, self.onSequenceSort, id=ID_sequenceSort)
+        
+        self.menubar.Append(sequence, "Sequence")
 
 # =================================#
         # Evaluation menu
@@ -359,6 +398,7 @@ class mainFrame(wx.Frame):
         
         # init other tools
         self.documentInfoPanel = None
+        self.sequencePanel = None
         
         # manage frames
         self.AUIManager = wx.aui.AuiManager()
@@ -465,6 +505,11 @@ class mainFrame(wx.Frame):
         self.menubar.Enable(ID_documentOpen, enableSpect)
         self.menubar.Enable(ID_documentClose, enableSpect)
         self.menubar.Enable(ID_documentCloseAll, enableSpect)
+
+        # sequence
+        self.menubar.Enable(ID_sequenceNew, enableSpect)
+        self.menubar.Enable(ID_sequenceImport, enableSpect)
+        self.menubar.Enable(ID_sequenceSort, enableSpect)
                    
         if self.currentDocument == None:
             enable = False
@@ -475,6 +520,23 @@ class mainFrame(wx.Frame):
             
         # update menubar
         self.menubar.Enable(ID_documentClose, enable)
+
+        # sequence
+        if self.currentDocument == None or self.currentSequence == None:
+            enable = False
+            sequence = None
+        else:
+            enable = True
+            sequence = self.documents[self.currentDocument].sequences[self.currentSequence]
+        
+        # update menubar
+        self.menubar.Enable(ID_sequenceEditor, enable)
+        self.menubar.Enable(ID_sequenceModifications, enable)
+        self.menubar.Enable(ID_sequenceDigest, enable)
+        self.menubar.Enable(ID_sequenceFragment, enable)
+        self.menubar.Enable(ID_sequenceSearch, enable)
+        self.menubar.Enable(ID_sequenceMatchesDelete, bool(enable and sequence.matches))
+        self.menubar.Enable(ID_sequenceDelete, enable)
         
         
     # ----
@@ -957,6 +1019,8 @@ class mainFrame(wx.Frame):
         # close panels
         if self.documentInfoPanel:
             self.documentInfoPanel.Close()
+        if self.sequencePanel:
+            self.sequencePanel.Close()
         
             
         # close documents
@@ -1135,6 +1199,20 @@ class mainFrame(wx.Frame):
    
     # ----
 
+    def getDocumentSequences(self, path, docType):
+        """Get sequences from document."""
+        
+        # get sequences
+        if docType == 'mSD':
+            parser = doc.parseMSD(path)
+            self.tmpSequenceList = parser.getSequences()
+        elif docType == 'FASTA':
+            parser = mspy.parseFASTA(path)
+            self.tmpSequenceList = parser.sequences()
+        else:
+            return
+    # ----
+
     def askForScans(self, path, docType):
         """Select scans to import."""
         
@@ -1170,6 +1248,51 @@ class mainFrame(wx.Frame):
         else:
             return [None]
     # ----
+
+    def askForSequences(self, path, docType):
+        """Select sequences to import."""
+        
+        self.tmpSequenceList = None
+        
+        # get scan list
+        gauge = mwx.gaugePanel(self, 'Gathering sequences...')
+        gauge.show()
+        process = threading.Thread(target=self.getDocumentSequences, kwargs={'path':path, 'docType':docType})
+        process.start()
+        while process.isAlive():
+            gauge.pulse()
+        gauge.close()
+        
+        # no sequences found
+        if self.tmpSequenceList == []:
+            wx.Bell()
+            dlg = mwx.dlgMessage(self, title="No sequence found.", message="Selected document doesn't contain any valid sequence.")
+            dlg.ShowModal()
+            dlg.Destroy()
+            return None
+            
+        # unable to load sequences
+        elif not self.tmpSequenceList:
+            wx.Bell()
+            dlg = mwx.dlgMessage(self, title="Unable to open the document.", message="Document type or structure can't be recognized. Selected format\nis probably unsupported.")
+            dlg.ShowModal()
+            dlg.Destroy()
+            return False
+        
+        # select sequences to open
+        if len(self.tmpSequenceList) > 1:
+            dlg = dlgSelectSequences(self, self.tmpSequenceList)
+            if dlg.ShowModal() == wx.ID_OK:
+                selected = dlg.selected
+                dlg.Destroy()
+                return selected
+            else:
+                dlg.Destroy()
+                return None
+        else:
+            return self.tmpSequenceList
+    # ----
+
     def getDocumentScanList(self, path, docType):
         """Get scans from document."""
         
@@ -1330,6 +1453,10 @@ class mainFrame(wx.Frame):
             # update peaklist panel
             self.peaklistPanel.setData(docData)
             
+            # update sequence panel
+            if self.sequencePanel:
+                self.sequencePanel.setData(None)
+
             # update document info panel
             if self.documentInfoPanel:
                 self.documentInfoPanel.setData(docData)
@@ -1387,6 +1514,10 @@ class mainFrame(wx.Frame):
             # update document info panel
             if self.documentInfoPanel:
                 self.documentInfoPanel.setData(docData)
+
+            # update sequence panel
+            if self.sequencePanel:
+                self.sequencePanel.clearMatches()
         
         # disable undo
         if 'sequence' in items:
@@ -1541,6 +1672,282 @@ class mainFrame(wx.Frame):
    
     # ----
 
+#================================================================================#
+
+    # sequence events
+
+    def onToolsSequence(self, evt=None):
+        """Show sequence tools panel."""
+        
+        # check document
+        if not self.sequencePanel and self.currentDocument == None:
+            wx.Bell()
+            return
+        
+        # select first sequence in document or make new
+        if not self.sequencePanel and self.currentDocument != None and self.currentSequence == None and evt and evt.GetId()==ID_toolsSequence:
+            if self.documents[self.currentDocument].sequences:
+                self.documentsPanel.selectSequence(self.currentDocument, 0)
+            else:
+                self.onSequenceNew()
+                return
+        
+        # disable tools if no sequence selected
+        if not self.sequencePanel and self.currentSequence == None and evt and evt.GetId()!=ID_toolsSequence:
+            wx.Bell()
+            return
+        
+        # destroy panel
+        if self.sequencePanel and evt and evt.GetId()==ID_toolsSequence:
+            self.sequencePanel.Close()
+            return
+        
+        # init panel
+        if not self.sequencePanel:
+            self.sequencePanel = panelSequence(self)
+        
+        # show selected tool
+        tool = 'editor'
+        if evt and evt.GetId() == ID_sequenceEditor:
+            tool = 'editor'
+        elif evt and evt.GetId() == ID_sequenceModifications:
+            tool = 'modifications'
+        elif evt and evt.GetId() == ID_sequenceDigest:
+            tool = 'digest'
+        elif evt and evt.GetId() == ID_sequenceFragment:
+            tool = 'fragment'
+        elif evt and evt.GetId() == ID_sequenceSearch:
+            tool = 'search'
+        
+        self.sequencePanel.onToolSelected(tool=tool)
+        self.sequencePanel.Centre()
+        self.sequencePanel.Show(True)
+        
+        # get current document sequence
+        seqData = None
+        if self.currentDocument != None and self.currentSequence != None:
+            seqData = self.documents[self.currentDocument].sequences[self.currentSequence]
+        
+        # set data
+        self.sequencePanel.setData(seqData)
+        self.sequencePanel.Raise()
+    # ----
+
+
+    def onSequenceSelected(self, seqIndex):
+        """Set current sequence."""
+        
+        # get sequence
+        if seqIndex != None:
+            seqData = self.documents[self.currentDocument].sequences[seqIndex]
+        else:
+            seqData = None
+        
+        # update panels
+        if seqIndex != self.currentSequence:
+            
+            # set current sequence
+            self.currentSequence = seqIndex
+            
+            # update sequence panel
+            if self.sequencePanel:
+                self.sequencePanel.setData(seqData)
+            
+            # update menubar and toolbar
+            self.updateControls()
+    # ----
+    
+    
+    def onSequenceNew(self, evt=None, seqData=None):
+        """Append new sequence to current document."""
+        
+        # check selection
+        if self.currentDocument == None:
+            wx.Bell()
+            return
+        
+        # create new sequence
+        if not seqData:
+            seqData = mspy.sequence('', title='Untitled Sequence')
+            seqData.matches = []
+        
+        # append sequence
+        self.documents[self.currentDocument].sequences.append(seqData)
+        
+        # update documents panel
+        self.documentsPanel.appendLastSequence(self.currentDocument)
+        self.documentsPanel.selectSequence(self.currentDocument, -1)
+        
+        # set document status
+        self.onDocumentChanged()
+        
+        # show sequence panel
+        self.onToolsSequence()
+    # ----
+    
+    
+    def onSequenceImport(self, evt=None, path=None):
+        """Import sequence from file to current document."""
+        
+        # check selection
+        if self.currentDocument == None:
+            wx.Bell()
+            return
+        
+        # open dialog if no path specified
+        if not path:
+            lastDir = ''
+            if os.path.exists(config.main['lastSeqDir']):
+                lastDir = config.main['lastSeqDir']
+            elif os.path.exists(config.main['lastDir']):
+                lastDir = config.main['lastDir']
+            wildcard =  "All supported formats|*.msd;*.fa;*.fsa;*.faa;*.fasta;|All files|*.*"
+            dlg = wx.FileDialog(self, "Import Sequence", lastDir, "", wildcard=wildcard, style=wx.FD_OPEN|wx.FD_FILE_MUST_EXIST)
+            if dlg.ShowModal() == wx.ID_OK:
+                path = dlg.GetPath()
+                dlg.Destroy()
+            else:
+                dlg.Destroy()
+                return
+        
+        # check path
+        if os.path.exists(path):
+            config.main['lastSeqDir'] = os.path.split(path)[0]
+        else:
+            wx.Bell()
+            return
+        
+        # get document type
+        docType = self.getDocumentType(path)
+        if not docType:
+            wx.Bell()
+            dlg = mwx.dlgMessage(self, title="Unable to open the document.", message="Document type or structure can't be recognized. Selected format\nis probably unsupported.")
+            dlg.ShowModal()
+            dlg.Destroy()
+            return
+        
+        # select sequences to open
+        sequences = self.askForSequences(path, docType)
+        if not sequences:
+            return
+        
+        # append sequences
+        for sequence in sequences:
+            sequence.matches = []
+            self.onSequenceNew(seqData=sequence)
+    # ----
+    
+    
+    def onSequenceDelete(self, evt=None):
+        """Delete current sequence."""
+        
+        # check selection
+        docIndex = self.currentDocument
+        seqIndex = self.currentSequence
+        if self.currentDocument == None or self.currentSequence == None:
+            return
+        
+        # update sequence panel
+        if self.sequencePanel:
+            self.sequencePanel.setData(None)
+        
+        # update documents panel
+        self.documentsPanel.deleteSequence(self.currentDocument, self.currentSequence)
+        
+        # delete sequence from document
+        self.documents[docIndex].backup(('sequences'))
+        del self.documents[docIndex].sequences[seqIndex]
+        self.currentSequence = None
+        
+        # set document status
+        self.onDocumentChanged()
+    # ----
+    
+    
+    def onSequenceMatchesDelete(self, evt=None, matchIndex=None):
+        """Delete sequence matches."""
+        
+        # check selection
+        if self.currentDocument == None or self.currentSequence == None:
+            return
+        
+        # delete matches
+        self.documents[self.currentDocument].backup(('sequences'))
+        if matchIndex != None:
+            del self.documents[self.currentDocument].sequences[self.currentSequence].matches[matchIndex]
+        else:
+            del self.documents[self.currentDocument].sequences[self.currentSequence].matches[:]
+        
+        # update GUI
+        self.onDocumentChanged(items=('matches'))
+    # ----
+    
+    
+    def onSequenceSort(self, evt=None):
+        """Sort current sequences by title."""
+        
+        # check selection
+        if self.currentDocument == None:
+            return
+        
+        # update document
+        self.documents[self.currentDocument].backup(('sequences'))
+        self.documents[self.currentDocument].sortSequences()
+        
+        # update sequence panel
+        if self.sequencePanel:
+            self.sequencePanel.setData(None)
+        
+        # update documents panel
+        self.currentSequence = None
+        
+        # set document status
+        self.onDocumentChanged(items=('sequences'))
+    # ----
+
+    def getCurrentPeaklist(self, filters=''):
+        """Get peaklist from current document."""
+        
+        # check document
+        if self.currentDocument == None:
+            return None
+        
+        peaklist = []
+        blacklist = []
+        whitelist = self.documents[self.currentDocument].spectrum.peaklist
+        
+        # get selection
+        if 'S' in filters:
+            whitelist = self.peaklistPanel.getSelectedPeaks()
+        
+        # get annotations
+        if 'A' in filters:
+            for annotation in self.documents[self.currentDocument].annotations:
+                blacklist.append(round(annotation.mz, 6))
+        
+        # get matches
+        if 'M' in filters:
+            for sequence in self.documents[self.currentDocument].sequences:
+                for match in sequence.matches:
+                    blacklist.append(round(match.mz, 6))
+        
+        # get peaklist
+        for peak in whitelist:
+            if 'X' in filters and peak.charge == None:
+                continue
+            elif 'I' in filters and not peak.isotope in (0, None):
+                continue
+            elif ('A' in filters or 'M' in filters) and round(peak.mz, 6) in blacklist:
+                continue
+            else:
+                peaklist.append(peak)
+        
+        # finalize peaklist
+        peaklist = mspy.peaklist(peaklist)
+        
+        return peaklist
+    # ----
+
 
 #================================================================================#    
    
@@ -1560,6 +1967,88 @@ class mainFrame(wx.Frame):
             self.peaklistPanel.Show(True)
             self.updateControls()
             
+    # ----
+    
+    # Called by evaluation panel to open spectrum based on scan id
+
+    def onButtonView(self, path, scans):
+	self.tmpDocumentQueue.append(path)
+        if self.processingDocumentQueue:
+            return
+        self.processingDocumentQueue = True
+        while self.tmpDocumentQueue:
+            if path in self.tmpDocumentQueue:
+                i = self.tmpDocumentQueue.index(path)
+            del self.tmpDocumentQueue[i]
+            
+            # check path
+        if os.path.exists(path):
+            config.main['lastDir'] = os.path.split(path)[0]
+        else:
+            wx.Bell()
+            dlg = mwx.dlgMessage(self, title="Document doesn't exists.", message="Specified document path cannot be found or is temporarily\nunavailable.")
+            dlg.ShowModal()
+            dlg.Destroy()
+            return
+        
+        docType = self.getDocumentType(path)
+        if not docType:
+            wx.Bell()
+            dlg = mwx.dlgMessage(self, title="Unable to open the document.", message="Document type or structure can't be recognized. Selected format\nis probably unsupported.")
+            dlg.ShowModal()
+            dlg.Destroy()
+            return
+
+        # convert Bruker format
+        compassUsed = False
+        if docType == 'bruker':
+            compassUsed = True
+            docType = config.main['compassFormat']
+            path = self.convertBrukerData(path)
+            if not path:
+                return
+	
+	status = True
+        for scan in scans:
+            before = len(self.documents)
+            
+            # init processing gauge
+            gauge = mwx.gaugePanel(self, 'Reading data...')
+            gauge.show()
+            
+            # load document
+            process = threading.Thread(target=self.runDocumentParser, kwargs={'path':path, 'docType':docType, 'scan':scan})
+            process.start()
+            while process.isAlive():
+                gauge.pulse()
+            
+            # append document
+            if before < len(self.documents):
+                self.onDocumentLoaded(select=True)
+                status *= True
+            else:
+                status *= False
+            
+            # close processing gauge
+            gauge.close()
+        
+        # delete compass file
+        if compassUsed and config.main['compassDeleteFile']:
+            try: os.unlink(path)
+            except: pass
+        
+        
+        # processing failed
+        if not status:
+            wx.Bell()
+            dlg = mwx.dlgMessage(self, title="Unable to open the document.", message="There were some errors while reading selected document\nor it contains no data.")
+            dlg.ShowModal()
+            dlg.Destroy()
+
+	# release processing flag
+        self.processingDocumentQueue = False
+
+
     # ----
 
     def onEvalRes(self, event=None):
