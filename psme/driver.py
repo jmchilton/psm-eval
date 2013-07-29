@@ -6,16 +6,26 @@ from .output import OutputFormatter
 
 
 def evaluate(settings, output_formatter=OutputFormatter):
+    """
+    Collect statistics about each PSM and write out to file
+    based on output_formatter.
+    """
+    collected_statistics = collect_statistics(settings)
+    with output_formatter(settings) as output:
+        for row in collected_statistics:
+            output.write_row(row)
+
+
+def collect_statistics(settings):
+    """
+    Build data structure describing statistics for each PSM.
+    """
     columns = build_column_providers(settings)
     source_statistic_names = __find_referenced_source_statistics(columns)
     scan_source_manager = ScanSourceManager(settings)
     psms = load_psms(settings, scan_source_manager, source_statistic_names)
     psm_manager = PsmManager(psms)
-    collected_statistics = \
-        __collect_statistics(scan_source_manager, psm_manager, columns)
-    with output_formatter(settings) as output:
-        for row in collected_statistics:
-            output.write_row(row)
+    return __collect_statistics(scan_source_manager, psm_manager, columns)
 
 
 def __find_referenced_source_statistics(columns):
