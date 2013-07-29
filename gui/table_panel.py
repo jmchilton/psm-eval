@@ -4,7 +4,7 @@ import wx.lib.scrolledpanel as scrolled
 from resultFilter import *
 
 class tablePanel(scrolled.ScrolledPanel):
-    def __init__(self, parent, evalNum, dataFile):
+    def __init__(self, parent, evalNum, dataFile, filepath):
         """Constructor"""
         scrolled.ScrolledPanel.__init__(self, parent, name='Result %d' % evalNum)
         self.SetAutoLayout(True)
@@ -12,14 +12,18 @@ class tablePanel(scrolled.ScrolledPanel):
         # set the number of evaluation it is indexed at
         self.evalNum = evalNum
 
-        # set parent
+        # set parent-nb
         self.parent = parent
+
+        # set peak list file path
+        self.filepath = filepath
 	
         # set column labels
         self.colLbls = dataFile.readline().split('\t')[:-1]
         
         # set data
         self.data = [line.split('\t')[:-1] for line in dataFile]
+        
         # create the grid
         self.rows = len(self.data)
         self.cols = len(self.data[0])
@@ -44,10 +48,27 @@ class tablePanel(scrolled.ScrolledPanel):
         # set sizer
         self.sizer = wx.BoxSizer(wx.VERTICAL)
         self.sizer.Add(self.myGrid)
+        
+        self.sizer.AddSpacer(8,8)
+        
+        # add spectrum viewing button
+        self.lblView = wx.StaticText(self, label="Enter Scan IDs, separated by commas:")
+        self.sizer.Add(self.lblView)
+        self.editView = wx.TextCtrl(self, value='1')
+        self.scanStr = '1'
+        self.Bind(wx.EVT_TEXT, self.EvtView, self.editView)
+        self.sizer.Add(self.editView)
+        self.buttonView = wx.Button(self, -1, label="View Spectrum")
+        self.buttonView.SetBackgroundColour(wx.BLUE)
+        self.buttonView.Bind(wx.EVT_BUTTON, self.onButtonView)
+        self.sizer.Add(self.buttonView, 0)
+        
+        self.sizer.AddSpacer(5,5)
+
         self.SetSizer(self.sizer)
         self.SetupScrolling()
         
-        self.sizer.AddSpacer(15,15)
+        
         
         # add filtering functions
         self.filterCount = 0
@@ -66,7 +87,19 @@ class tablePanel(scrolled.ScrolledPanel):
 # =============================================================== #
         
 # Events
+        
+    def EvtView(self, event):
+        self.scanStr = str(self.editView.GetValue())
+    
+    # ----
 
+    def onButtonView(self, event):
+        self.parent.parent.onSpectViewer()
+        scanlist = [int(i) for i in self.scanStr.split(',')]
+        self.parent.parent.onButtonView(self.filepath, scanlist)
+
+        
+    # ----
     def onFilter(self, event):
         self.filterCount += 1
         self.sizer.Add(resultFilter(self, self.filterCount))

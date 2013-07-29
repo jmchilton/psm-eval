@@ -1,8 +1,6 @@
 columns:
-- title: Peptide Sequence
-  type: peptide
-- title: Scan Index
-  type: scan_index
+- title: Scan Number
+  type: scan_number
 ions_defs:
   aggressive:
     losses:
@@ -24,6 +22,6 @@ peak_filter_defs:
     percent: 0.02
     q: 3
     type: quantile
-peak_list: test-data/test2.mzML
-psms: test-data/test2.mzid
+peak_list: /home/ubuntu/psmeval/test-data/test2.mzML
+psms: /home/ubuntu/psmeval/test-data/test2.mzid
 psms_type: mzid

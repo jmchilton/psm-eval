@@ -13,7 +13,7 @@ class mainPanel(scrolled.ScrolledPanel):
     # ToDo: Error handling
     def __init__(self, parent, id, title, evalNum):
         scrolled.ScrolledPanel.__init__(self, parent, name=title)
-        
+
         # This might not be necessary
         self.SetAutoLayout(True)
         
@@ -27,6 +27,9 @@ class mainPanel(scrolled.ScrolledPanel):
         
         # keep track of number of columns added
         self.numCols = 0
+
+        # keep track of the file path of Peak lists for opening in spectrum viewer later
+        self.filepath = ""
 
         # set up the sizer
         self.grid = wx.BoxSizer(wx.VERTICAL)        
@@ -84,9 +87,10 @@ class mainPanel(scrolled.ScrolledPanel):
         
         # ProteinPilot Peptide Report combobox
         # TESTING doesnt work
-        # TODO: add import function for available choices of files
-
+        
+        # keeps track of what is already in the choices of the combobox
         self.report = []
+
         self.lblReport = wx.StaticText(self, label="ProteinPilot Peptide Report:")
         self.lblReport.SetFont(font2)
         self.grid.Add(self.lblReport)
@@ -109,8 +113,7 @@ class mainPanel(scrolled.ScrolledPanel):
         self.itemIndex += 3
 
         # Peak list listbox
-        # TODO: add import function for available choices of files
-        self.fType = ['files directly', 'by multifile']
+        self.fType = ['by multifile', 'files directly']
         self.peakList = []
         self.multiList = []
         
@@ -130,22 +133,17 @@ class mainPanel(scrolled.ScrolledPanel):
         self.Bind(wx.EVT_RADIOBOX, self.EvtFType, self.fTypeBox)
         self.grid.Add(self.fTypeBox)
         
-        # Default to select by file directly
+        # Default to by multifile
+        self.editMultiList = wx.ComboBox(self, size=(-1, -1), choices=self.multiList, style=wx.CB_DROPDOWN)
+        self.Bind(wx.EVT_COMBOBOX, self.EvtMultiList, self.editMultiList)
+        self.grid.Add(self.editMultiList)
+
+        # by file directly
         self.editPeakList = wx.ListBox(self, size=(-1, -1), choices=self.peakList, style=wx.LB_MULTIPLE, name='direct')
         self.Bind(wx.EVT_LISTBOX, self.EvtPeakList, self.editPeakList)
         self.grid.Add(self.editPeakList)
         
-        for i in range(len(self.peakList)):
-            self.editPeakList.Select(i)
-        self.peak_listVal = [self.peakList[i] for i in self.editPeakList.GetSelections()]
-        
-        # by multifile
-        self.editMultiList = wx.ComboBox(self, size=(-1, -1), choices=self.multiList, style=wx.CB_DROPDOWN)
-        self.Bind(wx.EVT_COMBOBOX, self.EvtMultiList, self.editMultiList)
-        self.grid.Add(self.editMultiList)
-        
-        #self.editMultiList.SetValue(self.multiList[0])
-        self.grid.Hide(self.editMultiList)
+        self.grid.Hide(self.editPeakList)
         
         self.grid.AddSpacer(5,5)
         self.itemIndex += 3
@@ -226,17 +224,22 @@ class mainPanel(scrolled.ScrolledPanel):
 # ========================================================================= #
 # Events 
     
+    # TODO: both load events need to handle if the files have already been loaded (keep a list of loaded files in self)
     def onLoad(self, event):
         filters = 'mzid file (*.mzid) |*.mzid| text files (*.txt) |*.txt| All files (*.*)|*.*'
         dialog = wx.FileDialog(None, message = 'Load report for PSME', wildcard = filters, style = wx.FD_OPEN | wx.FD_MULTIPLE)
         if dialog.ShowModal() == wx.ID_OK:
             selected = dialog.GetPaths()
             for selection in selected:
-                self.editReport.Append(selection)
-                self.report.append(selection)
+                if selection not in self.report:
+                    self.report.append(selection)
+                    self.editReport.Append(selection)
+            self.editReport.SetSelection(0)
+            self.psmsVal = str(self.editReport.GetValue())
+            self.FitInside()
+            self.parent.Layout()
         else:
             print 'Nothing Selected'
-        pass
 
     # ----
 
@@ -246,13 +249,20 @@ class mainPanel(scrolled.ScrolledPanel):
         if dialog.ShowModal() == wx.ID_OK:
             selected = dialog.GetPaths()
             for selection in selected:
-                self.editMultiList.Append(selection)
-                self.editPeakList.Append(selection)
-                self.multiList.append(selection)
-                self.peakList.append(selection)
+                if selection not in self.multiList:
+                    self.multiList.append(selection)
+                    self.editMultiList.Append(selection)
+                    self.editPeakList.AppendAndEnsureVisible(selection)
+                    self.editPeakList.SetStringSelection(selection)
+            if self.editMultiList.IsShown():
+                self.editMultiList.SetSelection(0)
+                self.peak_listVal = str(self.editMultiList.GetValue())
+            else:
+                self.peak_listVal = [str(self.editPeakList.GetString(i)) for i in self.editPeakList.GetSelections()]
+            self.FitInside()
+            self.parent.Layout()
         else:
             print 'Nothing Selected'
-        pass
     
     # ----
                 
@@ -262,6 +272,8 @@ class mainPanel(scrolled.ScrolledPanel):
         wx.Yield()
         
         # create submission list
+        print self.peak_listVal
+        print self.psmsVal
         self.submission['peak_list'] = self.peak_listVal
         self.submission['psms_type'] = self.psms_typeVal
         self.submission['psms'] = self.psmsVal
@@ -271,6 +283,9 @@ class mainPanel(scrolled.ScrolledPanel):
         self.submission['columns'] = self.columns
         self.submission['outtype'] = self.outtypeVal
         self.submission['masstype'] = self.masstypeVal
+
+        # record the path to the mzML file for opening spectrum viewer later
+        self.filepath = self.peak_listVal
         
         # store column titles in a file
         f = open('../columns.txt', 'w')
@@ -286,12 +301,12 @@ class mainPanel(scrolled.ScrolledPanel):
         # python 2.7 needed to run pyteomics, but 2.6 needed to run the installed version of wxpython
         # TODO: Maybe add a progress bar
         # call psme core functions
-        os.system('module load python-epd && cd .. && python -m psme.main')
+        os.system('cd .. && python -m psme.main')
         self.buttonExe.SetLabel('Execute')
         
         # write results to file, then open in new notebook page
         f2 = open('../results.tsv', 'r')
-        curPage = self.parent.AddPage(tablePanel(self.parent, 1, f2), "Result %d" % self.evalNum, select = True)
+        curPage = self.parent.AddPage(tablePanel(self.parent, 1, f2, self.filepath), "Result %d" % self.evalNum, select = True)
         
         '''
         progressMax = 50
@@ -321,11 +336,11 @@ class mainPanel(scrolled.ScrolledPanel):
     
     def EvtFType(self, event):        
         value = self.fTypeBox.GetSelection()
-        if value == 0:
+        if value == 1:
             if self.editMultiList.IsShown():
                 self.grid.Hide(self.editMultiList)
                 self.grid.Show(self.editPeakList)
-                self.peak_listVal = [self.peakList[i] for i in self.editPeakList.GetSelections()]
+                self.peak_listVal = [str(self.editPeakList.GetString(i)) for i in self.editPeakList.GetSelections()]
                 self.FitInside()
         else:
             if self.editPeakList.IsShown():
@@ -334,7 +349,15 @@ class mainPanel(scrolled.ScrolledPanel):
                 self.peak_listVal = str(self.editMultiList.GetValue())
                 self.FitInside()
         self.parent.Layout()
-            
+
+    # ----
+    def EvtPeakList(self, event):
+        self.peak_listVal = [str(self.editPeakList.GetString(i)) for i in self.editPeakList.GetSelections()]
+    
+    # ----
+    def EvtMultiList(self, event):
+        self.peak_listVal = str(self.editMultiList.GetValue())
+    
     # ----
     def EvtPsmType(self, event):
         self.psms_typeVal = str(self.editPsmType.GetValue())
@@ -342,14 +365,6 @@ class mainPanel(scrolled.ScrolledPanel):
     # ----
     def EvtReport(self, event):
         self.psmsVal = str(self.editReport.GetValue())
-        
-    # ----
-    def EvtPeakList(self, event):
-        self.peak_listVal = [self.peakList[i] for i in self.editPeakList.GetSelections()]
-    
-    # ----
-    def EvtMultiList(self, event):
-        self.peak_listVal = str(self.editMultiList.GetValue())
         
     # ----
     def EvtOutType(self, event):
