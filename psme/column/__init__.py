@@ -11,6 +11,11 @@ def build_column_providers(settings):
         column_type = column_options["type"]
         column = build_column_provider(settings, column_type, column_options)
         columns.append(column)
+    
+    # build scan number column
+    scancol = build_column_provider(settings, 'scan_number', column_options)
+    columns.append(scancol)
+    
     return columns
 
 
