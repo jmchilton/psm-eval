@@ -28,7 +28,8 @@ class tablePanel(scrolled.ScrolledPanel):
         self.rows = len(self.data)
         self.cols = len(self.data[0])
         self.myGrid = gridlib.Grid(self)
-        self.myGrid.CreateGrid(self.rows, self.cols)
+        self.myGrid.CreateGrid(self.rows, self.cols-1)
+        self.myGrid.SetSelectionBackground('blue')
         
         # dictionary for keeping track of col index corresponding to col labels
         self.columnIndexDict = {}
@@ -40,8 +41,18 @@ class tablePanel(scrolled.ScrolledPanel):
 
         # fill in data
         for i in range(self.rows):
-            for j in range(self.cols):
+            for j in range(self.cols-1):
                 self.myGrid.SetCellValue(i, j, self.data[i][j])
+        
+        # self.x, self.y keeps the current spectrum view index
+        self.x = 0
+        self.y = 0
+                
+        # keep a list of scan numbers
+        self.scanNums = [int(self.data[i][self.cols-1]) for i in range(self.rows)]
+        
+        # right click to view spectrum
+        self.myGrid.Bind(gridlib.EVT_GRID_CELL_RIGHT_CLICK, self.showPopupMenu)
 
         self.myGrid.AutoSize()
         
@@ -97,7 +108,29 @@ class tablePanel(scrolled.ScrolledPanel):
         self.parent.parent.onSpectViewer()
         scanlist = [int(i) for i in self.scanStr.split(',')]
         self.parent.parent.onButtonView(self.filepath, scanlist)
+    
+    # ----
+    def onClickView(self, event):
+        self.parent.parent.onSpectViewer()
+        scanlist = [self.scanNums[self.x]]
+        self.parent.parent.onButtonView(self.filepath, scanlist)
 
+    # ----
+    def showPopupMenu(self, event):
+        self.x, self.y = event.GetRow(), event.GetCol()
+        # highlight the row
+        self.myGrid.SelectRow(self.x)
+        if not hasattr(self, "ViewSpectrum"):
+            self.ViewSpectrum = wx.NewId()
+        
+        menu = wx.Menu()
+        item = wx.MenuItem(menu, self.ViewSpectrum, "View Spectrum")
+        menu.AppendItem(item)
+        self.PopupMenu(menu)
+        self.Bind(wx.EVT_MENU, self.onClickView, id = self.ViewSpectrum)
+        
+        menu.Destroy()
+        self.myGrid.DeselectRow(self.x)
         
     # ----
     def onFilter(self, event):

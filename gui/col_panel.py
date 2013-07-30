@@ -2,6 +2,7 @@ import wx
 from numPeaks_panel import *
 from peaksMatched_panel import *
 from ionsMatched_panel import *
+from psmSource_panel import *
 
 class colPanel(wx.Panel):
     # ToDo: When initiating, pass in all list of choices for setting up the choices box
@@ -122,7 +123,11 @@ class colPanel(wx.Panel):
             self.handleIonsMatched(event)
         if selection==self.colType[8]:
             self.colVal['title'] = self.colType[8]
-            self.colVal['type'] = self.types[8]  
+            self.colVal['type'] = self.types[8]
+        if selection==self.colType[9]:
+            self.colVal['title'] = self.colType[9]
+            self.colVal['type'] = self.types[9]
+            self.handleSrcStats(event)
 
     # ----
     def handleNumPeaks(self, event):
@@ -142,6 +147,13 @@ class colPanel(wx.Panel):
     # ----
     def handleIonsMatched(self, event):
         self.grid.Add(ionsMatchedPanel(self), wx.EXPAND)
+        self.Fit()
+        self.parent.Fit()
+        self.parent.parent.Layout()
+
+    # ----
+    def handleSrcStats(self, event):
+        self.grid.Add(psmSourcePanel(self), wx.EXPAND)
         self.Fit()
         self.parent.Fit()
         self.parent.parent.Layout()

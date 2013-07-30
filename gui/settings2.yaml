@@ -1,6 +1,9 @@
 columns:
-- title: Scan Number
-  type: scan_number
+- title: Peptide Sequence
+  type: peptide
+- statistic_name: xcorr
+  title: 'Source statistic: xcorr'
+  type: source_statistic
 ions_defs:
   aggressive:
     losses:

@@ -3,6 +3,7 @@ import wx.lib.scrolledpanel as scrolled
 import yaml
 from col_panel import *
 import wx.lib.buttons as buttons
+
 import os
 import exceptions
 from table_panel import *
@@ -66,7 +67,7 @@ class mainPanel(scrolled.ScrolledPanel):
         t = wx.StaticText(self, -1, "Please specify requirements:")
         t.SetFont(font1)
         self.grid.Add(t)
-        self.grid.AddSpacer(5,5)
+        self.grid.AddSpacer(10,10)
         self.itemIndex += 2
         
         # PSMs Type combobox
@@ -96,7 +97,7 @@ class mainPanel(scrolled.ScrolledPanel):
         self.grid.Add(self.lblReport)
 
         # load button
-        self.load = wx.Button(self, label="load")
+        self.load = wx.Button(self, size=(60, 25),label="load")
         self.load.Bind(wx.EVT_BUTTON, self.onLoad)
         self.grid.Add(self.load)
         self.itemIndex += 1
@@ -121,18 +122,18 @@ class mainPanel(scrolled.ScrolledPanel):
         self.lblPeakList.SetFont(font2)
         self.grid.Add(self.lblPeakList)
         self.itemIndex += 1
-
-        # load button
-        self.load2 = wx.Button(self, label="load")
-        self.load2.Bind(wx.EVT_BUTTON, self.onLoad2)
-        self.grid.Add(self.load2)
-        self.itemIndex +=1
         
         # Add option to select dierectly or by multifile
         self.fTypeBox = wx.RadioBox(self, label="select ", choices=self.fType, style=wx.RA_SPECIFY_COLS)
         self.Bind(wx.EVT_RADIOBOX, self.EvtFType, self.fTypeBox)
         self.grid.Add(self.fTypeBox)
         
+        # load button
+        self.load2 = wx.Button(self, size=(60, 25), label="load")
+        self.load2.Bind(wx.EVT_BUTTON, self.onLoad2)
+        self.grid.Add(self.load2)
+        self.itemIndex +=1
+
         # Default to by multifile
         self.editMultiList = wx.ComboBox(self, size=(-1, -1), choices=self.multiList, style=wx.CB_DROPDOWN)
         self.Bind(wx.EVT_COMBOBOX, self.EvtMultiList, self.editMultiList)

@@ -1,1 +1,2 @@
-Scan Number
+Peptide Sequence
+Source statistic: xcorr
