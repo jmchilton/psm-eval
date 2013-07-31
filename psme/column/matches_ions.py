@@ -19,6 +19,14 @@ class MatchesIons(UsesIonSeries):
 
     def _ions_matched(self, ions, peaks):
         ion_matcher = self.ion_matcher
+        '''
+        print [any([ion_matcher(ion, peak) for peak in peaks]) for ion in ions]
+        print "Peaks: ===================================" 
+        print peaks
+        print "Ions: =================================="
+        print [ion.peptide_context for ion in ions]
+        print [ion.label for ion in ions] 
+        '''
         return [any([ion_matcher(ion, peak) for peak in peaks]) for ion in ions]
 
     def _peaks_matched(self, ions, peaks):
