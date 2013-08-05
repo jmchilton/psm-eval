@@ -41,7 +41,8 @@ class PercentMaxSpectrumIntensityFilterFactory(IntensityThresholdFilterFactory):
         self.percent_max = filter_options.get('percent', 0.0)
 
     def _get_intensity_threshold(self, scan):
-        return (max_intensity(scan) * self.percent_max, float("inf"))
+        thresh = max_intensity(scan) * self.percent_max
+        return (thresh, float("inf"))
 
 
 class PercentTicFilterFactory(IntensityThresholdFilterFactory):

@@ -20,6 +20,14 @@ class FiltersPeaksTestCase(PsmeTestCase):
         self._assert_peak_is(peaks[0], 327.836792, 10.00239944)
         self._assert_peak_is(peaks[-1], 355.4126282, 11.12517834)
 
+    def test_intensity_percent(self):
+        # Most intense peak has intensity of  58.05626678...
+        # second has 13.014031 (around 22%)
+        peaks = self._filter_scan({"peak_filters": [{"type": "percent_max_intensity", "percent": .23}]})
+        assert len(peaks) == 1
+        peaks = self._filter_scan({"peak_filters": [{"type": "percent_max_intensity", "percent": .21}]})
+        assert len(peaks) > 1
+
     def _assert_peak_is(self, peak, expected_mz, expected_intensity):
         (mz, intensity) = peak
         self.assertAlmostEquals(expected_mz, mz, 4)
