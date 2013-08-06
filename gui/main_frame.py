@@ -5,7 +5,7 @@ import os
 
 # TODO: cleanup
 import sys
-sys.path.append("/home/ubuntu/venv/lib/python2.7/site-packages/mMass")
+sys.path.append("/home/ubuntu/ENV/lib/python2.7/site-packages/mMass")
 
 # import Python lilbraries
 import wx
@@ -1966,12 +1966,35 @@ class mainFrame(wx.Frame):
             self.spectrumPanel.Show(True)
             self.peaklistPanel.Show(True)
             self.updateControls()
-            
+    
+    def markPeaks(self, matched):
+        peaklist = self.getCurrentPeaklist().peaks
+
+        labeldict = {}
+        for pairs in matched:
+            labeldict[pairs[0]] = pairs[1]
+
+        def findIndices(matched, peaklist):
+            return [index for index in range(len(peaklist)) if peaklist[index].mz in labeldict]
+        # list of peaks to be labelled
+        toLabel = [peaklist[i] for i in findIndices(matched, peaklist)]
+        
+        # Actually label
+        curDoc = self.documents[self.currentDocument]
+
+        for peak in toLabel:
+            annot = doc.annotation(label=labeldict[peak.mz], mz=peak.mz, ai=peak.ai, base=peak.base, charge=peak.charge)
+            curDoc.annotations.append(annot)        
+            curDoc.sortAnnotations()
+            self.onDocumentChanged(items=('annotations'))
+        
+        
     # ----
     
     # Called by evaluation panel to open spectrum based on scan id
 
-    def onButtonView(self, path, scans):
+    def onButtonView(self, path, scans, matched):
+
 	self.tmpDocumentQueue.append(path)
         if self.processingDocumentQueue:
             return
@@ -2048,6 +2071,7 @@ class mainFrame(wx.Frame):
 	# release processing flag
         self.processingDocumentQueue = False
 
+        self.markPeaks(matched)
 
     # ----
 

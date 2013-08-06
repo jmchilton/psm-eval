@@ -1,9 +1,26 @@
 columns:
 - title: Peptide Sequence
   type: peptide
-- statistic_name: xcorr
-  title: 'Source statistic: xcorr'
-  type: source_statistic
+- title: Number of Peaks
+  type: num_peaks
+- ions_ref: aggressive
+  mass_tolerance: 1.5
+  title: Peaks Matched Statistics
+  type: peaks_matched
+- aggregate_by: count
+  ions:
+    losses: []
+    series:
+    - b1
+  title: Matched ['b1'] Ions
+  type: ions_matched
+- aggregate_by: count
+  ions:
+    losses: []
+    series:
+    - y1
+  title: Matched ['y1'] Ions
+  type: ions_matched
 ions_defs:
   aggressive:
     losses:
@@ -25,6 +42,6 @@ peak_filter_defs:
     percent: 0.02
     q: 3
     type: quantile
-peak_list: /home/ubuntu/psmeval/test-data/test2.mzML
-psms: /home/ubuntu/psmeval/test-data/test2.mzid
+peak_list: /home/ubuntu/psm-eval/test-data/test2.mzML
+psms: /home/ubuntu/psm-eval/test-data/test2.mzid
 psms_type: mzid

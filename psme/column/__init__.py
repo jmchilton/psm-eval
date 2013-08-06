@@ -15,6 +15,11 @@ def build_column_providers(settings):
     # build scan number column
     scancol = build_column_provider(settings, 'scan_number', column_options)
     columns.append(scancol)
+
+    # build matched pairs column
+    matched = build_column_provider(settings, 'matched_pairs', column_options)
+    columns.append(matched)
+    return columns
     
     return columns
 
@@ -111,8 +116,26 @@ class IonsMatched(ColumnProvider, AggregatesMatches, FiltersPeaks, MatchesIons):
     def calculate(self, spectra, psm):
         filtered_peaks = self._filtered_peaks(spectra)
         ions = self._get_ions(psm)
-        matched = self._ions_matched(ions, filtered_peaks)
+        matched, pairings = self._ions_matched(ions, filtered_peaks)
         return self._aggregate(matched, ions)
+
+
+@register_column_provider(name="matched_pairs")
+class MatchedPairs(ColumnProvider, AggregatesMatches, FiltersPeaks, MatchesIons):
+
+    def __init__(self, settings, **kwds):
+        super(MatchedPairs, self).__init__(**kwds)
+        self._setup_aggregate_by(aggregate_what='ions', **kwds)
+        self._setup_peak_filters(**kwds)
+        self._setup_ion_series(settings, **kwds)
+        self._setup_ion_matcher(settings, **kwds)
+
+    def calculate(self, spectra, psm):
+        filtered_peaks = self._filtered_peaks(spectra)
+        ions = self._get_ions(psm)
+	# return also matched peak, ion pairs        
+	matched, pairings = self._ions_matched(ions, filtered_peaks)
+	return pairings
 
 
 @register_column_provider(name="num_peaks")

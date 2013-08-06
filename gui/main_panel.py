@@ -278,6 +278,9 @@ class mainPanel(scrolled.ScrolledPanel):
         self.submission['peak_list'] = self.peak_listVal
         self.submission['psms_type'] = self.psms_typeVal
         self.submission['psms'] = self.psmsVal
+        # set default for convenient debugging
+        self.submission['peak_list'] = '/home/ubuntu/psm-eval/test-data/test2.mzML'
+        self.submission['psms'] = '/home/ubuntu/psm-eval/test-data/test2.mzid'
         self.submission['mass_tolerance'] = self.mass_toleranceVal
         self.submission['ions_defs'] = self.ions_defs
         self.submission['peak_filter_defs'] = self.peak_filter_defs
@@ -286,7 +289,7 @@ class mainPanel(scrolled.ScrolledPanel):
         self.submission['masstype'] = self.masstypeVal
 
         # record the path to the mzML file for opening spectrum viewer later
-        self.filepath = self.peak_listVal
+        self.filepath = self.submission['peak_list']
         
         # store column titles in a file
         f = open('../columns.txt', 'w')
