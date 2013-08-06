@@ -11,7 +11,7 @@ class FiltersPeaksTestCase(PsmeTestCase):
         self._assert_peak_is(peaks[-1], 479.9738159, 2.316269875)
 
     def test_mz_range(self):
-        peaks = self._filter_scan({"peak_filters": [{"type": "mz_range", "min": 275.0, "max": 300.0}]})
+        peaks = self._filter_scan({"peak_filters": [{"type": "mz_range_absolute", "min": 275.0, "max": 300.0}]})
         self._assert_peak_is(peaks[0], 281.3802795, 1.877650738)
         self._assert_peak_is(peaks[-1], 299.9325562, 1.883962154)
 
@@ -19,6 +19,19 @@ class FiltersPeaksTestCase(PsmeTestCase):
         peaks = self._filter_scan({"peak_filters": [{"type": "intensity_range", "min": 10.0, "max": 12.0}]})
         self._assert_peak_is(peaks[0], 327.836792, 10.00239944)
         self._assert_peak_is(peaks[-1], 355.4126282, 11.12517834)
+
+    def test_base_peak_mz(self):
+        # 479.9738155/354.541259765625
+        # 1.3537883173803076
+
+        # 149.1203003/354.541259765625
+        # 0.42060069510267517
+        peaks = self._filter_scan({"peak_filters": [{"type": "mz_range_percent_bp", "min": .42, "max": 1.4}]})
+        self.assertAlmostEqual(peaks[0][0], 149.1203003, 4)
+        self.assertAlmostEqual(peaks[-1][0], 479.9738155, 4)
+        peaks = self._filter_scan({"peak_filters": [{"type": "mz_range_percent_bp", "min": .43, "max": 1.3}]})
+        self.assertNotAlmostEqual(peaks[0][0], 149.1203003, 4)
+        self.assertNotAlmostEqual(peaks[-1][0], 479.9738155, 4)
 
     def test_intensity_percent(self):
         # Most intense peak has intensity of  58.05626678...

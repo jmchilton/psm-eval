@@ -1,15 +1,17 @@
 from pyteomics.mzml import read as mzml_read
 from re import search
 from os.path import basename
+from numpy import argmax
 
 
 class ScanReference(object):
 
-    def __init__(self, source, index=None, number=None, id=None):
+    def __init__(self, source, index=None, number=None, id=None, base_peak_mz=None):
         self.index = index
         self.number = number
         self.id = id
         self.source = source
+        self.base_peak_mz = base_peak_mz
 
     def matches_scan_from_same_source(self, scan):
         SEARCH_ORDER = ['id', 'index', 'number']
@@ -72,11 +74,12 @@ class ScanSource(object):
 
 class Scan(object):
 
-    def __init__(self, source, index, intensity_array, mz_array, number=None, id=None):
+    def __init__(self, source, index, intensity_array, mz_array, number=None, id=None, base_peak_mz=None):
         self.source = source
         self.index = index
         self.intensity_array = intensity_array
         self.mz_array = mz_array
+        self.base_peak_mz = base_peak_mz
         self._number = number
         self._id = id
 
@@ -92,9 +95,13 @@ class Scan(object):
 def mzml_spectrum_to_scan(spectrum, source, index):
     intensity_array = spectrum['intensity array']
     mz_array = spectrum['m/z array']
+    try:
+        base_peak_mz = spectrum['base peak m/z']
+    except KeyError:
+        base_peak_mz = mz_array[argmax(intensity_array)]
     id = spectrum['id']
     number = __mzml_id_to_number(id)
-    return Scan(source=source, index=index, intensity_array=intensity_array, mz_array=mz_array, id=id, number=number)
+    return Scan(source=source, index=index, intensity_array=intensity_array, mz_array=mz_array, id=id, number=number, base_peak_mz=base_peak_mz)
 
 
 def __mzml_id_to_number(scan_id):

@@ -34,6 +34,30 @@ class IntensityThresholdFilterFactory(object):
         return lambda peak: (max_inten >= peak[1]) and (peak[1] >= min_inten)
 
 
+class MzThresholdFilterFactor(object):
+
+    def __init__(self, **filter_options):
+        super(MzThresholdFilterFactor, self).__init__()
+
+    def get(self, scan):
+        (min_mz, max_mz) = self._get_mz_threshold(scan)
+        return lambda peak: (max_mz >= peak[0]) and (peak[0] >= min_mz)
+
+
+class MzRangePercentBpFilterFactory(MzThresholdFilterFactor):
+
+    def __init__(self, **filter_options):
+        super(MzThresholdFilterFactor, self).__init__()
+        self.min_percent = filter_options.get('min', 0.0)
+        self.max_percent = filter_options.get('max', float("inf"))
+
+    def _get_mz_threshold(self, scan):
+        max_percent = self.max_percent
+        min_percent = self.min_percent
+        base_peak_mz = scan.base_peak_mz
+        return min_percent * base_peak_mz, max_percent * base_peak_mz
+
+
 class PercentMaxSpectrumIntensityFilterFactory(IntensityThresholdFilterFactory):
 
     def __init__(self, **filter_options):
@@ -101,6 +125,7 @@ FILTER_FACTORY_CLASSES = {
     "percent_tic": PercentTicFilterFactory,
     "percent_max_intensity": PercentMaxSpectrumIntensityFilterFactory,
     "quantile": QuantileFilterFactory,
-    "mz_range": MzRangeFilterFactory,
+    "mz_range_absolute": MzRangeFilterFactory,
+    "mz_range_percent_bp": MzRangePercentBpFilterFactory,
     "intensity_range": IntensityRangeFilterFactory,
 }
