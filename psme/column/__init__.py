@@ -17,9 +17,10 @@ def build_column_providers(settings):
     columns.append(scancol)
 
     # build matched pairs column
-    matched = build_column_provider(settings, 'matched_pairs', column_options)
-    columns.append(matched)
-    return columns
+    for column_options in settings.get("columns"):
+        if column_type == column_options["type"]:
+            matched = build_column_provider(settings, 'matched_pairs', column_options)
+            columns.append(matched)
     
     return columns
 

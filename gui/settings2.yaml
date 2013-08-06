@@ -1,26 +1,4 @@
-columns:
-- title: Peptide Sequence
-  type: peptide
-- title: Number of Peaks
-  type: num_peaks
-- ions_ref: aggressive
-  mass_tolerance: 1.5
-  title: Peaks Matched Statistics
-  type: peaks_matched
-- aggregate_by: count
-  ions:
-    losses: []
-    series:
-    - b1
-  title: Matched ['b1'] Ions
-  type: ions_matched
-- aggregate_by: count
-  ions:
-    losses: []
-    series:
-    - y1
-  title: Matched ['y1'] Ions
-  type: ions_matched
+columns: []
 ions_defs:
   aggressive:
     losses:

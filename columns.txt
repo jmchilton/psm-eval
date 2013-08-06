@@ -1,5 +1,0 @@
-Peptide Sequence
-Number of Peaks
-Peaks Matched Statistics
-Matched ['b1'] Ions
-Matched ['y1'] Ions

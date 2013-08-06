@@ -11,6 +11,7 @@ sys.path.append("/home/ubuntu/ENV/lib/python2.7/site-packages/mMass")
 import wx
 import wx.aui
 import re
+import ast
 
 # load gui modules
 from main_panel import *
@@ -1969,11 +1970,10 @@ class mainFrame(wx.Frame):
     
     def markPeaks(self, matched):
         peaklist = self.getCurrentPeaklist().peaks
-
         labeldict = {}
-        for pairs in matched:
-            labeldict[pairs[0]] = pairs[1]
-
+        for i in range(len(matched)):
+            for pair in matched[i]:
+                labeldict[pair[0]] = pair[1]
         def findIndices(matched, peaklist):
             return [index for index in range(len(peaklist)) if peaklist[index].mz in labeldict]
         # list of peaks to be labelled

@@ -28,8 +28,12 @@ class tablePanel(scrolled.ScrolledPanel):
         # create the grid
         self.rows = len(self.data)
         self.cols = len(self.data[0])
+        
+        # number of implicit columns
+        self.implicitCols = self.cols-len(self.colLbls)
+        
         self.myGrid = gridlib.Grid(self)
-        self.myGrid.CreateGrid(self.rows, self.cols-2)
+        self.myGrid.CreateGrid(self.rows, self.cols-self.implicitCols)
         self.myGrid.SetSelectionBackground('blue')
         
         # dictionary for keeping track of col index corresponding to col labels
@@ -42,7 +46,7 @@ class tablePanel(scrolled.ScrolledPanel):
 
         # fill in data
         for i in range(self.rows):
-            for j in range(self.cols-2):
+            for j in range(self.cols-self.implicitCols):
                 self.myGrid.SetCellValue(i, j, self.data[i][j])
         
         # self.x, self.y keeps the current spectrum view index
@@ -50,11 +54,11 @@ class tablePanel(scrolled.ScrolledPanel):
         self.y = 0
                 
         # keep a list of scan numbers
-        self.scanNums = [int(self.data[i][self.cols-2]) for i in range(self.rows)]
+        self.scanNums = [int(self.data[i][self.cols-self.implicitCols]) for i in range(self.rows)]
 
         # keep a list of matched ion peak pairs
-        self.matched = [self.data[i][self.cols-1] for i in range(self.rows)]
-        
+        self.matched = [self.data[i][self.cols-self.implicitCols+1:self.cols] for i in range(self.rows)]
+
         # right click to view spectrum
         self.myGrid.Bind(gridlib.EVT_GRID_CELL_RIGHT_CLICK, self.showPopupMenu)
 
@@ -118,8 +122,9 @@ class tablePanel(scrolled.ScrolledPanel):
     def onClickView(self, event):
         self.parent.parent.onSpectViewer()
         scanlist = [self.scanNums[self.x]]
-        matched = ast.literal_eval(self.matched[self.x])
-        self.parent.parent.onButtonView(self.filepath, scanlist, matched)
+        matched = self.matched[self.x]
+        matchedlist = [ast.literal_eval(match) for match in matched]
+        self.parent.parent.onButtonView(self.filepath, scanlist, matchedlist)
 
     # ----
     def showPopupMenu(self, event):
