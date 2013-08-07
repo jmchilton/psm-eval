@@ -1,12 +1,15 @@
 import wx
 import wx.lib.scrolledpanel as scrolled
 import yaml
-from col_panel import *
 import wx.lib.buttons as buttons
 
 import os
 import exceptions
+
+from col_panel import *
 from table_panel import *
+from psme.driver import *
+from psme.settings import *
 
 
 class mainPanel(scrolled.ScrolledPanel):
@@ -92,7 +95,7 @@ class mainPanel(scrolled.ScrolledPanel):
         # keeps track of what is already in the choices of the combobox
         self.report = []
 
-        self.lblReport = wx.StaticText(self, label="ProteinPilot Peptide Report:")
+        self.lblReport = wx.StaticText(self, label="MzidentML containing PSMs:")
         self.lblReport.SetFont(font2)
         self.grid.Add(self.lblReport)
 
@@ -292,24 +295,26 @@ class mainPanel(scrolled.ScrolledPanel):
         self.filepath = self.submission['peak_list']
         
         # store column titles in a file
-        f = open('../columns.txt', 'w')
+        f = open('./columns.txt', 'w')
         for col in self.submission['columns']:
             f.write("%s\n" % col['title'])
         f.close()
         
         # create yaml file based on submission
-        stream = file('settings2.yaml', 'w')
+        stream = file('settings.yaml', 'w')
         yaml.dump(self.submission, stream, default_flow_style=False)
         
         # This can be made better and cleaner?
         # python 2.7 needed to run pyteomics, but 2.6 needed to run the installed version of wxpython
         # TODO: Maybe add a progress bar
         # call psme core functions
-        os.system('cd .. && python -m psme.main')
+        #os.system('cd .. && python -m psme.main')
+        settings = load_settings()
+        evaluate(settings)
         self.buttonExe.SetLabel('Execute')
         
         # write results to file, then open in new notebook page
-        f2 = open('../results.tsv', 'r')
+        f2 = open('./results.tsv', 'r')
         curPage = self.parent.AddPage(tablePanel(self.parent, 1, f2, self.filepath), "Result %d" % self.evalNum, select = True)
         
         '''
@@ -365,6 +370,11 @@ class mainPanel(scrolled.ScrolledPanel):
     # ----
     def EvtPsmType(self, event):
         self.psms_typeVal = str(self.editPsmType.GetValue())
+        if self.psms_typeVal == 'mzid':
+            self.lblReport.SetLabel('MzidentML containing PSMs:')
+        else:
+            self.lblReport.SetLabel('ProteinPilot Peptied Report:')
+        
     
     # ----
     def EvtReport(self, event):

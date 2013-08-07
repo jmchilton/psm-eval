@@ -3,11 +3,7 @@ import time
 import threading
 import os
 
-# TODO: cleanup
-import sys
-sys.path.append("/home/ubuntu/ENV/lib/python2.7/site-packages/mMass")
-
-# import Python lilbraries
+# import Python libraries
 import wx
 import wx.aui
 import re
@@ -1296,14 +1292,14 @@ class mainFrame(wx.Frame):
 
     def getDocumentScanList(self, path, docType):
         """Get scans from document."""
-        
         modified = os.path.getmtime(path)
+        
         
         # try to load from buffer
         if path in self.bufferedScanlists and modified == self.bufferedScanlists[path][0]:
             self.tmpScanlist = self.bufferedScanlists[path][1]
             return
-        
+
         # set parser
         if docType == 'mzData':
             parser = mspy.parseMZDATA(path)
@@ -1315,10 +1311,11 @@ class mainFrame(wx.Frame):
             parser = mspy.parseMGF(path)
         else:
             return
-        
+
         # load scans
-        self.tmpScanlist = parser.scanlist()
         
+        self.tmpScanlist = parser.scanlist()
+
         # remember scan list
         if self.tmpScanlist:
             self.bufferedScanlists[path] = (modified, self.tmpScanlist)
@@ -2042,6 +2039,7 @@ class mainFrame(wx.Frame):
             # load document
             process = threading.Thread(target=self.runDocumentParser, kwargs={'path':path, 'docType':docType, 'scan':scan})
             process.start()
+
             while process.isAlive():
                 gauge.pulse()
             

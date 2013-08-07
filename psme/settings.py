@@ -8,7 +8,7 @@ def load_settings():
 
     (options, _) = option_parser.parse_args()
 
-    settings_path = "./gui/settings2.yaml"
+    settings_path = "./settings.yaml"
 
     settings = __read_yaml(settings_path)
  
