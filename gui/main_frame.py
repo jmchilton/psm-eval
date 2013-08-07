@@ -30,6 +30,8 @@ import mMass.gui.doc as doc
 # Sequence
 from mMass.gui.panel_sequence import panelSequence
 from mMass.gui.dlg_select_sequences import dlgSelectSequences
+from mMass.gui.panel_mass_to_formula import panelMassToFormula
+from mMass.gui.panel_mass_calculator import panelMassCalculator
 
 # Main Frame
 
@@ -396,6 +398,8 @@ class mainFrame(wx.Frame):
         # init other tools
         self.documentInfoPanel = None
         self.sequencePanel = None
+        self.massToFormulaPanel = None
+        self.massCalculatorPanel = None
         
         # manage frames
         self.AUIManager = wx.aui.AuiManager()
@@ -1944,6 +1948,89 @@ class mainFrame(wx.Frame):
         peaklist = mspy.peaklist(peaklist)
         
         return peaklist
+    # ----
+    
+    def onToolsMassToFormula(self, evt=None, mass=None, charge=None, tolerance=None, units=None, agentFormula=None):
+        """Show mass to formula tool panel."""
+        
+        # destroy panel
+        if self.massToFormulaPanel and evt:
+            self.massToFormulaPanel.Close()
+            return
+        
+        # init panel
+        if not self.massToFormulaPanel:
+            self.massToFormulaPanel = panelMassToFormula(self)
+            self.massToFormulaPanel.Centre()
+            self.massToFormulaPanel.Show(True)
+        
+        # get current document
+        docData = None
+        if self.currentDocument != None:
+            docData = self.documents[self.currentDocument]
+        
+        # set data
+        self.massToFormulaPanel.setData(document=docData, mass=mass, charge=charge, tolerance=tolerance, units=units, agentFormula=agentFormula)
+        self.massToFormulaPanel.Raise()
+    # ----
+    
+    def onToolsMassCalculator(self, evt=None, formula=None, charge=None, agentFormula='H', agentCharge=1, fwhm=None):
+        """Show mass calculation tool panel."""
+        
+        # destroy panel
+        if self.massCalculatorPanel and evt:
+            self.massCalculatorPanel.Close()
+            return
+        
+        # init panel
+        if not self.massCalculatorPanel:
+            self.massCalculatorPanel = panelMassCalculator(self)
+            self.massCalculatorPanel.Centre()
+            self.massCalculatorPanel.Show(True)
+        
+        # set no formula
+        if formula == None:
+            self.massCalculatorPanel.setData(None)
+            self.massCalculatorPanel.Raise()
+        
+        # set current formula
+        else:
+            fwhm = None
+            intensity = None
+            baseline = None
+            
+            # try to approximate intensity and baseline
+            if self.currentDocument != None and charge != None and self.documents[self.currentDocument].spectrum.hasprofile():
+                compound = mspy.compound(formula)
+                mz = compound.mz(charge=charge, agentFormula=agentFormula, agentCharge=agentCharge)[0]
+                peak = mspy.labelpeak(
+                    signal = self.documents[self.currentDocument].spectrum.profile,
+                    mz = mz,
+                    pickingHeight = 0.95
+                )
+                if peak:
+                    intensity = peak.ai
+                    baseline = peak.base
+                    fwhm = peak.fwhm
+            
+            # set data
+            self.massCalculatorPanel.setData(
+                formula = formula,
+                charge = charge,
+                agentFormula = agentFormula,
+                agentCharge = agentCharge,
+                fwhm = fwhm,
+                intensity = intensity,
+                baseline = baseline
+            )
+            
+            # raise panel
+            self.massCalculatorPanel.Raise()
+    # ----
+            
+    def updateTmpSpectrum(self, points, flipped=False, refresh=True):
+        """Update tmp spectrum in canvas."""
+        self.spectrumPanel.updateTmpSpectrum(points, flipped=flipped, refresh=refresh)
     # ----
 
 
