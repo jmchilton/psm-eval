@@ -99,7 +99,7 @@ class resultFilter(wx.Panel):
             colNum = len(filteredData[0])
         for i in range(rowNum):
             for j in range(colNum):
-                self.parent.myGrid.SetCellValue(i, j, filteredData[i][j])
+                self.parent.myGrid.SetCellValue(i, j, str(filteredData[i][j]))
         self.parent.myGrid.AutoSize()
 
     # compare rows against requirements

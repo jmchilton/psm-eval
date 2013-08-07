@@ -4,31 +4,15 @@ from .column import build_column_providers
 from .peak_list import ScanSourceManager
 from .output import OutputFormatter
 
-
+# Not using this function now so can change to whatever needed to accommodate galaxy
 def evaluate(settings, output_formatter=OutputFormatter):
     """
     Collect statistics about each PSM and write out to file
     based on output_formatter.
     """
     collected_statistics = collect_statistics(settings)
-    f = open('columns.txt', 'r')
-    columns = []
-    for line in f:
-        columns.append(line[:-1])
-    f.close()
-    f2 = open('results.tsv', 'w')
     with output_formatter(settings) as output:
-        for column in columns:
-            f2.write(column+'\t')
-            #f2.write('\t')
-        f2.write('\n')
         output.write_row(columns)
-        for row in collected_statistics:
-            for item in row:
-                f2.write(str(item))
-                f2.write('\t')
-            f2.write('\n')
-            output.write_row(row)
 
 
 def collect_statistics(settings):

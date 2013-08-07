@@ -22,6 +22,9 @@ class mainPanel(scrolled.ScrolledPanel):
         self.SetAutoLayout(True)
         
         self.parent = parent
+        
+        # boolean to keep track of whether to output results in tsv file
+        self.outFile = False
        
         # keep track of the number of eavaluation pages added
         self.evalNum = evalNum
@@ -210,6 +213,12 @@ class mainPanel(scrolled.ScrolledPanel):
         self.grid.AddSpacer(10,10)
         self.itemIndex += 3
         
+        # Output to file checkbox
+        self.checkOut = wx.CheckBox(self, label="Output Results to File")
+        self.checkOut.Bind(wx.EVT_CHECKBOX, self.onCheckOut)
+        self.grid.Add(self.checkOut, 0)
+        self.itemIndex += 1
+        
         # Execute button
         self.buttonExe = wx.Button(self, -1, label="Execute", size=(-1, -1))
         self.buttonExe.SetForegroundColour(wx.WHITE)
@@ -227,8 +236,12 @@ class mainPanel(scrolled.ScrolledPanel):
         
 # ========================================================================= #
 # Events 
+    def onCheckOut(self, event):
+        if self.checkOut.GetValue():
+            self.outFile = True
+        else:
+            self.outFile = False
     
-    # TODO: both load events need to handle if the files have already been loaded (keep a list of loaded files in self)
     def onLoad(self, event):
         filters = 'mzid file (*.mzid) |*.mzid| text files (*.txt) |*.txt| All files (*.*)|*.*'
         dialog = wx.FileDialog(None, message = 'Load report for PSME', wildcard = filters, style = wx.FD_OPEN | wx.FD_MULTIPLE)
@@ -272,18 +285,16 @@ class mainPanel(scrolled.ScrolledPanel):
                 
     def onButtonExe(self, event):
         # Wait till analysis finishes before changing back to original button label
-        self.buttonExe.SetLabel('Matching...')
+        self.buttonExe.SetLabel('Working...')
         wx.Yield()
         
         # create submission list
-        print self.peak_listVal
-        print self.psmsVal
         self.submission['peak_list'] = self.peak_listVal
         self.submission['psms_type'] = self.psms_typeVal
         self.submission['psms'] = self.psmsVal
         # set default for convenient debugging
-        self.submission['peak_list'] = '/home/ubuntu/psm-eval/test-data/test2.mzML'
-        self.submission['psms'] = '/home/ubuntu/psm-eval/test-data/test2.mzid'
+        # self.submission['peak_list'] = '/home/ubuntu/psm-eval/test-data/test2.mzML'
+        # self.submission['psms'] = '/home/ubuntu/psm-eval/test-data/test2.mzid'
         self.submission['mass_tolerance'] = self.mass_toleranceVal
         self.submission['ions_defs'] = self.ions_defs
         self.submission['peak_filter_defs'] = self.peak_filter_defs
@@ -294,50 +305,31 @@ class mainPanel(scrolled.ScrolledPanel):
         # record the path to the mzML file for opening spectrum viewer later
         self.filepath = self.submission['peak_list']
         
-        # store column titles in a file
-        f = open('./columns.txt', 'w')
-        for col in self.submission['columns']:
-            f.write("%s\n" % col['title'])
-        f.close()
-        
         # create yaml file based on submission
         stream = file('settings.yaml', 'w')
         yaml.dump(self.submission, stream, default_flow_style=False)
         
-        # This can be made better and cleaner?
-        # python 2.7 needed to run pyteomics, but 2.6 needed to run the installed version of wxpython
         # TODO: Maybe add a progress bar
-        # call psme core functions
-        #os.system('cd .. && python -m psme.main')
+        # os.system('cd .. && python -m psme.main')
+        
         settings = load_settings()
-        evaluate(settings)
+        
+        # evaluate(settings)
+
+        stats = collect_statistics(settings)
+        colLbls = [col['title'] for col in self.submission['columns']]
+        stats.insert(0, colLbls)
+
         self.buttonExe.SetLabel('Execute')
         
-        # write results to file, then open in new notebook page
-        f2 = open('./results.tsv', 'r')
-        curPage = self.parent.AddPage(tablePanel(self.parent, 1, f2, self.filepath), "Result %d" % self.evalNum, select = True)
-        
-        '''
-        progressMax = 50
-        self.dialog = wx.ProgressDialog("A progress box", "Gathering information...", progressMax, parent = self, style=wx.PD_CAN_ABORT)
-        keepGoing = True
-        count = 0
-        while keepGoing and count < progressMax and os.path.exists("/home/support/wangco/psm-eval/'results.tsv'")==False:
-            count = count + 2
-            wx.Sleep(1)
-            keepGoing = self.dialog.Update(count)
-
-        
-        # Finish on ok, then display option to open file in Excel.
-        self.dialog.Destroy()
-        '''
+        curPage = self.parent.AddPage(tablePanel(self.parent, 1, stats, self.filepath, self.outFile), "Result %d" % self.evalNum, select = True)
        
     # ----
 
     def onAddCol(self, event):
         self.itemIndex += 1
         self.numCols += 1
-        self.grid.Insert(self.itemIndex-4, colPanel(self, self.numCols), wx.EXPAND)
+        self.grid.Insert(self.itemIndex-5, colPanel(self, self.numCols), wx.EXPAND)
         self.FitInside()
         self.parent.Layout()
        

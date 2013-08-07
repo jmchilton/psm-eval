@@ -5,7 +5,7 @@ from resultFilter import *
 import ast
 
 class tablePanel(scrolled.ScrolledPanel):
-    def __init__(self, parent, evalNum, dataFile, filepath):
+    def __init__(self, parent, evalNum, stats, filepath, outFile):
         """Constructor"""
         scrolled.ScrolledPanel.__init__(self, parent, name='Result %d' % evalNum)
         self.SetAutoLayout(True)
@@ -20,10 +20,10 @@ class tablePanel(scrolled.ScrolledPanel):
         self.filepath = filepath
 	
         # set column labels
-        self.colLbls = dataFile.readline().split('\t')[:-1]
+        self.colLbls = stats[0]
         
         # set data
-        self.data = [line.split('\t')[:-1] for line in dataFile]
+        self.data = stats[1:]
         
         # create the grid
         self.rows = len(self.data)
@@ -47,7 +47,8 @@ class tablePanel(scrolled.ScrolledPanel):
         # fill in data
         for i in range(self.rows):
             for j in range(self.cols-self.implicitCols):
-                self.myGrid.SetCellValue(i, j, self.data[i][j])
+                # total ion current loses a little precision when using str()
+                self.myGrid.SetCellValue(i, j, str(self.data[i][j]))
         
         # self.x, self.y keeps the current spectrum view index
         self.x = 0
@@ -63,6 +64,26 @@ class tablePanel(scrolled.ScrolledPanel):
         self.myGrid.Bind(gridlib.EVT_GRID_CELL_RIGHT_CLICK, self.showPopupMenu)
 
         self.myGrid.AutoSize()
+
+        # store results to file if output is True
+        print outFile
+        if outFile:
+            f = open('./results.tsv', 'w')
+            for column in self.colLbls:
+                f.write(column+'\t')
+            f.write('\n')
+            '''
+            for row in self.data:
+                for item in row:
+                    f.write(str(item))
+                    f.write('\t')
+                f.write('\n')'''
+            for i in range(self.rows):
+                for j in range(self.cols-self.implicitCols):
+                    f.write(str(self.data[i][j]))
+                    f.write('\t')
+                f.write('\n')
+            f.close()
         
         # set sizer
         self.sizer = wx.BoxSizer(wx.VERTICAL)
@@ -123,13 +144,12 @@ class tablePanel(scrolled.ScrolledPanel):
         self.parent.parent.onSpectViewer()
         scanlist = [self.scanNums[self.x]]
         matched = self.matched[self.x]
-        matchedlist = [ast.literal_eval(match) for match in matched]
+        matchedlist = [match for match in matched]
         self.parent.parent.onButtonView(self.filepath, scanlist, matchedlist)
 
     # ----
     def showPopupMenu(self, event):
         self.x, self.y = event.GetRow(), event.GetCol()
-        # highlight the row
         self.myGrid.SelectRow(self.x)
         if not hasattr(self, "ViewSpectrum"):
             self.ViewSpectrum = wx.NewId()
@@ -162,7 +182,7 @@ class tablePanel(scrolled.ScrolledPanel):
         self.specified.clear()
         for i in range(self.rows):
             for j in range(self.cols):
-                self.myGrid.SetCellValue(i, j, self.data[i][j])
+                self.myGrid.SetCellValue(i, j, str(self.data[i][j]))
         self.Fit()
         self.parent.Layout()
         
