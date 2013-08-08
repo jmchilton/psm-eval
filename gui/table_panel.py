@@ -24,7 +24,6 @@ class tablePanel(scrolled.ScrolledPanel):
         
         # set data
         self.data = stats[1:]
-        
         # create the grid
         self.rows = len(self.data)
         self.cols = len(self.data[0])
@@ -66,7 +65,6 @@ class tablePanel(scrolled.ScrolledPanel):
         self.myGrid.AutoSize()
 
         # store results to file if output is True
-        print outFile
         if outFile:
             f = open('./results.tsv', 'w')
             for column in self.colLbls:

@@ -325,9 +325,11 @@ class mainFrame(wx.Frame):
 # =================================#
         # Evaluation menu
         evalmenu = wx.Menu()
-        evalmenu.Append(ID_evalRes, "Evaluate Results"+HK_evalRes, "")
+        evalmenu.Append(ID_evalRes, "New Evaluation"+HK_evalRes, "")
+        evalmenu.Append(ID_toRes, "Back to Results"+HK_toRes, "")
 
         self.Bind(wx.EVT_MENU, self.onEvalRes, id=ID_evalRes)
+        self.Bind(wx.EVT_MENU, self.onRes, id=ID_toRes)
         
         self.menubar.Append(evalmenu, "Evaluation")
 
@@ -2039,6 +2041,7 @@ class mainFrame(wx.Frame):
     # Switch between windows for spectrum viewer and PSME
 
     def onSpectViewer(self, event=None):
+        self.nb.Show(False)
         if hasattr(self, 'spectrumPanel') == False:
             self.makeGUI()
             self.updateControls()
@@ -2166,9 +2169,21 @@ class mainFrame(wx.Frame):
             self.spectrumPanel.Show(False)
             self.peaklistPanel.Show(False)
 
+        self.nb.Show(True)
         self.updateControls()
         self.evalNum += 1
-        curPage = self.nb.AddPage(mainPanel(self.nb, -1, "Evaluation", self.evalNum), "Evaluation %d" % self.evalNum, select = True)
+        self.nb.AddPage(mainPanel(self.nb, -1, "Evaluation", self.evalNum), "Evaluation %d" % self.evalNum, select = True)
+        
+    # ----
+
+    def onRes(self, event=None):
+        if hasattr(self, 'spectrumPanel') and self.spectrumPanel.IsShown():
+            self.documentsPanel.Show(False)
+            self.spectrumPanel.Show(False)
+            self.peaklistPanel.Show(False)
+
+        self.nb.Show(True)
+        self.updateControls()
     
     
 

@@ -169,8 +169,10 @@ HK_processingBaseline = '\tCtrl+B'
 
 # evaluation
 ID_evalRes = wx.NewId()
+ID_toRes = wx.NewId()
 
 HK_evalRes = '\tCtrl+E'
+HK_toRes  = '\tCtrl+R'
 
 # sequence
 ID_sequenceNew = wx.NewId()
