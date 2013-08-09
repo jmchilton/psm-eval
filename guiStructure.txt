@@ -1,0 +1,10 @@
+Structure of GUI:
+
+main_frame.py: Main Frame, contains:
+    -main_panel.py: interface for PSM-E, contains:
+        -various widgets
+        -col-panel.py: panel for each column, contains:
+	    -various different panels for different columnt types
+	-table_panel.py: where results are printed, called upon execution, contains:
+	    -resultFilter.py: the filter panel
+    -various functions and panels from mMass

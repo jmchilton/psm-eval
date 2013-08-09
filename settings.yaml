@@ -1,0 +1,40 @@
+columns:
+- title: Peptide Sequence
+  type: peptide
+- aggregate_by: count
+  ions:
+    losses: []
+    series:
+    - b1
+    - b2
+  title: Matched ['b1', 'b2'] Ions
+  type: ions_matched
+- statistic_name: xcorr
+  title: 'Source statistic: xcorr'
+  type: source_statistic
+- title: Total Ion Current
+  type: total_ion_current
+ions_defs:
+  aggressive:
+    losses:
+    - H2O
+    - CO
+    - NH3
+    series:
+    - y1
+    - b1
+    - internal
+    - m1
+    - m2
+mass_tolerance: 1.5
+masstype: Monoisotopic
+outtype: Tabular (tsv)
+peak_filter_defs:
+  top_third:
+    k: 1
+    percent: 0.02
+    q: 3
+    type: quantile
+peak_list: /home/ubuntu/psm-eval/test-data/test2.mzML
+psms: /home/ubuntu/psm-eval/test-data/test2.mzid
+psms_type: mzid
