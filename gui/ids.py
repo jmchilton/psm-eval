@@ -92,6 +92,8 @@ ID_viewPeaklistColumnMass = wx.NewId()
 ID_viewPeaklistColumnFwhm = wx.NewId()
 ID_viewPeaklistColumnResol = wx.NewId()
 ID_viewPeaklistColumnGroup = wx.NewId()
+ID_nextScan = wx.NewId()
+ID_prevScan = wx.NewId()
 
 HK_viewPosBars = '\tAlt+Ctrl+P'
 HK_viewGel = '\tAlt+Ctrl+G'
@@ -104,6 +106,8 @@ HK_viewAutoscale = '\tAlt+Ctrl+A'
 HK_viewNormalize = '\tAlt+Ctrl+N'
 HK_viewRange = '\tAlt+Ctrl+R'
 HK_viewCanvasProperties = '\tCtrl+J'
+HK_nextScan = '\tAlt+N'
+HK_prevScan = '\tAlt+P'
 
 # processing
 ID_processingUndo = wx.NewId()

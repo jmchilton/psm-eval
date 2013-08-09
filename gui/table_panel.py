@@ -145,6 +145,10 @@ class tablePanel(scrolled.ScrolledPanel):
     
     # ----
     def onClickView(self, event):
+        self.parent.parent.curscanIndex = self.x
+        self.parent.parent.matchedList = self.matched
+        self.parent.parent.curfPath = self.filepath
+        self.parent.parent.scanNums = self.scanNums
         self.parent.parent.onSpectViewer()
         scanlist = [self.scanNums[self.x]]
         matched = self.matched[self.x]

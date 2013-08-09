@@ -76,6 +76,12 @@ class mainFrame(wx.Frame):
         self.tmpSequenceList = None
         self.tmpCompassXport = None
         self.tmpLibrarySaved = None
+        
+        # set variables to keep track of matched results and scan indices
+        self.curscanIndex = 0
+        self.matchedList = None
+        self.curfPath = None
+        self.scanNums = None
 
         # Notebook widget for PSM-evaluations
         self.nb = wx.aui.AuiNotebook(self)
@@ -195,6 +201,10 @@ class mainFrame(wx.Frame):
         view.AppendSeparator()
         view.Append(ID_viewCanvasProperties, "Canvas Properties..."+HK_viewCanvasProperties, "")
         
+        view.AppendSeparator()
+        view.Append(ID_nextScan, "Next Scan"+HK_nextScan, "")
+        view.Append(ID_prevScan, "Previous Scan"+HK_prevScan, "")
+        
         self.Bind(wx.EVT_MENU, self.onView, id=ID_viewLegend)
         self.Bind(wx.EVT_MENU, self.onView, id=ID_viewGrid)
         self.Bind(wx.EVT_MENU, self.onView, id=ID_viewMinorTicks)
@@ -246,6 +256,9 @@ class mainFrame(wx.Frame):
         self.Bind(wx.EVT_MENU, self.onDocumentOffset, id=ID_documentOffset)
         self.Bind(wx.EVT_MENU, self.onDocumentOffset, id=ID_documentClearOffsets)
         self.Bind(wx.EVT_MENU, self.onViewCanvasProperties, id=ID_viewCanvasProperties)
+
+        self.Bind(wx.EVT_MENU, self.onNextScan, id=ID_nextScan)
+        self.Bind(wx.EVT_MENU, self.onPrevScan, id=ID_prevScan)
         
         self.menubar.Append(view, "View")
         
@@ -540,6 +553,17 @@ class mainFrame(wx.Frame):
         self.menubar.Enable(ID_sequenceSearch, enable)
         self.menubar.Enable(ID_sequenceMatchesDelete, bool(enable and sequence.matches))
         self.menubar.Enable(ID_sequenceDelete, enable)
+
+        # update next/prev scan
+        if self.scanNums == None or self.matchedList == None:
+            enablenext = False
+            enableprev = False
+        
+        else:
+            enablenext = (self.curscanIndex != len(self.scanNums)-1)
+            enableprev = (self.curscanIndex != 0)
+        self.menubar.Enable(ID_nextScan, enablenext)
+        self.menubar.Enable(ID_prevScan, enableprev)
         
         
     # ----
@@ -840,6 +864,32 @@ class mainFrame(wx.Frame):
     def updateMassPoints(self, points):
         """Highlight specified points in the spectrum."""
         self.spectrumPanel.highlightPoints(points)
+    # ----
+
+        
+    # previous / next spectrum viewing
+    def onNextScan(self, evt):
+        self.onDocumentCloseAll()
+        self.curscanIndex += 1
+        scanlist = [self.scanNums[self.curscanIndex]]
+        matched = self.matchedList[self.curscanIndex]
+        matchedlist = [match for match in matched]
+        self.onButtonView(self.curfPath, scanlist, matchedlist)
+        
+        self.updateControls()
+    
+    # ----
+    
+    def onPrevScan(self, evt):
+        self.onDocumentCloseAll()
+        self.curscanIndex -= 1
+        scanlist = [self.scanNums[self.curscanIndex]]
+        matched = self.matchedList[self.curscanIndex]
+        matchedlist = [match for match in matched]
+        self.onButtonView(self.curfPath, scanlist, matchedlist)
+        
+        self.updateControls()
+
     # ----
 
 #===============================================================================#
