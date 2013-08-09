@@ -20,14 +20,6 @@ class MatchesIons(UsesIonSeries):
         
     def _ions_matched(self, ions, peaks):
         ion_matcher = self.ion_matcher
-        '''
-        print [any([ion_matcher(ion, peak) for peak in peaks]) for ion in ions]
-        print "Peaks: ===================================" 
-        print peaks
-        print "Ions: =================================="
-        print [ion.peptide_context for ion in ions]
-        print [ion.label for ion in ions] 
-        '''
         def find_most_intense_peak(ion):
             all_matching_peaks = [peak for peak in peaks if ion_matcher(ion, peak)]
             if not all_matching_peaks:

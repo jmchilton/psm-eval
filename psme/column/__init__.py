@@ -18,9 +18,9 @@ def build_column_providers(settings):
 
     # build matched pairs column
     for column_options in settings.get("columns"):
-        if column_type == column_options["type"]:
-            matched = build_column_provider(settings, 'matched_pairs', column_options)
-            columns.append(matched)
+        #if column_type == column_options["type"]:
+        matched = build_column_provider(settings, 'matched_pairs', column_options)
+        columns.append(matched)
     
     return columns
 

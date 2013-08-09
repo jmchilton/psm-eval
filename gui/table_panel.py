@@ -2,7 +2,6 @@ import wx
 import wx.grid as gridlib
 import wx.lib.scrolledpanel as scrolled
 from resultFilter import *
-import ast
 
 class tablePanel(scrolled.ScrolledPanel):
     def __init__(self, parent, evalNum, stats, filepath, outFile):
@@ -122,6 +121,13 @@ class tablePanel(scrolled.ScrolledPanel):
         # dictionary for keeping track of current filter standards
         self.specified = {}
         
+        # create popup menu
+        self.ViewSpectrum = wx.NewId()
+        self.popupMenu = wx.Menu()
+        item = wx.MenuItem(self.popupMenu, self.ViewSpectrum, "View Spectrum")      
+        self.Bind(wx.EVT_MENU, self.onClickView, id = self.ViewSpectrum)
+        self.popupMenu.AppendItem(item)
+        
 # =============================================================== #
         
 # Events
@@ -149,16 +155,7 @@ class tablePanel(scrolled.ScrolledPanel):
     def showPopupMenu(self, event):
         self.x, self.y = event.GetRow(), event.GetCol()
         self.myGrid.SelectRow(self.x)
-        if not hasattr(self, "ViewSpectrum"):
-            self.ViewSpectrum = wx.NewId()
-        
-        menu = wx.Menu()
-        item = wx.MenuItem(menu, self.ViewSpectrum, "View Spectrum")
-        menu.AppendItem(item)
-        self.PopupMenu(menu)
-        self.Bind(wx.EVT_MENU, self.onClickView, id = self.ViewSpectrum)
-        
-        menu.Destroy()
+        self.PopupMenu(self.popupMenu)
         self.myGrid.DeselectRow(self.x)
         
     # ----

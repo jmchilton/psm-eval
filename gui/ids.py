@@ -20,39 +20,17 @@ import wx
 
 # common
 ID_quit = wx.ID_EXIT
-ID_about = wx.ID_ABOUT
-ID_preferences = wx.ID_PREFERENCES
 
 HK_quit = '\tCtrl+Q'
-HK_preferences = ''
 if wx.Platform == '__WXMAC__':
     HK_preferences = '\tCtrl+,'
 
 # file
 ID_documentNew = wx.NewId()
-ID_documentNewFromClipboard = wx.NewId()
-ID_documentDuplicate = wx.NewId()
 ID_documentOpen = wx.NewId()
-ID_documentRecent = wx.NewId()
 ID_documentClose = wx.NewId()
 ID_documentCloseAll = wx.NewId()
-ID_documentSave = wx.NewId()
-ID_documentSaveAs = wx.NewId()
-ID_documentSaveAll = wx.NewId()
-ID_documentExport = wx.NewId()
-ID_documentInfo = wx.NewId()
-ID_documentPrintSpectrum = wx.NewId()
-ID_documentReport = wx.NewId()
-ID_documentFlip = wx.NewId()
-ID_documentOffset = wx.NewId()
-ID_documentClearOffset = wx.NewId()
-ID_documentClearOffsets = wx.NewId()
-ID_documentColour = wx.NewId()
-ID_documentStyle = wx.NewId()
-ID_documentStyleSolid = wx.NewId()
-ID_documentStyleDot = wx.NewId()
-ID_documentStyleDash = wx.NewId()
-ID_documentStyleDotDash = wx.NewId()
+
 ID_documentAnnotationEdit = wx.NewId()
 ID_documentAnnotationDelete = wx.NewId()
 ID_documentAnnotationSendToMassCalculator = wx.NewId()
@@ -62,31 +40,10 @@ ID_documentAnnotationsDelete = wx.NewId()
 ID_documentAnnotationsCalibrateBy = wx.NewId()
 ID_documentNotationsDelete = wx.NewId()
 
-ID_documentRecent0 = wx.NewId()
-ID_documentRecent1 = wx.NewId()
-ID_documentRecent2 = wx.NewId()
-ID_documentRecent3 = wx.NewId()
-ID_documentRecent4 = wx.NewId()
-ID_documentRecent5 = wx.NewId()
-ID_documentRecent6 = wx.NewId()
-ID_documentRecent7 = wx.NewId()
-ID_documentRecent8 = wx.NewId()
-ID_documentRecent9 = wx.NewId()
-ID_documentRecentClear = wx.NewId()
-
 HK_documentNew = '\tCtrl+N'
-HK_documentNewFromClipboard = '\tShift+Ctrl+N'
 HK_documentOpen = '\tCtrl+O'
 HK_documentClose = '\tCtrl+W'
 HK_documentCloseAll = '\tShift+Ctrl+W'
-HK_documentSave = '\tCtrl+S'
-HK_documentSaveAs = '\tShift+Ctrl+S'
-HK_documentSaveAll = '\tAlt+Ctrl+S'
-HK_documentExport = '\tCtrl+E'
-HK_documentInfo = '\tCtrl+I'
-HK_documentPrintSpectrum = '\tCtrl+P'
-HK_documentReport = '\tShift+Ctrl+R'
-HK_documentFlip = '\tAlt+Ctrl+F'
 
 # view
 ID_viewGrid = wx.NewId()
@@ -237,60 +194,6 @@ HK_toolsComparePeaklists = '\tShift+Ctrl+C'
 HK_toolsSpectrumGenerator = '\tShift+Ctrl+G'
 HK_toolsEnvelopeFit = '\tShift+Ctrl+V'
 
-# library
-ID_libraryCompounds = wx.NewId()
-ID_libraryModifications = wx.NewId()
-ID_libraryMonomers = wx.NewId()
-ID_libraryEnzymes = wx.NewId()
-ID_libraryReferences = wx.NewId()
-ID_libraryMascot = wx.NewId()
-ID_libraryPresets = wx.NewId()
-
-# links
-ID_linksBiomedMSTools = wx.NewId()
-ID_linksBLAST = wx.NewId()
-ID_linksClustalW = wx.NewId()
-ID_linksDeltaMass = wx.NewId()
-ID_linksEMBLEBI = wx.NewId()
-ID_linksExpasy = wx.NewId()
-ID_linksFASTA = wx.NewId()
-ID_linksMatrixScience = wx.NewId()
-ID_linksMUSCLE = wx.NewId()
-ID_linksNCBI = wx.NewId()
-ID_linksPDB = wx.NewId()
-ID_linksPIR = wx.NewId()
-ID_linksProfound = wx.NewId()
-ID_linksProspector = wx.NewId()
-ID_linksUniMod = wx.NewId()
-ID_linksUniProt = wx.NewId()
-
-# window
-ID_windowMaximize = wx.NewId()
-ID_windowMinimize = wx.NewId()
-ID_windowLayout1 = wx.NewId()
-ID_windowLayout2 = wx.NewId()
-ID_windowLayout3 = wx.NewId()
-ID_windowLayout4 = wx.NewId()
-
-HK_windowLayout1 = '\tF5'
-HK_windowLayout2 = '\tF6'
-HK_windowLayout3 = '\tF7'
-HK_windowLayout4 = '\tF8'
-
-# help
-ID_helpAbout = wx.ID_ABOUT
-ID_helpHomepage = wx.NewId()
-ID_helpForum = wx.NewId()
-ID_helpTwitter = wx.NewId()
-ID_helpCite = wx.NewId()
-ID_helpDonate = wx.NewId()
-ID_helpUpdate = wx.NewId()
-ID_helpUserGuide = wx.NewId()
-ID_helpDownload = wx.NewId()
-ID_helpWhatsNew = wx.NewId()
-
-HK_helpUserGuide = '\tF1'
-
 # peaklist panel
 ID_peaklistAnnotate = wx.NewId()
 ID_peaklistSendToMassToFormula = wx.NewId()
@@ -319,21 +222,6 @@ ID_massToFormulaSearchLipidMaps = wx.NewId()
 # coumpounds search panel
 ID_compoundsSearchCompounds = wx.NewId()
 ID_compoundsSearchFormula = wx.NewId()
-
-# mascot panel
-ID_mascotPMF = wx.NewId()
-ID_mascotMIS = wx.NewId()
-ID_mascotSQ = wx.NewId()
-ID_mascotQuery = wx.NewId()
-
-# profound panel
-ID_profoundPMF = wx.NewId()
-ID_profoundQuery = wx.NewId()
-
-# prospector panel
-ID_prospectorMSFit = wx.NewId()
-ID_prospectorMSTag = wx.NewId()
-ID_prospectorQuery = wx.NewId()
 
 # info panel
 ID_documentInfoSummary = wx.NewId()
