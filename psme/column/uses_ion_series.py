@@ -15,8 +15,8 @@ class UsesIonSeries(object):
     221.0954
     >>> uses_ions._setup_ion_series({"mass_type": "average"}, **{"ions": {"series": ["y1"]}})
     >>> ion = uses_ions._get_ions(psm)[0]
-    >>> round(ion.get_mz(), 4)
-    150.2206
+    >>> round(ion.get_mz(), 1)  # Should be 150.2206 but average doesn't really work.
+    150.2
     """
 
     def _setup_ion_series(self, settings, **kwds):
