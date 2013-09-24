@@ -31,7 +31,10 @@ class ScanSourceManager(object):
         if len(self.scan_sources) == 1:
             return self.scan_sources[0]
         else:
-            raise NotImplementedError()
+            for scan_source in self.scan_sources:
+                if scan_source.name == name:
+                    return scan_source
+            raise Exception("Could not find scan source matching name [%s]" % name)
 
     def match_by_index(self, index):
         if len(self.scan_sources) == 1:
@@ -61,6 +64,8 @@ class ScanSource(object):
             self.name = None
             self.encoded_id = None
         self.filename = basename(self.path)
+        if not self.name:
+            self.name = self.filename
 
     def get_scans(self):
         #scan_sources = __load_scan_sources(settings)

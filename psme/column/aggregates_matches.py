@@ -48,7 +48,7 @@ class AggregatesMatches(object):
         else:
             return float('nan')
 
-    def _aggregate(self, matched, ions=None):
+    def _aggregate(self, matched, ions=None, peaks=None):
         if self.aggregate_by == 'count':
             return self._count_matched(matched)
         elif self.aggregate_by == 'count_missed':
@@ -65,6 +65,9 @@ class AggregatesMatches(object):
             return ",".join([ion.label for (was_matched, ion) in zip(matched, ions) if was_matched])
         elif self.aggregate_by == 'list_misses':
             return ",".join([ion.label for (was_matched, ion) in zip(matched, ions) if not was_matched])
+        elif self.aggregate_by == 'ion_map':
+            # TODO:
+            pass
         else:
             self._raise_cannot_aggregate_by(self.aggregate_by)
 

@@ -1,4 +1,6 @@
 from pyteomics.mass import calculate_mass, std_ion_comp, Composition
+from re import sub, compile
+from .mass_util import mass_diff
 
 ION_COMP = std_ion_comp.copy()
 ION_COMP['M-CO'] = Composition(formula='C-1O-1')
@@ -8,6 +10,11 @@ ION_COMP['M-H2O'] = Composition(formula='H-2O-1')
 # Lorikeet & ProteinProspector compute Z-dot ions (though I don't actually
 # know what that means).
 ION_COMP['z'] = Composition(formula='H-2O-1' + 'ON-1')
+
+TPP_N_TERM_MODIFICATION_PATTERN = compile(r'n\[([^\]]+)\]')
+TPP_C_TERM_MODIFICATION_PATTERN = compile(r'c\[([^\]]+)\]')
+TPP_MODIFICATION_PATTERN = compile(r'([A-Z])(?:\[([^\]]+)\])?')
+TPP_TRIMMED_PATTERN = compile(r'^.\.(.*)\..$')
 
 
 class Peptide(object):
@@ -23,6 +30,40 @@ class Peptide(object):
         self.modifications = mods
         self.n_term_modifications = n_term_modifications
         self.c_term_modifications = c_term_modifications
+
+    @staticmethod
+    def from_tpp_peptide_string(peptide_string):
+        sequence = Peptide.__unmodify(peptide_string)
+        n_term_modifications = []
+        c_term_modifications = []
+        n_term_mod_match = TPP_N_TERM_MODIFICATION_PATTERN.search(peptide_string)
+        if n_term_mod_match:
+            n_term_modifications = [float(n_term_mod_match.group(1))]
+        c_term_mod_match = TPP_C_TERM_MODIFICATION_PATTERN.search(peptide_string)
+        if c_term_mod_match:
+            c_term_modifications = [float(c_term_mod_match.group(1))]
+        last_mod_index = 0
+        mods = []
+        trimmed_string = TPP_TRIMMED_PATTERN.match(peptide_string).group(1)
+        while True:
+            match = TPP_MODIFICATION_PATTERN.search(trimmed_string, last_mod_index)
+            if not match:
+                break
+            amino_acid = match.group(1)
+            if match.group(2):
+                mods.append([mass_diff(amino_acid, float(match.group(2)))])
+            else:
+                mods.append([])
+            last_mod_index = match.end(0)
+        peptide = Peptide(sequence=sequence, n_term_modifications=n_term_modifications, c_term_modifications=c_term_modifications)
+        peptide.modifications = mods
+        return peptide
+
+    @staticmethod
+    def __unmodify(peptide):
+        peptide = sub(r'\[(\-|\d|\.)+\]', '', peptide)
+        peptide = sub(r'^.\.|\..$|n|c', '', peptide)
+        return peptide
 
     def get_seq_mass(self, start=None, end=None, term="n", **kwds):
         # kwds could be average, ion_type, etc...

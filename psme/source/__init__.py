@@ -1,6 +1,7 @@
 from .mzid import MzIdLoader
 from .pepxml import PepXmlLoader
 from .protein_pilot import ProteinPilotPeptideReportLoader
+from .tpp_derived_report import TppDerivedReportLoader
 
 
 DEFAULT_PSMS_TYPES = 'mzid'
@@ -9,6 +10,7 @@ PSM_LOADERS = {
     'mzid': MzIdLoader,
     'pepxml': PepXmlLoader,  # Not yet implemented.
     'proteinpilot_peptide_report': ProteinPilotPeptideReportLoader,
+    'tpp_derived_report': TppDerivedReportLoader,
 }
 
 
